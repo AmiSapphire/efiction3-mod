@@ -73,6 +73,17 @@ else {
 		dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = '3.5.6' WHERE sitekey = '" . SITEKEY . "'");
 		$settings['version'] = '3.5.6';
 	}
+ 
+	else {
+		$set_359 = do_version_check_359();
+	
+		if ($set_359)
+		{
+			$output .= write_message("Table <b>" . $set_359 . "</b> needs a update.");
+			dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = '3.5.8' WHERE sitekey = '" . SITEKEY . "'");
+			$settings['version'] = '3.5.8';
+		}
+	}
 }
 
 $oldVersion = explode(".", $settings['version']);
@@ -271,6 +282,30 @@ elseif ($oldVersion[0] == 3 && ($oldVersion[1] < 5 || $oldVersion[2] < 8))  //3.
 
 }
 
+elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 9)  // 3.5.8 -> 3.5.9
+{
+	if ($confirm == "yes")
+	{
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'smtp_port'")))
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `smtp_port` varchar(5) NOT NULL DEFAULT ''");
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'smtp_secure'")))
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `smtp_secure` varchar(3) NOT NULL DEFAULT ''");
+
+		$set_359 = do_version_check_359();
+		if ($set_359)
+		{
+			$output .= write_error(_ERROR);   // migration not confirmed -> DO NOT bump version
+		}
+		else
+		{
+			$update = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET version = '".$version."' WHERE sitekey = '".SITEKEY."'");
+			if ($update) $output .= write_message(_ACTIONSUCCESSFUL);
+		}
+	}
+	else if ($confirm == "no") $output .= write_message(_ACTIONCANCELLED);
+	else $output .= write_message("Are you ready to update? <a href='update.php?confirm=yes'>"._YES."</a> "._OR." <a href='update.php?confirm=no'>"._NO."</a>");
+}
+
 else $output .= write_message(_ALREADYUPDATED);
 
 /* until database is fully fixed, not update efiction version */
@@ -379,6 +414,23 @@ function do_version_check_356()
 	}
  
 	return $check_356;
+}
+
+function do_version_check_359()
+{
+	$check_359 = false;
+
+	$required = array('smtp_port', 'smtp_secure');
+	foreach ($required as $f)
+	{
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM " . TABLEPREFIX . "fanfiction_settings LIKE '{$f}'")))
+		{
+			$check_359 = "fanfiction_settings - field: " . $f;
+			return $check_359;
+		}
+	}
+
+	return $check_359;
 }
 
 $tpl->assign("output", $output);

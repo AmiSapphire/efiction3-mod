@@ -29,7 +29,7 @@ if(!defined("_CHARSET")) exit( );
 
 function sendemail($to_name,$to_email,$from_name,$from_email,$subject,$message,$type="plain",$cc="",$bcc="") {
                  
-	global $language, $smtp_host, $smtp_username, $smtp_password, $siteemail;     
+	global $language, $smtp_host, $smtp_username, $smtp_password, $smtp_port, $smtp_secure, $smtp_debug, $siteemail;
    
 	// Check for hackers and spammers and bad input
 	if(!isset($_SERVER['HTTP_USER_AGENT'])) return false;
@@ -64,12 +64,22 @@ function sendemail($to_name,$to_email,$from_name,$from_email,$subject,$message,$
 	if(!$smtp_host) {
 		$mail->IsMail( );
 	}
-	else { 
+	else {
 		$mail->IsSMTP( );
 		$mail->Host = $smtp_host;
 		$mail->SMTPAuth = true;
 		$mail->Username = $smtp_username;
 		$mail->Password = $smtp_password;
+		// Apply transport settings only when configured; otherwise leave PHPMailer
+		// defaults (and SMTPAutoTLS) in place. !empty() avoids 8.x warnings on
+		// not-yet-migrated installs where these globals are undefined.
+		if (!empty($smtp_port))   $mail->Port = (int) $smtp_port;
+		if (!empty($smtp_secure)) $mail->SMTPSecure = $smtp_secure;   // '', 'tls', 'ssl'
+		// Optional handshake debugging, off unless $smtp_debug is set. Routed to the PHP error log.
+		if(!empty($smtp_debug)) {
+			$mail->SMTPDebug = 2;
+			$mail->Debugoutput = function($str, $level) { error_log("eFiction SMTP debug [$level]: ".trim($str)); };
+		}
 	}
 	$mail->CharSet = _CHARSET;
 	$mail->From = $siteemail;
@@ -97,10 +107,11 @@ function sendemail($to_name,$to_email,$from_name,$from_email,$subject,$message,$
 	$mail->Subject = $subject;
 	$mail->Body = $message;
 	if(!$mail->Send()) {
-		$mail->ErrorInfo;
+		$errorinfo = $mail->ErrorInfo;
+		error_log("eFiction sendemail failed for ".$to_email.": ".$errorinfo);
 		$mail->ClearAllRecipients();
 		$mail->ClearReplyTos();
-		return $mail->ErrorInfo;
+		return false;
 	} else {
 		$mail->ClearAllRecipients(); 
 		$mail->ClearReplyTos();

@@ -77,7 +77,117 @@ $sects = array("main", "submissions", "sitesettings", "display", "reviews", "use
 //if(!isset($_GET['sect'])) $sect = "main";
 //else $sect = $_GET['sect'];
 $sect = isset($_GET['sect']) ? $_GET['sect'] : "main";
-if(isset($_POST['submit'])) {
+if(isset($_POST['testsmtp']) && $sect == "email") {
+	// SMTP connection test. Runs only on POST (the Test button), never via a GET
+	// parameter. It verifies the SAVED settings loaded from fanfiction_settings
+	// (via header.php) -- NOT the unsaved form values -- by opening a real SMTP
+	// connection and reporting each step. It never sends an email and never writes
+	// to the database, so it must not touch $result or advance $sects.
+	$output .= "<h2>"._TESTSMTP_HEADER."</h2>";
+	if(empty($smtp_host)) {
+		$output .= write_error(_TESTSMTP_NOHOST);
+	}
+	else {
+		// Effective values MUST mirror the real sending behaviour of sendemail():
+		// PHPMailer's default port is 25, and 'ssl' uses an ssl:// transport prefix.
+		$port   = !empty($smtp_port) ? (int) $smtp_port : 25;
+		$secure = !empty($smtp_secure) ? $smtp_secure : '';
+		$host   = ($secure === 'ssl') ? 'ssl://'.$smtp_host : $smtp_host;
+
+		$output .= write_message(sprintf(_TESTSMTP_PORTNOTE, htmlspecialchars((string) $port), htmlspecialchars($secure !== '' ? $secure : '(none)')));
+		// If encryption is requested but no port is saved, warn about the usual port
+		// -- but still run the test on the effective values, since that is what real
+		// sending will do.
+		if(empty($smtp_port) && $secure === 'ssl') $output .= write_message(_TESTSMTP_SSLPORTWARN);
+		if(empty($smtp_port) && $secure === 'tls') $output .= write_message(_TESTSMTP_TLSPORTWARN);
+
+		// Load the SMTP class the same way emailer.php loads PHPMailer, via the
+		// autoloader -- NOT by requiring class.smtp.php directly. After the planned
+		// PHPMailer 6.x upgrade the autoload file becomes a shim and this must keep
+		// working (that upgrade must alias the SMTP class name; see issue #2).
+		require_once(_BASEDIR."includes/PHPMailerAutoload.php");
+
+		$steps = "";
+		ob_start();
+		$smtp = new SMTP;
+		$smtp->do_debug = 2;
+		try {
+			if(!$smtp->connect($host, $port, 10)) {
+				$steps .= write_error(sprintf(_TESTSMTP_CONNECTFAIL, htmlspecialchars($host), htmlspecialchars((string) $port)));
+			}
+			else {
+				$steps .= write_message(sprintf(_TESTSMTP_CONNECTOK, htmlspecialchars($host), htmlspecialchars((string) $port)));
+				if(!$smtp->hello(gethostname())) {
+					$err = $smtp->getError();
+					$steps .= write_error(sprintf(_TESTSMTP_HELOFAIL, htmlspecialchars(!empty($err['error']) ? $err['error'] : '')));
+				}
+				else {
+					$steps .= write_message(_TESTSMTP_HELOOK);
+					$ext = $smtp->getServerExtList();
+					$hasStartTls = is_array($ext) && array_key_exists('STARTTLS', $ext);
+					if($hasStartTls) {
+						$steps .= write_message(_TESTSMTP_STARTTLSOK);
+						if($secure === 'tls') {
+							if(!$smtp->startTLS()) {
+								$err = $smtp->getError();
+								$steps .= write_error(sprintf(_TESTSMTP_STARTTLSFAIL, htmlspecialchars(!empty($err['error']) ? $err['error'] : '')));
+							}
+							else {
+								// Re-issue EHLO over the now-encrypted channel and refresh caps.
+								$smtp->hello(gethostname());
+								$ext = $smtp->getServerExtList();
+							}
+						}
+					}
+					else if($secure === 'tls') {
+						$steps .= write_error(_TESTSMTP_STARTTLSMISSING);
+					}
+					$hasAuth = is_array($ext) && array_key_exists('AUTH', $ext);
+					if($hasAuth) {
+						if(!empty($smtp_username)) {
+							if(!$smtp->authenticate($smtp_username, $smtp_password)) {
+								// NOTE: never include the password in this message.
+								$err = $smtp->getError();
+								$steps .= write_error(sprintf(_TESTSMTP_AUTHFAIL, htmlspecialchars(!empty($err['error']) ? $err['error'] : '')));
+							}
+							else {
+								$steps .= write_message(_TESTSMTP_AUTHOK);
+							}
+						}
+						else {
+							$steps .= write_message(_TESTSMTP_AUTHSKIP);
+						}
+					}
+					else {
+						$steps .= write_message(_TESTSMTP_NOAUTH);
+					}
+				}
+			}
+		} catch (Exception $e) {
+			$steps .= write_error(htmlspecialchars($e->getMessage()));
+		}
+		// Always close the connection, even if we stopped early above.
+		$smtp->quit(true);
+		$debug = ob_get_clean();
+
+		// SECURITY: the debug transcript at level 2 echoes client commands, which
+		// during AUTH include the base64-encoded credentials. Redact every form of
+		// the password before it is ever shown so it is never printed anywhere.
+		if(!empty($smtp_password)) {
+			$secrets = array(
+				$smtp_password,
+				base64_encode($smtp_password),
+				base64_encode("\0".$smtp_username."\0".$smtp_password), // AUTH PLAIN
+			);
+			$debug = str_replace($secrets, "***REDACTED***", $debug);
+		}
+
+		$output .= $steps;
+		// Server banners are untrusted input -> escape the whole transcript (XSS).
+		$output .= "<h3>"._TESTSMTP_TRANSCRIPT."</h3><pre style='text-align:left; overflow:auto; background-color: rgba(0, 0, 0, .6); margin-top: 10px; color: #fff; padding: 8px;'>".htmlspecialchars($debug)."</pre>";
+	}
+}
+else if(isset($_POST['submit'])) {
 	if($sect == "main") {
 		if(!preg_match("!^[a-z0-9_]{3,30}$!i", $_POST['newsitekey'])) $output .= write_error(_BADSITEKEY);
 		else {
@@ -164,21 +274,29 @@ if(isset($_POST['submit'])) {
 		$result = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET alertson = '$alertson', disablepopups = '$disablepopups', agestatement = '$agestatement', pwdsetting = '$pwdsetting' WHERE sitekey ='".SITEKEY."'");
 	}
 	else if($sect == "email") {
-		$smtp_host = $_POST['newsmtp_host'];
-		$smtp_username = $_POST['newsmtp_username'];
-		$smtp_password = $_POST['newsmtp_password'];
-		$result = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET smtp_host = '$smtp_host', smtp_username = '$smtp_username', smtp_password = '$smtp_password' WHERE sitekey ='".SITEKEY."'");
+		$smtp_host = escapestring(descript(strip_tags($_POST['newsmtp_host'])));
+		$smtp_username = escapestring(descript(strip_tags($_POST['newsmtp_username'])));
+		$smtp_password = escapestring(descript(strip_tags($_POST['newsmtp_password'])));
+		$smtp_port = !empty($_POST['newsmtp_port']) ? (int) $_POST['newsmtp_port'] : '';
+		$smtp_secure = in_array($_POST['newsmtp_secure'], array('', 'tls', 'ssl'), true) ? $_POST['newsmtp_secure'] : '';
+		$result = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET smtp_host = '$smtp_host', smtp_username = '$smtp_username', smtp_password = '$smtp_password', smtp_port = '$smtp_port', smtp_secure = '$smtp_secure' WHERE sitekey ='".SITEKEY."'");
 	}
 	if ($result) {
 		$output .= write_message(_ACTIONSUCCESSFUL);
-		
-		$idx = array_search($sect, $sects);
-		if ($idx !== false) {
-			$next_idx = $idx + 1;
-			if ($next_idx >= count($sects)) {
-				$next_idx = 0;
+		// The section-advance wizard is for the INSTALLER only (install/install.php
+		// includes this file and steps through sections). In admin, "email" is the
+		// last entry in $sects, so advancing would wrap to 0 and jump back to the
+		// first tab while the URL still says sect=email. $action is undefined in the
+		// installer include context, so guard with isset() to avoid a PHP 8 warning.
+		if (!isset($action) || $action != "settings") {
+			$idx = array_search($sect, $sects);
+			if ($idx !== false) {
+				$next_idx = $idx + 1;
+				if ($next_idx >= count($sects)) {
+					$next_idx = 0;
+				}
+				$sect = $sects[$next_idx];
 			}
-			$sect = $sects[$next_idx];
 		}
 	} else {
 		$output .= write_error(_ERROR);
@@ -190,8 +308,9 @@ if(isset($_POST['submit'])) {
 		if(is_NULL($val)) $val = '';
 		$$var = stripslashes($val );
 	}
+	}
 
-	$output .= "<form method='POST' class='tblborder' style='' enctype='multipart/form-data' action='".($action == "settings" ? "admin.php?action=settings" : $_SERVER['PHP_SELF']."?step=".$_GET['step'])."&amp;sect=$sect'>";
+	$output .= "<form method='POST' class='tblborder' style='' enctype='multipart/form-data' action='".((isset($action) && $action == "settings") ? "admin.php?action=settings" : $_SERVER['PHP_SELF']."?step=".$_GET['step'])."&amp;sect=$sect'>";
 	if($sect == "main") {
 		$output .= "<h2>"._SITEINFO."</h2>
 		<table class='acp'>
@@ -488,8 +607,32 @@ if(isset($_POST['submit'])) {
 				<td><label for='newsmtp_username'>"._SMTPUSER.":</label></td><td><input name='newsmtp_username' type='text' value='$smtp_username'> <a href='#' class='pophelp'>[?]<span>"._HELP_SMTPUSER."</span></a></td>
 		</tr>
 		<tr>
-				<td><label for='newsmtp_password'>"._SMTPPASS.":</label></td><td><input name='newsmtp_password' type='password' value='$smtp_password'> <a href='#' class='pophelp'>[?]<span>"._HELP_SMTPPWD."</span></a></td></tr>";		
+				<td><label for='newsmtp_password'>"._SMTPPASS.":</label></td><td><input name='newsmtp_password' type='password' value='$smtp_password'> <a href='#' class='pophelp'>[?]<span>"._HELP_SMTPPWD."</span></a></td></tr>
+		<tr>
+				<td><label for='newsmtp_port'>"._SMTPPORT.":</label></td><td><input name='newsmtp_port' type='text' value='".((isset($smtp_port) && $smtp_port !== '') ? $smtp_port : '')."'> <a href='#' class='pophelp'>[?]<span>"._HELP_SMTPPORT."</span></a></td>
+		</tr>
+		<tr>
+				<td><label for='newsmtp_secure'>"._SMTPSECURE.":</label></td><td><select name='newsmtp_secure'>
+					<option value=''".((!isset($smtp_secure) || $smtp_secure === '') ? " selected" : "").">(none)</option>
+					<option value='tls'".((isset($smtp_secure) && $smtp_secure == 'tls') ? " selected" : "").">STARTTLS / 587</option>
+					<option value='ssl'".((isset($smtp_secure) && $smtp_secure == 'ssl') ? " selected" : "").">SSL / 465</option>
+				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_SMTPSECURE."</span></a></td></tr>";
 		$output .= 	write_message(_SMTPOFF);
 	}
 	$output .= "<tr><td colspan='2'><div align='center'><input type='submit' id='submit' class='button' name='submit' value='"._SUBMIT."'></div></form></td></tr></table>";
+	// The SMTP test button lives OUTSIDE the main settings form (nested forms are
+	// invalid HTML). It is its own POST mini-form -- a submit button, not a GET
+	// link -- so the outbound SMTP connection can't be triggered by a plain link
+	// or a browser prefetch. The existing testsmtp handler posts to the same URL.
+	if($sect == "email") {
+		$output .= "<h2>"._TESTSMTP_HEADER."</h2>
+		<ul>
+			<li>
+				<form method='POST' action='admin.php?action=settings&amp;sect=email' style='display:inline'>
+					<input type='submit' class='button' name='testsmtp' value='"._TESTSMTP."'>
+				</form>
+				<a href='#' class='pophelp'>[?]<span>"._HELP_TESTSMTP."</span></a>
+			</li>
+		</ul>";
+	}
 ?>
