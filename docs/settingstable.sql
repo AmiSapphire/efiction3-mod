@@ -61,4 +61,4 @@ CREATE TABLE `fanfiction_settings` (
   `smtp_port` varchar(5) NOT NULL default '',
   `smtp_secure` varchar(3) NOT NULL default '',
   PRIMARY KEY  (`sitekey`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

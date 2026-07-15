@@ -12,7 +12,7 @@ CREATE TABLE `fanfiction_authorfields` (
   `field_code_out` text,
   `field_on` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`field_id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -26,7 +26,7 @@ CREATE TABLE `fanfiction_authorinfo` (
   `info` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`uid`,`field`),
   KEY `uid` (`uid`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -50,7 +50,7 @@ CREATE TABLE `fanfiction_authorprefs` (
   `contact` tinyint(1) NOT NULL default '0',
   `stories` int(11) NOT NULL default '',
   PRIMARY KEY  (`uid`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -72,7 +72,7 @@ CREATE TABLE `fanfiction_authors` (
   PRIMARY KEY  (`uid`),
   KEY `penname` (`penname`),
   KEY `admincreated` (`admincreated`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE `fanfiction_blocks` (
   `block_variables` text NOT NULL,
   PRIMARY KEY  (`block_id`),
   KEY `block_name` (`block_name`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -109,7 +109,7 @@ CREATE TABLE `fanfiction_categories` (
   `numitems` int(11) NOT NULL default '0',
   PRIMARY KEY  (`catid`),
   KEY `byparent` (`parentcatid`,`displayorder`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -138,7 +138,7 @@ CREATE TABLE `fanfiction_chapters` (
   KEY `title` (`title`),
   KEY `validated` (`validated`),
   KEY `forstoryblock` (`sid`,`validated`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -155,7 +155,7 @@ CREATE TABLE `fanfiction_characters` (
   PRIMARY KEY  (`charid`),
   KEY `catid` (`catid`),
   KEY `charname` (`charname`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -169,7 +169,7 @@ CREATE TABLE `fanfiction_classes` (
   `class_name` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`class_id`),
   KEY `byname` (`class_type`,`class_name`,`class_id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -183,7 +183,7 @@ CREATE TABLE `fanfiction_classtypes` (
   `classtype_title` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`classtype_id`),
   UNIQUE KEY `classtype_name` (`classtype_name`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -195,7 +195,7 @@ CREATE TABLE `fanfiction_coauthors` (
   `sid` int(11) NOT NULL default '0',
   `uid` int(11) NOT NULL default '0',
   PRIMARY KEY  (`sid`,`uid`),
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 -- --------------------------------------------------------
 
 -- 
@@ -209,7 +209,7 @@ CREATE TABLE `fanfiction_codeblocks` (
   `code_module` varchar(60) default NULL,
   PRIMARY KEY  (`code_id`),
   KEY `code_type` (`code_type`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -225,7 +225,7 @@ CREATE TABLE `fanfiction_comments` (
   `time` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`cid`),
   KEY `commentlist` (`nid`,`time`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -240,7 +240,7 @@ CREATE TABLE `fanfiction_favorites` (
   `comments` text,
   UNIQUE KEY `byitem` (`item`,`type`,`uid`),
   UNIQUE KEY `byuid` (`uid`,`type`,`item`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -256,7 +256,7 @@ CREATE TABLE `fanfiction_inseries` (
   `inorder` int(11) NOT NULL default '0',
   PRIMARY KEY  (`sid`,`seriesid`),
   KEY `seriesid` (`seriesid`,`inorder`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -272,7 +272,7 @@ CREATE TABLE `fanfiction_log` (
   `log_timestamp` int(10) unsigned NOT NULL default '0',
   `log_type` char(2) NOT NULL default '',
   PRIMARY KEY  (`log_id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -287,7 +287,7 @@ CREATE TABLE `fanfiction_messages` (
   `message_text` text,
   PRIMARY KEY  (`message_id`),
   KEY `message_name` (`message_name`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -301,7 +301,7 @@ CREATE TABLE `fanfiction_modules` (
   `version` varchar(10) NOT NULL default '1.0',
   PRIMARY KEY  (`id`),
   KEY `name_version` (`name`,`version`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -317,7 +317,7 @@ CREATE TABLE `fanfiction_news` (
   `time` int(10) unsigned NOT NULL default '0',
   `comments` int(11) NOT NULL default '0',
   PRIMARY KEY  (`nid`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -334,7 +334,7 @@ CREATE TABLE `fanfiction_pagelinks` (
   `link_access` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`link_id`),
   KEY `link_name` (`link_name`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -353,7 +353,7 @@ CREATE TABLE `fanfiction_panels` (
   `panel_type` varchar(20) NOT NULL default 'A',
   PRIMARY KEY  (`panel_id`),
   KEY `panel_type` (`panel_type`,`panel_name`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -368,7 +368,7 @@ CREATE TABLE `fanfiction_ratings` (
   `warningtext` text NOT NULL,
   PRIMARY KEY  (`rid`),
   KEY `rating` (`rating`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -394,7 +394,7 @@ CREATE TABLE `fanfiction_reviews` (
   KEY `avgrating` (`type`,`item`,`rating`),
   KEY `bychapter` (`chapid`,`rating`),
   KEY `byuid` (`uid`,`item`,`type`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -420,7 +420,7 @@ CREATE TABLE `fanfiction_series` (
   PRIMARY KEY  (`seriesid`),
   KEY `catid` (`catid`),
   KEY `owner` (`uid`,`title`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 -- 
@@ -438,7 +438,7 @@ CREATE TABLE `fanfiction_stats` (
   `members` int(11) NOT NULL default '0',
   `reviewers` int(11) NOT NULL default '0',
   `newestmember` int(11) NOT NULL default '0'
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -480,7 +480,7 @@ CREATE TABLE `fanfiction_stories` (
   KEY `challenges` (`challenges`),
   KEY `validateduid` (`validated`,`uid`),
   KEY `recent` (`updated`,`validated`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -551,4 +551,4 @@ CREATE TABLE `fanfiction_settings` (
   `rectarget` tinyint(1) NOT NULL default '0',
   `autovalrecs` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`sitekey`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
