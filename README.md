@@ -18,7 +18,9 @@ Same as the usual eFiction 3.x installs.
 ## Updating
 
 Has to be done manually for now. Easiest if you have either unofficial versions 3.5.8, 3.5.8.f1, or future 3.5.9. If you are updating from versions 3.5.3, 3.5.5, or 3.5.6, update to at least version 3.5.8 first.
+
 <br>
+
 # Changelog
 
 
