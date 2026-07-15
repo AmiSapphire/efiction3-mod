@@ -879,7 +879,9 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_modules` (
 				$smtp_host = $_POST['newsmtp_host'];
 				$smtp_username = $_POST['newsmtp_username'];
 				$smtp_password = $_POST['newsmtp_password'];
-				$result = dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET smtp_host = '$smtp_host', smtp_username = '$smtp_username', smtp_password = '$smtp_password' WHERE sitekey = '" . SITEKEY . "'");
+				$smtp_port = $_POST['newsmtp_port'];
+				$smtp_secure = $_POST['newsmtp_secure'];
+				$result = dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET smtp_host = '$smtp_host', smtp_username = '$smtp_username', smtp_password = '$smtp_password', smtp_port = '$smtp_port', smtp_secure = '$smtp_secure' WHERE sitekey = '" . SITEKEY . "'");
 				if ($result)
 				{
 					$output .= write_message(_ACTIONSUCCESSFUL);
@@ -952,6 +954,8 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_modules` (
   `smtp_host` varchar(200) default NULL,
   `smtp_username` varchar(50) default NULL,
   `smtp_password` varchar(50) default NULL,
+  `smtp_port` varchar(5) NOT NULL default '',
+  `smtp_secure` varchar(3) NOT NULL default '',
   PRIMARY KEY  (`sitekey`)
 ) ENGINE=MyISAM;");
 					if ($settings) $output .= write_message("<img src=\"../images/check.gif\"> " . _SETTINGSTABLESUCCESS . " <br /><a href='install.php?step=2'>" . _CONTINUE . "</a>");
