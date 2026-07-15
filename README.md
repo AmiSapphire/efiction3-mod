@@ -1,85 +1,43 @@
-# efiction v3.5.8 fixes
+# eFiction 3 Mod
 
-- rating display fix
-
-
-# efiction v3.5.8
-
-- added notification module
-- changed files: user/editbio.php and user/lostpassword.php 
-- chanded way for loading DB functions - moved from config file! 
-- fixed bug in install.php - script worked but in PHP 8.x it caused warnings
-- new ranking system - number of likes, used as {ratingpics} likes in tpl.
+This version is essentially a version of 'future 3.5.9' wiith some of my internal modifications. For now, there are no auto paths to patch old eFiction versions to this version, so it has to be done manually. (The update.php file needs to be cleaned up, and the 3.5.5 update does not work properly in PHP 7 anyway.)
 
 
-# efiction v3.5.7
+## Requirements
 
-minimum requirements:  MySQL 5.6.3  or MariaDB 10.5.0 
-
-
-### Database changes:
-
-- all IP adress fields - from integer to 46 chars
-
-### Other changes:
-
-- tinymce4 settings fix
-- INET6 support needed
-- file uploading fixed for PHP 8.1
-- national characters fix in search form 
+- Minimum: PHP 7.4, MySQL 5.6.3 or MariaDB 10.5
+- Recommnended: PHP 8.4, MySQL 7.0 or MariaDB 11.4
+- Tested Working: PHP: 7.4.33, 8.5.8; MariaDB: 10.6, 10.11, 11.4
 
 
+## Installation
 
-# efiction v3.5.6
-
-non official version of 3.5.x efiction software
-
-## Only for testing purposes
+Same as the usual eFiction 3.x installs.
 
 
-### Database changes:
+## Updating
 
-- all date fields from datestamp format to unix time format
-
-### File's changes
-
-- related date field type changes
-- found issues fixed
-- deleted bridges 
-
-### Looking for missing modules
-If you have source code of missing and used modules, share it and I can try to add and fix them
+Has to be done manually for now. Easiest if you have either unofficial versions 3.5.8, 3.5.8.f1, or future 3.5.9. If you are updating from versions 3.5.3, 3.5.5, or 3.5.6, update to at least version 3.5.8 first.
+<br>
+# Changelog
 
 
-### Installation
-No change
+### Future 3.5.9 release has the following changes and fixes so far:
 
-### Update
-Classic as before, run update process that should change your date fields without lossing your data. It works only for update from 3.5.5, not sooner.
+- date fields fix
+- logs fail typo fix
+- PHP warning fixes
+- SMTP updates/fixes and an SMTP settings tester
 
 
+### eFiction 3 Mod has the following changes and fixes so far:
 
-<code>
-// ----------------------------------------------------------------------
-// Copyright (c) 2007 by Tammy Keefer
-// Based on eFiction 1.1
-// Copyright (C) 2003 by Rebecca Smallwood.
-// http://efiction.sourceforge.net/
-// ----------------------------------------------------------------------
-// LICENSE
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License (GPL)
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// To read the license please visit http://www.gnu.org/copyleft/gpl.html
-// ----------------------------------------------------------------------
+- Original eFiction 3 skins restored
+- Future 3.5.9 SMTP database table creation oversight fixes (also install.php consistency change)
+- SQL database engine change from MyISAM to InnoDB
+- SQL database charset changes from latin1 to utf8mb4 
+- Password hashes are now bcrypt with a cost of 12 instead of MD5 (though old MD5 hashed passwords still work until changed by user)
 
-see more in README.txt file
-</code>
+<br>
+
+README_old.md has the noted changes and fixes from 3.5.8.f1 down to 3.5.6.
