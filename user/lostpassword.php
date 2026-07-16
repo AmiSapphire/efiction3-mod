@@ -54,7 +54,7 @@ if(isMEMBER) accessDenied( );
 				mt_srand((double)microtime() * 1000000);
 				$charset = '23456789' . 'abcdefghijkmnpqrstuvwxyz' . 'ABCDEFGHJKLMNPQRSTUVWXYZ';		
 				$pass = random_string($charset, 10);
-				$encryppass = md5($pass);
+				$encryppass = password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
 				$subject = _NEWPWDSUB;
 				$mailtext = sprintf(_NEWPWDMSG, $pass);
 

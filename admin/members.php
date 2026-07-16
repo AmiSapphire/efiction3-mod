@@ -87,7 +87,7 @@ $confirm = isset($_GET['confirm']) ? $_GET['confirm'] : false;
 			mt_srand((double)microtime() * 1000000);
 			$charset = '23456789' . 'abcdefghijkmnpqrstuvwxyz' . 'ABCDEFGHJKLMNPQRSTUVWXYZ';
 			$pass = random_string($charset, 10);
-			$encryppass = md5($pass);
+			$encryppass = password_hash($pass, PASSWORD_BCRYPT, ['cost' => 12]);
 			//$headers = "From: $sitename\n";
 			dbquery("UPDATE "._AUTHORTABLE." SET "._PASSWORDFIELD." = '$encryppass' WHERE uid = '".$_GET['release']."'");
 			

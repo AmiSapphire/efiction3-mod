@@ -192,7 +192,7 @@ switch ($_GET['step'])
 			if ((!$_POST['email']) && !isADMIN) $fail .= "<div style='text-align: center;'>" . _EMAILREQUIRED . " " . _TRYAGAIN . "</div>";
 			if ($penname && !preg_match("!^[a-z0-9_ ]{3,30}$!i", $penname)) $fail = "<div style='text-align: center;'>" . _BADUSERNAME . " " . _TRYAGAIN . "</div>";
 			if (!preg_match("/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+$/", $_POST['email'])) $fail = "<div style='text-align: center;'>" . _INVALIDEMAIL . " " . _TRYAGAIN . "</div>";
-			if ($_POST['password'] == $_POST['password2']) $encryptpassword = md5($_POST['password']);
+			if ($_POST['password'] == $_POST['password2']) $encryptpassword = password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
 			else $fail =  write_message(_PASSWORDTWICE);
 			if (!isset($fail))
 			{
@@ -531,7 +531,7 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
   `image` varchar(200) NOT NULL default '',
   `date`int(10) unsigned NOT NULL default '0',
   `admincreated` char(1) NOT NULL default '0',
-  `password` varchar(40) NOT NULL default '0',
+  `password` varchar(255) NOT NULL default '0',
   PRIMARY KEY  (`uid`),
   KEY `penname` (`penname`),
   KEY `admincreated` (`admincreated`)

@@ -52,7 +52,8 @@
 			header("Location: maintenance.php");
 			exit( );
 		}
-		$encryptedpassword = md5($_POST['password']);
+		$encryptedpasswordb = $passwd['password'];
+		$encryptedpasswordm = md5($_POST['password']);
 		if($passwd['level'] == -1) {
 			require_once("header.php");
 			//make a new TemplatePower object
@@ -65,14 +66,28 @@
 			dbclose( );
 			exit( );
 		}
-		if($passwd['password'] == $encryptedpassword) {
+		if(password_verify($_POST['password'], $encryptedpasswordb) == $encryptedpasswordb) {
 			if(isset($_POST['cookiecheck'])) {
 				setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
-				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpassword),  time()+60*60*24*30, "/");
+				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordb),  time()+60*60*24*30, "/");
 			}
 			if(!isset($_SESSION)) session_start( );
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
-			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpassword);
+			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordb);
+			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");
+			while($code = dbassoc($logincode)) {
+				eval($code['code_text']);
+			}
+		}
+
+		else if($passwd['password'] == $encryptedpasswordm) {
+			if(isset($_POST['cookiecheck'])) {
+				setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
+				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordm),  time()+60*60*24*30, "/");
+			}
+			if(!isset($_SESSION)) session_start( );
+			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
+			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordm);
 			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");
 			while($code = dbassoc($logincode)) {
 				eval($code['code_text']);

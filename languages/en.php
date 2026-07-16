@@ -65,6 +65,7 @@ define ("_JAVASCRIPTOFF", "You must have javascript enabled for this form to wor
 define ("_LIKE", "like");
 define ("_LIKES_NUMBER", "Number of Likes");
 define ("_LOGIN", "Log In");
+define ("_LOGINAGAIN", "<br>However, if you have changed your password, you will have to <a href=\"login.php\">login again</a>.");
 define ("_PLEASELOGIN", "Please login to access this feature.");
 define ("_MEMBER", "Member");
 define ("_MEMBERS", "Members");
