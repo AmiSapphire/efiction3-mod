@@ -546,7 +546,7 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
   `block_variables` text NOT NULL,
   PRIMARY KEY  (`block_id`),
   KEY `block_name` (`block_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 				$output .= "<tr><td>" . $tableprefix . "fanfiction_blocks</td><td align='center'>" . ($blocks ? "<img src=\"../images/check.gif\">" : "<img src=\"../images/X.gif\">") . "</td></tr>";
 				$categories = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_categories` (
   `catid` int(11) NOT NULL auto_increment,
@@ -560,7 +560,7 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
   `numitems` int(11) NOT NULL default '0',
   PRIMARY KEY  (`catid`),
   KEY `byparent` (`parentcatid`,`displayorder`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 				$output .= "<tr><td>" . $tableprefix . "fanfiction_categories</td><td align='center'>" . ($categories ? "<img src=\"../images/check.gif\">" : "<img src=\"../images/X.gif\">") . "</td></tr>";
 				$chapters = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_chapters` (
   `chapid` int(11) NOT NULL auto_increment,
@@ -766,7 +766,7 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_modules` (
   KEY `characters` (`characters`),
   KEY `classes` (`classes`),
   KEY `owner` (`uid`,`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 				$output .= "<tr><td>" . $tableprefix . "fanfiction_series</td><td align='center'>" . ($series ? "<img src=\"../images/check.gif\">" : "<img src=\"../images/X.gif\">") . "</td></tr>";
 				$stats = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_stats` (
   `sitekey` varchar(50) NOT NULL default '0',

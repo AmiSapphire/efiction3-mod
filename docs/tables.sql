@@ -109,7 +109,7 @@ CREATE TABLE `fanfiction_categories` (
   `numitems` int(11) NOT NULL default '0',
   PRIMARY KEY  (`catid`),
   KEY `byparent` (`parentcatid`,`displayorder`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -420,7 +420,7 @@ CREATE TABLE `fanfiction_series` (
   PRIMARY KEY  (`seriesid`),
   KEY `catid` (`catid`),
   KEY `owner` (`uid`,`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 -- 
