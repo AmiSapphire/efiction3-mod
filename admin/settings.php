@@ -558,6 +558,7 @@ else if(isset($_POST['submit'])) {
 		</tr>
 		<tr>
 				<td><label for='newratings'>"._WHATRATINGS.":</label></td><td><select name='newratings'>
+				<option value='3'".($ratings == "3" ? " selected" : "").">"._LIKES_NUMBER_SYS."</option>
 				<option value='2'".($ratings == "2" ? " selected" : "").">"._LIKESYS."</option>
 				<option value='1'".($ratings == "1" ? " selected" : "").">"._STARS."</option>
 				<option value='0'".($ratings == "0" ? " selected" : "").">"._NONE."</option>

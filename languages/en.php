@@ -63,6 +63,7 @@ define ("_GO", "Go");
 define ("_HALFSTAR", "half-star");
 define ("_JAVASCRIPTOFF", "You must have javascript enabled for this form to work properly."); // Modified for version 3.0
 define ("_LIKE", "like");
+define ("_LIKES_NUMBER", "Number of Likes");
 define ("_LOGIN", "Log In");
 define ("_PLEASELOGIN", "Please login to access this feature.");
 define ("_MEMBER", "Member");
