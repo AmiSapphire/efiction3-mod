@@ -301,13 +301,13 @@ else if(isset($_POST['submit'])) {
 	} else {
 		$output .= write_error(_ERROR);
 	}
+}
 	$settingsresults = dbquery("SELECT * FROM ".$settingsprefix."fanfiction_settings WHERE sitekey ='".SITEKEY."'");
 	$settings = dbassoc($settingsresults);
  
 	foreach($settings as $var => $val) {
 		if(is_NULL($val)) $val = '';
 		$$var = stripslashes($val );
-	}
 	}
 
 	$output .= "<form method='POST' class='tblborder' style='' enctype='multipart/form-data' action='".((isset($action) && $action == "settings") ? "admin.php?action=settings" : $_SERVER['PHP_SELF']."?step=".$_GET['step'])."&amp;sect=$sect'>";
@@ -557,8 +557,7 @@ else if(isset($_POST['submit'])) {
 				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_REVDELETE."</span></a></td>
 		</tr>
 		<tr>
-				<td><label for='newratings'>"._WHATRATINGS. ":</label></td><td><select name='newratings'>
-				<option value='3'" . ($ratings == "3" ? " selected" : "") . ">" . _LIKES_NUMBER . "</option>
+				<td><label for='newratings'>"._WHATRATINGS.":</label></td><td><select name='newratings'>
 				<option value='2'".($ratings == "2" ? " selected" : "").">"._LIKESYS."</option>
 				<option value='1'".($ratings == "1" ? " selected" : "").">"._STARS."</option>
 				<option value='0'".($ratings == "0" ? " selected" : "").">"._NONE."</option>
