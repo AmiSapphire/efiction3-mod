@@ -137,7 +137,7 @@ if(isset($_SERVER['PHP_SELF'])) $_SERVER['PHP_SELF'] = htmlspecialchars(descript
 if(isset($PHP_SELF)) $PHP_SELF = htmlspecialchars(descript($PHP_SELF), ENT_QUOTES);
 
 // Set these variables to start.
-$agecontsent = false; $viewed = array(); 
+$ageconsent = false; $viewed = array();
 
 require_once("includes/get_session_vars.php");
 
