@@ -39,6 +39,10 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - SQL database engine change from MyISAM to InnoDB
 - SQL database charset changes from latin1 to utf8mb4 
 - Password hashes are now bcrypt with a cost of 12 instead of MD5 (though old MD5 hashed passwords still work until changed by user)
+- install/install.php: SMTP settings table column creation oversight fix and consistency changes
+- series.php: category settings causing Fatal Error bug fix for PHP 8.x users
+- header.php: leftover array typo oversight fix with age consent feature
+- admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
 
 <br>
 
