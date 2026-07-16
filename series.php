@@ -83,7 +83,8 @@ if($add == "series" || ($action == "add" && !$add) || $action == "edit") {
 	if(isset($_POST['submit'])) {
 		$title = addslashes(escapestring(strip_tags($_POST['title'], $allowed_tags)));
 		$summary = addslashes(escapestring(descript(strip_tags($_POST["summary"], $allowed_tags))));
-		$category = isset($_POST['catid']) ? explode(",", $_POST['catid']) : array();
+		if ($multiplecats) $category = isset($_POST['catid']) ? explode(",", $_POST['catid']) : array();
+		else $category = isset($_POST['catid']) ? $_POST['catid'] : array();
 		$category = array_filter($category, "isNumber");
 		if($category) $category = implode(",", $category);
 		else $category = "";
