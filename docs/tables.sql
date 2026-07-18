@@ -60,8 +60,8 @@ CREATE TABLE `fanfiction_authorprefs` (
 
 CREATE TABLE `fanfiction_authors` (
   `uid` int(11) NOT NULL auto_increment,
-  `penname` varchar(200) NOT NULL default '',
-  `realname` varchar(200) NOT NULL default '',
+  `penname` varchar(200) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
+  `realname` varchar(200) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
   `email` varchar(200) NOT NULL default '',
   `website` varchar(200) NOT NULL default '',
   `bio` text NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `fanfiction_authors` (
   PRIMARY KEY  (`uid`),
   KEY `penname` (`penname`),
   KEY `admincreated` (`admincreated`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -100,7 +100,7 @@ CREATE TABLE `fanfiction_blocks` (
 CREATE TABLE `fanfiction_categories` (
   `catid` int(11) NOT NULL auto_increment,
   `parentcatid` int(11) NOT NULL default '-1',
-  `category` varchar(60) NOT NULL default '',
+  `category` varchar(60) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
   `description` text NOT NULL,
   `image` varchar(100) NOT NULL default '',
   `locked` tinyint(4) NOT NULL default '0',
@@ -109,7 +109,7 @@ CREATE TABLE `fanfiction_categories` (
   `numitems` int(11) NOT NULL default '0',
   PRIMARY KEY  (`catid`),
   KEY `byparent` (`parentcatid`,`displayorder`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -404,8 +404,8 @@ CREATE TABLE `fanfiction_reviews` (
 
 CREATE TABLE `fanfiction_series` (
   `seriesid` int(11) NOT NULL auto_increment,
-  `title` varchar(200) NOT NULL default '',
-  `summary` text,
+  `title` varchar(200) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
+  `summary` text COLLATE utf8mb4_unicode_ci,
   `uid` int(11) NOT NULL default '0',
   `isopen` tinyint(4) NOT NULL default '0',
   `catid` varchar(200) NOT NULL default '0',
@@ -420,7 +420,7 @@ CREATE TABLE `fanfiction_series` (
   PRIMARY KEY  (`seriesid`),
   KEY `catid` (`catid`),
   KEY `owner` (`uid`,`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 -- 
@@ -448,8 +448,8 @@ CREATE TABLE `fanfiction_stats` (
 
 CREATE TABLE `fanfiction_stories` (
   `sid` int(11) NOT NULL auto_increment,
-  `title` varchar(200) NOT NULL default '',
-  `summary` text,
+  `title` varchar(200) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
+  `summary` text COLLATE uft8mb4_unicode_ci,
   `storynotes` text,
   `catid` varchar(100) NOT NULL default '0',
   `classes` varchar(200) default NULL,
@@ -480,7 +480,7 @@ CREATE TABLE `fanfiction_stories` (
   KEY `challenges` (`challenges`),
   KEY `validateduid` (`validated`,`uid`),
   KEY `recent` (`updated`,`validated`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
