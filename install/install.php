@@ -588,7 +588,7 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
 				$characters = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_characters` (
   `charid` int(11) NOT NULL auto_increment,
   `catid` int(11) NOT NULL default '0',
-  `charname` varchar(60) NOT NULL default '',
+  `charname` varchar(60) NOT NULL default '' COLLATE=utf8mb4_unicode_ci,
   `bio` text NOT NULL,
   `image` varchar(200) NOT NULL default '',
   PRIMARY KEY  (`charid`),
@@ -721,7 +721,7 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_modules` (
 				$output .= "<tr><td>" . $tableprefix . "fanfiction_panels</td><td align='center'>" . ($panels ? "<img src=\"../images/check.gif\">" : "<img src=\"../images/X.gif\">") . "</td></tr>";
 				$ratings = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_ratings` (
   `rid` int(11) NOT NULL auto_increment,
-  `rating` varchar(60) NOT NULL default '',
+  `rating` varchar(60) NOT NULL default '' COLLATE=utf8mb4_unicode_ci,
   `ratingwarning` char(1) NOT NULL default '0',
   `warningtext` text NOT NULL,
   PRIMARY KEY  (`rid`),
