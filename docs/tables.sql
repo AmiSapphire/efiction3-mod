@@ -68,11 +68,11 @@ CREATE TABLE `fanfiction_authors` (
   `image` varchar(200) NOT NULL default '',
   `date`  int(10) unsigned NOT NULL default '0',
   `admincreated` int(11) NOT NULL default '0',
-  `password` varchar(40) NOT NULL default '0',
+  `password` varchar(255) NOT NULL default '0',
   PRIMARY KEY  (`uid`),
   KEY `penname` (`penname`),
   KEY `admincreated` (`admincreated`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -109,7 +109,7 @@ CREATE TABLE `fanfiction_categories` (
   `numitems` int(11) NOT NULL default '0',
   PRIMARY KEY  (`catid`),
   KEY `byparent` (`parentcatid`,`displayorder`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -420,7 +420,7 @@ CREATE TABLE `fanfiction_series` (
   PRIMARY KEY  (`seriesid`),
   KEY `catid` (`catid`),
   KEY `owner` (`uid`,`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 -- 
@@ -480,7 +480,7 @@ CREATE TABLE `fanfiction_stories` (
   KEY `challenges` (`challenges`),
   KEY `validateduid` (`validated`,`uid`),
   KEY `recent` (`updated`,`validated`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
