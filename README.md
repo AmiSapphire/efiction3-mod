@@ -5,7 +5,7 @@ This version is essentially a version of 'future 3.5.9' wiith some of my interna
 
 ## Requirements
 
-- Minimum: PHP 7.4, MySQL 5.6.3 or MariaDB 10.5
+- Minimum: PHP 7.4, MySQL 5.7.7 or MariaDB 10.6
 - Recommnended: PHP 8.4, MySQL 7.0 or MariaDB 11.4
 - Tested Working: PHP: 7.4.33, 8.5.8; MariaDB: 10.6, 10.11, 11.4
 
