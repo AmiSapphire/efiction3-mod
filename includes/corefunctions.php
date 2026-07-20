@@ -42,7 +42,7 @@ function categoryitems($catid, $value)
 			if($cat['leveldown'] > 0) $pcats[] = $cat['parentcatid'];
 			if(!in_array($cat['catid'], $cats)) $cats[] = $cat['catid'];
 		}
-		if(count($pcats) > 0) $catquery = dbquery("SELECT catid, parentcatid, leveldown FROM ".TABLEPREFIX."fanfiction_categories WHERE FIND_IN_SET(catid, '".implode($pcats)."') GROUP BY catid");
+		if($pcats && (count($pcats) > 0)) $catquery = dbquery("SELECT catid, parentcatid, leveldown FROM ".TABLEPREFIX."fanfiction_categories WHERE FIND_IN_SET(catid, '".implode($pcats)."') GROUP BY catid");
 		else unset($catquery);
 	}
 	dbquery("UPDATE ".TABLEPREFIX."fanfiction_categories SET numitems = (numitems + $value) WHERE FIND_IN_SET(catid, '".implode(",", $cats)."')");

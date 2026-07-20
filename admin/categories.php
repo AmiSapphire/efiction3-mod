@@ -75,7 +75,7 @@ function relevelcategory($cat, $leveldown) {
 			dbquery("DELETE FROM ".TABLEPREFIX."fanfiction_categories WHERE parentcatid = '$catid'");
 			$stories = dbquery("SELECT title,sid, catid FROM ".TABLEPREFIX."fanfiction_stories WHERE FIND_IN_SET(catid, '$catid')");
 			while($story = dbassoc($stories)) {
-				$cats = explode(",", $story[catid]);
+				$cats = explode(",", $story['catid']);
 				if(count($cats) == 1) $newcat = "-1";
 				else $newcat = implode(",", array_dif($cats, array($catid)));
 				dbquery("UPDATE ".TABLEPREFIX."fanfiction_stories SET catid = '$newcat' WHERE sid = '$story[sid]' LIMIT 1");					
