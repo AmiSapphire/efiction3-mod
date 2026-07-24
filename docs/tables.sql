@@ -196,6 +196,7 @@ CREATE TABLE `fanfiction_coauthors` (
   `uid` int(11) NOT NULL default '0',
   PRIMARY KEY  (`sid`,`uid`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
 -- --------------------------------------------------------
 
 -- 
