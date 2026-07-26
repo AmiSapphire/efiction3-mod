@@ -35,11 +35,11 @@ else {
 	$text = $message['message_text'];
 	if(!$message) dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_messages` (`message_name` , `message_title` , `message_text` ) VALUES ('".$_GET['message']."', '', '')");
 	$output .= "<div class='sectionheader'>".preg_replace("@\{sitename\}@", $sitename, $message['message_title'])."</div>
-		<div style='width: 100%;'><div  id=\"settingsform\"><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=messages&message=".$_GET['message']."\">
+		<div style='width: 100%;'><div style='width: 35%; margin: 0 auto;'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=messages&message=".$_GET['message']."\">
 		<textarea rows=\"10\" cols=\"60\" style=\"width: 100%;\" ".($_GET['message'] == "tinyMCE" ? "class='mceNoEditor'" :"")." name=\"text\">$text</textarea>";
 	if($tinyMCE && $_GET['message'] != "tinyMCE") 
 		$output .= "<div class='tinytoggle'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('text');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div>";
-	$output .= "<div style='clear: both;'>&nbsp;</div><INPUT type='submit' class='button' id='submit' value='"._SUBMIT."' name='submit'>
+	$output .= "<div style='clear: both;'>&nbsp; &nbsp;</div><INPUT type='submit' class='button' id='submit' value='"._SUBMIT."' name='submit'>
 				</form></div><div style='clear: both;'>&nbsp;</div></div>";
 }
 ?>
