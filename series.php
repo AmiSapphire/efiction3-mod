@@ -83,6 +83,7 @@ if($add == "series" || ($action == "add" && !$add) || $action == "edit") {
 	if(isset($_POST['submit'])) {
 		$title = addslashes(escapestring(strip_tags($_POST['title'], $allowed_tags)));
 		$summary = addslashes(escapestring(descript(strip_tags($_POST["summary"], $allowed_tags))));
+		#$category = isset($_POST['catid']) ? explode(",", $_POST['catid']) : array();
 		if ($multiplecats) $category = isset($_POST['catid']) ? explode(",", $_POST['catid']) : array();
 		else $category = isset($_POST['catid']) ? $_POST['catid'] : array();
 		$category = array_filter($category, "isNumber");
@@ -141,7 +142,7 @@ if($add == "series" || ($action == "add" && !$add) || $action == "edit") {
 	}
 	else {
 	$output = "<div id=\"pagetitle\">".($action == "edit" ? _EDITSERIES : ($add == "stories" ? _ADD2SERIES : _ADDSERIES))."</div>
-<form METHOD=\"POST\" style='width: 90%; margin: 0 auto;' name=\"form\" action=\"series.php?action=$action&amp;add=".(!empty($add) ? $add : "series").(!empty($seriesid) ? "&amp;seriesid=$seriesid" : "")."\">";
+<form METHOD=\"POST\" class='tblborder' style='width: 75%; margin: 0 auto; padding: 10px;' name=\"form\" action=\"series.php?action=$action&amp;add=".(!empty($add) ? $add : "series").(!empty($seriesid) ? "&amp;seriesid=$seriesid" : "")."\">";
 	if($action == "edit" && !isset($POST['submit'])) {
 		$seriesquery = dbquery(_SERIESQUERY." AND seriesid = '$seriesid' LIMIT 1");
 		$series = dbassoc($seriesquery);
