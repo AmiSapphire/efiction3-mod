@@ -413,11 +413,11 @@ function newstory( ) {
 
 	$submit = isset($_POST['submit']) ? $_POST['submit'] : false;
 	if(!$submit) $submit = _PREVIEW;
-	$output .= "<div class=\"tblborder\" style=\" padding: 10px; margin: 1em auto;\">
+	$output .= "<div class=\"tblborder\" style=\" width: 45%; padding: 10px; margin: 1em auto;\">
 	<form METHOD=\"POST\" name=\"form\" enctype=\"multipart/form-data\" action='stories.php?action=$action".($newchapter ? "&amp;sid=$sid&amp;inorder=$inorder" : "").($admin == 1 ? "&amp;admin=1&amp;uid=$uid" : "")."'>";
 	if(!$newchapter) $output .= storyform($stories, $submit);
 	$output .= chapterform($inorder, $notes, $endnotes, $storytext, $chaptertitle, $uid);
-	$output .= "<div style=\"text-align: center;\"><input type=\"submit\" class=\"button\" value=\""._PREVIEW."\" name=\"submit\">&nbsp; <input type=\"submit\" class=\"button\" 
+	$output .= "<br><div style=\"text-align: center;\"><input type=\"submit\" class=\"button\" value=\""._PREVIEW."\" name=\"submit\">&nbsp; <input type=\"submit\" class=\"button\"
                  value=\""._ADDSTORY."\" name=\"submit\"></div></form></div>";
 	return $output;
 }
