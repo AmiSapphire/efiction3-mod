@@ -50,7 +50,7 @@ function updatePanelOrder( ) {
 }
 
 if($action == "settings") {
-$output .= "<h1>"._SETTINGS."</h1><div style='text-align: center;'>
+$output .= "<div id='pagetitle'>"._SETTINGS."</div><div style='text-align: center;'>
 	<a href='admin.php?action=settings&amp;sect=main'>"._MAINSETTINGS."</a> |
 	<a href='admin.php?action=settings&amp;sect=submissions'>"._SUBMISSIONSETTINGS."</a> |
 	<a href='admin.php?action=settings&amp;sect=sitesettings'>"._SITESETTINGS."</a> |
@@ -310,9 +310,9 @@ else if(isset($_POST['submit'])) {
 		$$var = stripslashes($val );
 	}
 
-	$output .= "<form method='POST' class='tblborder' style='' enctype='multipart/form-data' action='".((isset($action) && $action == "settings") ? "admin.php?action=settings" : $_SERVER['PHP_SELF']."?step=".$_GET['step'])."&amp;sect=$sect'>";
+	$output .= "<form method='POST' class='tblborder' style='width:30%; margin:0 auto' enctype='multipart/form-data' action='".((isset($action) && $action == "settings") ? "admin.php?action=settings" : $_SERVER['PHP_SELF']."?step=".$_GET['step'])."&amp;sect=$sect'>";
 	if($sect == "main") {
-		$output .= "<h2>"._SITEINFO."</h2>
+		$output .= "<div class='sectionheader'>"._SITEINFO."</div>
 		<table class='acp'>
 			<tr>
 				<td><label for='newsitekey'>"._SITEKEY.":</label></td><td><input type='text' class='textbox' name='newsitekey' value='".SITEKEY."'> <a href='#' class='pophelp'>[?]<span>"._HELP_SITEKEY."</span></a></td>
@@ -355,7 +355,7 @@ else if(isset($_POST['submit'])) {
 		$output .= "</select> <a href='#' class='pophelp'>[?]<span>"._HELP_LANGUAGE."</span></a></td></tr>";
 	}
 	else if($sect == "submissions") {
-		$output .= "<h2>"._SUBMISSIONSETTINGS."</h2>
+		$output .= "<div class='sectionheader'>"._SUBMISSIONSETTINGS."</div>
 		<table class='acp'>
 			<tr>
 				<td><label for='newsubmissionsoff'>"._NOSUBS.":</label></td><td><select name='newsubmissionsoff'>
@@ -396,8 +396,8 @@ else if(isset($_POST['submit'])) {
 			</tr>
 			<tr>
 				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._IMAGESIZE." <a href='#' class='pophelp'>[?]<span>"._HELP_IMAGESIZE."</span></a></legend>
-				<label for='newimageheight'>"._MAXHEIGHT.":</label> <input  type='text' class='textbox=' name='newimageheight' value='$imageheight' size='5'> <br />
-				<label for='newimagewidth'>"._MAXWIDTH.":</label> <input  type='text' class='textbox=' name='newimagewidth' value='$imagewidth' size='5'></fieldset></td>
+				<label for='newimageheight'>"._MAXHEIGHT.":</label> &nbsp; &nbsp; <input  type='text' class='textbox=' name='newimageheight' value='$imageheight' size='5'> <br />
+				<label for='newimagewidth'>"._MAXWIDTH.":</label> &nbsp; &nbsp; &nbsp; <input  type='text' class='textbox=' name='newimagewidth' value='$imagewidth' size='5'></fieldset></td>
 			</tr>
 			<tr>
 				<td><label for='newstore'>"._HOWSTORE.":</label></td><td><select name='newstore' onChange='if (this.disabled) this.selectedIndex=0' disabled>
@@ -410,11 +410,11 @@ else if(isset($_POST['submit'])) {
 			</tr>
 			<tr>
 				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._MAXMINWORDS."<a href='#' class='pophelp'>[?]<span>"._HELP_MINMAXWORDS."</span></a></legend>
-				<label for='newminwords'>"._MIN.":</label> <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
-				<label for='newmaxwords'>"._MAX.":</label> <input  type='text' class='textbox=' name='newmaxwords' value='$maxwords' size='7'></fieldset></td></tr>";
+				<label for='newminwords'>"._MIN.":</label> &nbsp; &nbsp; &nbsp; <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
+				<label for='newmaxwords'>"._MAX.":</label> &nbsp; &nbsp; &nbsp; <input  type='text' class='textbox=' name='newmaxwords' value='$maxwords' size='7'></fieldset></td></tr>";
 	}
 	else if($sect == "sitesettings") {
-		$output .= "<h2>"._SITESETTINGS."</h2>
+		$output .= "<div class='sectionheader'>"._SITESETTINGS."</div>
 		<table class='acp'>
 			<tr>
 				<td><label for='newtinyMCE'>"._USETINYMCE. ": </label></td><td><select name='newtinyMCE'>
@@ -474,7 +474,7 @@ else if(isset($_POST['submit'])) {
 		$defaultdates = array("m/d/y", "m/d/Y", "m/d/Y", "d/m/Y", "d/m/y", "d M Y", 
 				"d.m.y", "Y.m.d", "m.d.Y", "d-m-y", "m-d-y", "M d Y", "M d, Y", "F d Y", "F d, Y");
 		$defaulttimes = array("h:i a", "h:i A", "H:i", "g:i a", "g:i A", "G:i", "h:i:s a", "H:i:s", "g:i:s a", "g:i:s A", "G:i:s");
-		$output .= "<h2>"._DISPLAYSETTINGS."</h2>
+		$output .= "<div class='sectionheader'>"._DISPLAYSETTINGS."</div>
 		<table class='acp'>
 			<tr>
 				<td><label for='newdateformat'>"._DATEFORMAT.":</label></td><td><select name='newdateformat'><option value=''>"._SELECTONE."</option>";
@@ -535,7 +535,7 @@ else if(isset($_POST['submit'])) {
 			<td><label for='newlinkrange'>"._LINKRANGE.":</label></td><td><input  type='text' class='textbox=' name='newlinkrange' size='3' value='$linkrange'> <a href='#' class='pophelp'>[?]<span>"._HELP_LINKRANGE."</span></a></td></tr>";
 	}
 	else if($sect == "reviews") {
-		$output .= "<h2>"._REVIEWSETTINGS."</h2>
+		$output .= "<div class='sectionheader'>"._REVIEWSETTINGS."</div>
 		<table class='acp'>
 			<tr>
 				<td><label for='newreviewsallowed'>"._ONREVIEWS.":</label></td><td><select name='newreviewsallowed'>
@@ -571,7 +571,7 @@ else if(isset($_POST['submit'])) {
 				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_RATEONLY."</span></a></td></tr>";
 	}
 	else if($sect == "useropts") {
-		$output .= "<h2>"._USERSETTINGS."</h2>
+		$output .= "<div class='sectionheader'>"._USERSETTINGS."</div>
 		<table class='acp'>
 			<tr>
 				<td><label for='newalertson'>"._ALERTSON.":</label></td><td><select name='newalertson'>
@@ -598,7 +598,7 @@ else if(isset($_POST['submit'])) {
 			</select> <a href='#' class='pophelp'>[?]<span>"._HELP_PWD."</span></a></td></tr>";
 	}
 	else if($sect == "email") {
-		$output .= "<h2>"._EMAILSETTINGS."</h2>
+		$output .= "<div class='sectionheader'>"._EMAILSETTINGS."</div>
 		<table class='acp'>
 			<tr>
 				<td><label for='newsmtp_host'>"._SMTPHOST.":</label></td><td><input name='newsmtp_host' type='text' value='$smtp_host'> <a href='#' class='pophelp'>[?]<span>"._HELP_SMTPHOST."</span></a></td>
@@ -625,7 +625,7 @@ else if(isset($_POST['submit'])) {
 	// link -- so the outbound SMTP connection can't be triggered by a plain link
 	// or a browser prefetch. The existing testsmtp handler posts to the same URL.
 	if($sect == "email") {
-		$output .= "<h2>"._TESTSMTP_HEADER."</h2>
+		$output .= "<div class='sectionheader'>"._TESTSMTP_HEADER."</div>
 		<ul>
 			<li>
 				<form method='POST' action='admin.php?action=settings&amp;sect=email' style='display:inline'>
