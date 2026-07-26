@@ -200,7 +200,7 @@ function random_string ($charset_string, $length)
 			list($tos) = dbrow($query);
 			$output .= "<div class='tblborder' style='width: 90%; margin: 1em auto;'>$tos</div>";
 		}
-		$output .= "<div id='settingsform'><form method=\"POST\" id=\"editbio\" name=\"editbio\" enctype=\"multipart/form-data\" style='margin: 0 auto;' action=\"user.php?action=$action".($uid != USERUID ? "&uid=".$uid : "")."\">
+		$output .= "<div id='settingsform'><form method=\"POST\" id=\"editbio\" name=\"editbio\" enctype=\"multipart/form-data\" style='width: 260%; margin: 0 auto;' action=\"user.php?action=$action".($uid != USERUID ? "&uid=".$uid : "")."\">
 		<div><label for='newpenname'>"._PENNAME.":</label>";
 		if((isADMIN && uLEVEL == 1) || $action == "register")
 			$output .= "<INPUT name=\"newpenname\" type=\"text\" class=\"textbox\" maxlength=\"200\" value=\"".(isset($user) ? $user['penname'] : "")."\"><INPUT name=\"oldpenname\" type=\"hidden\" value=\"".(isset($user) ? $user['penname'] : "")."\"><font color=\"red\">*</font> ";
