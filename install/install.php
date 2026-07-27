@@ -136,15 +136,6 @@ include("../version.php");
 echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 <html><head><title>eFiction {$version} Install</title>
 <style>
-LABEL { float: left; display: block; width: 45%; text-align: right; padding-right: 10px; clear: left;}
-.row { float: left; width: 99%; }
-#settingsform FORM { width: 80%; margin; 0 auto; }
-#settingsform LABEL { float: left; display: block; width: 30%; text-align: right; padding-right: 10px; clear: left; }
-#settingsform .fieldset SPAN { float: left; display: block; width: 30%; text-align: right; padding-right: 10px; clear: left;}
-#settingsform .fieldset LABEL { float: none; width: auto; display: inline; text-align: left; clear: none; }
-#settingsform .tinytoggle { text-align: center; }
-#settingsform .tinytoggle LABEL { float: none; display: inline; width: auto; text-align: center; padding: 0; clear: none; }
-#settingsform #submit { display: block; margin: 1ex auto; }
 a.pophelp{
     position: relative; /* this is the key*/
     z-index:24;
@@ -170,6 +161,17 @@ a.pophelp:hover span{ /*the span will display just on :hover state*/
 .required { color: red; }
 </style>
 <link rel=\"stylesheet\" type=\"text/css\" href='../default_tpls/style.css'></head>";
+
+// leftover data that would be right after the <style> tag above
+// LABEL { float: left; display: block; width: 45%; text-align: right; padding-right: 10px; clear: left;}
+// .row { float: left; width: 99%; }
+// #settingsform FORM { width: 80%; margin; 0 auto; }
+// #settingsform LABEL { float: left; display: block; width: 30%; text-align: right; padding-right: 10px; clear: left; }
+// #settingsform .fieldset SPAN { float: left; display: block; width: 30%; text-align: right; padding-right: 10px; clear: left;}
+// #settingsform .fieldset LABEL { float: none; width: auto; display: inline; text-align: left; clear: none; }
+// #settingsform .tinytoggle { text-align: center; }
+// #settingsform .tinytoggle LABEL { float: none; display: inline; width: auto; text-align: center; padding: 0; clear: none; }
+// #settingsform #submit { display: block; margin: 1ex auto; }
 
 $tpl = new TemplatePower("../default_tpls/default.tpl");
 $tpl->assignInclude("header", "./../default_tpls/header.tpl");
@@ -1047,13 +1049,25 @@ if(!empty(\$sitekey)) \$dbconnect = dbconnect(\$dbhost, \$dbuser,\$dbpass, \$dbn
 			else
 			{
 				$output .=
-					"<form method='POST' enctype='multipart/form-data' action='install.php?step=1' class='tblborder' style='width: 350px; margin: 1em auto;'>
-						<div><label for='dbhost'>" . _DBHOST . "</label><input type='text'  name='dbhost' id='dbhost'" . (!empty($dbhost) ? "value='$dbhost'" : "value='localhost'") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_DBHOST . "</span></A></div>
-						<div><label for='dbname'>" . _DBNAME . "</label><input type='text' name='dbname' id='dbname'" . (!empty($dbname) ? "value='$dbname'" : "") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_DBNAME . "</span></A></div>
-						<div><label for='dbuser'>" . _DBUSER . "</label><input type='text' name='dbuser' id='dbuser'" . (!empty($dbuser) ? "value='$dbuser'" : "") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_DBUSER . "</span></A></div>
-						<div><label for='dbpass'>" . _DBPASS . "</label><input type='password' name='dbpass' id='dbpass'" . (!empty($dbpass) ? "value='$dbpass'" : "") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_DBPASS . "</span></A></div>
-						<div><label for='sitekey'>" . _SITEKEY . "</label><input type='text' name='sitekey' value='" . (!empty($sitekey) ? $sitekey : random_string($randomcharset, 10)) . "' id='sitekey'> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_INSTALL_SITEKEY . "</span></A></div>
-						<div><label for=\"language\">" . _LANGUAGE . ":</label> <select name=\"language\">";
+					"<form method='POST' enctype='multipart/form-data' action='install.php?step=1' class='tblborder' style='width: 45%; margin: 1em auto;'>
+						<table class='acp' style='margin: 0 auto;'>
+							<tr>
+								<td><label for='dbhost'>" . _DBHOST . "</label></td><td><input type='text'  name='dbhost' id='dbhost'" . (!empty($dbhost) ? "value='$dbhost'" : "value='localhost'") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_DBHOST . "</span></A></td>
+							</tr>
+							<tr>
+								<td><label for='dbname'>" . _DBNAME . "</label></td><td><input type='text' name='dbname' id='dbname'" . (!empty($dbname) ? "value='$dbname'" : "") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_DBNAME . "</span></A></td>
+							</tr>
+							<tr>
+								<td><label for='dbuser'>" . _DBUSER . "</label></td><td><input type='text' name='dbuser' id='dbuser'" . (!empty($dbuser) ? "value='$dbuser'" : "") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_DBUSER . "</span></A></td>
+							</tr>
+							<tr>
+								<td><label for='dbpass'>" . _DBPASS . "</label></td><td><input type='password' name='dbpass' id='dbpass'" . (!empty($dbpass) ? "value='$dbpass'" : "") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_DBPASS . "</span></A></td>
+							</tr>
+							<tr>
+								<td><label for='sitekey'>" . _SITEKEY . "</label></td><td><input type='text' name='sitekey' value='" . (!empty($sitekey) ? $sitekey : random_string($randomcharset, 10)) . "' id='sitekey'> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_INSTALL_SITEKEY . "</span></A></td>
+							</tr>
+							<tr>
+								<td><label for=\"language\">" . _LANGUAGE . ":</label></td><td><select name=\"language\">";
 				$directory = opendir("../languages");
 				while ($filename = readdir($directory))
 				{
@@ -1064,9 +1078,12 @@ if(!empty(\$sitekey)) \$dbconnect = dbconnect(\$dbhost, \$dbuser,\$dbpass, \$dbn
 				}
 				closedir($directory);
 				$output .=
-					"</select> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_LANGUAGE . "</span></A></div>
-						<label for='settingsprefix'>" . _SETTINGSPREFIX . "</label><input type='text' name='settingsprefix' id='settingsprefix'" . (isset($settingsprefix) ? "value='$settingsprefix'" : "") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_SETTINGSPREFIX . "</span></A><br />
-						<div style='text-align: center; margin: 1em;'><INPUT type=\"submit\"class=\"button\" name=\"submit\" value=\"submit\"></div>
+					"</select> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_LANGUAGE . "</span></A></td>
+							</tr>
+								<td><label for='settingsprefix'>" . _SETTINGSPREFIX . "</label></td><td><input type='text' name='settingsprefix' id='settingsprefix'" . (isset($settingsprefix) ? "value='$settingsprefix'" : "") . "> <A HREF=\"#\" class=\"pophelp\">[?]<span>" . _HELP_SETTINGSPREFIX . "</span></A></td>
+							</tr>
+							<tr><td colspan='2'><div style='text-align: center; margin: 1em;'><INPUT type=\"submit\"class=\"button\" name=\"submit\" value=\"submit\"></div></td></tr>
+						</table>
 					</form>";
 			}
 		}

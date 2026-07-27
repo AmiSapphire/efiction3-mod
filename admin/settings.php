@@ -396,8 +396,8 @@ else if(isset($_POST['submit'])) {
 			</tr>
 			<tr>
 				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._IMAGESIZE." <a href='#' class='pophelp'>[?]<span>"._HELP_IMAGESIZE."</span></a></legend>
-				<label for='newimageheight'>"._MAXHEIGHT.":</label> <span style='padding-left: 19.3%;'> <input  type='text' class='textbox=' name='newimageheight' value='$imageheight' size='5'> <br />
-				<label for='newimagewidth'>"._MAXWIDTH.":</label> <span style='padding-left: 20.3%;'> <input  type='text' class='textbox=' name='newimagewidth' value='$imagewidth' size='5'></fieldset></td>
+				<label for='newimageheight'>"._MAXHEIGHT.":</label> <span style='padding-left: 24.3%;'> <input  type='text' class='textbox=' name='newimageheight' value='$imageheight' size='5'> <br />
+				<label for='newimagewidth'>"._MAXWIDTH.":</label> <span style='padding-left: 25.3%;'> <input  type='text' class='textbox=' name='newimagewidth' value='$imagewidth' size='5'></fieldset></td>
 			</tr>
 			<tr>
 				<td><label for='newstore'>"._HOWSTORE.":</label></td><td><select name='newstore' onChange='if (this.disabled) this.selectedIndex=0' disabled>
@@ -410,8 +410,8 @@ else if(isset($_POST['submit'])) {
 			</tr>
 			<tr>
 				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._MAXMINWORDS."<a href='#' class='pophelp'>[?]<span>"._HELP_MINMAXWORDS."</span></a></legend>
-				<label for='newminwords'>"._MIN.":</label> <span style='padding-left: 33.44%;'> <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
-				<label for='newmaxwords'>"._MAX.":</label> <span style='padding-left: 32.7%;'> <input  type='text' class='textbox=' name='newmaxwords' value='$maxwords' size='7'></fieldset></td></tr>";
+				<label for='newminwords'>"._MIN.":</label> <span style='padding-left: 38.44%;'> <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
+				<label for='newmaxwords'>"._MAX.":</label> <span style='padding-left: 37.7%;'> <input  type='text' class='textbox=' name='newmaxwords' value='$maxwords' size='7'></fieldset></td></tr>";
 	}
 	else if($sect == "sitesettings") {
 		$output .= "<div class='sectionheader'>"._SITESETTINGS."</div>
