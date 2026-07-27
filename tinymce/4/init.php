@@ -10,7 +10,7 @@ echo "
 echo "
 	<script language=\"javascript\" type=\"text/javascript\"><!--";
 	$tinylanguage = $language;
-	if (!file_exists(_BASEDIR . "tinymce/js/tinymce/langs/{$language}.js"))
+	if (!file_exists(_BASEDIR . "tinymce/4/js/tinymce/langs/{$language}.js"))
 	{
 		$tinylanguage = "en";
 	} 

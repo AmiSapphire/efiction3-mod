@@ -326,13 +326,13 @@ else if(isset($_POST['submit'])) {
 			<tr>
 				<td><label for='newurl'>"._SITEURL.":</label></td><td><input type='text' class='textbox' name='newsiteurl' value='$url'> <a href='#' class='pophelp'>[?]<span>"._HELP_URL."</span></a></td>
 			</tr>
-			<tr>				
+			<tr>
 				<td><label for='newtableprefix'>"._TABLEPREFIX.":</label></td><td><input type='text' class='textbox' name='newtableprefix' value='".TABLEPREFIX."'> <a href='#' class='pophelp'>[?]<span>"._HELP_TABLEPREFIX."</span></a></td>
 			</tr>
-			<tr>				
+			<tr>
 				<td><label for='newsiteemail'>"._ADMINEMAIL.":</label></td><td><input type='text' class='textbox' name='newsiteemail' value='$siteemail'> <a href='#' class='pophelp'>[?]<span>"._HELP_SITEEMAIL."</span></a></td>
 			</tr>
-			<tr>				
+			<tr>
 				<td><label for='newsiteskin'>"._DEFAULTSKIN.":</label></td><td><select name='newskin'>";
 		$directory = opendir(_BASEDIR."skins");
 		while($filename = readdir($directory)) {
@@ -418,9 +418,9 @@ else if(isset($_POST['submit'])) {
 		<table class='acp' style='margin: 0 auto;'>
 			<tr>
 				<td><label for='newtinyMCE'>"._USETINYMCE. ": </label></td><td><select name='newtinyMCE'>
-				<option value=\"3\"" . ($tinyMCE == 3 ? " selected" : "") . ">TinyMce4</option>
-				<option value=\"2\"" . ($tinyMCE == 2 ? " selected" : "") . ">TinyMce3</option>
-				<option value=\"1\"" . ($tinyMCE == 1 ? " selected" : "") . ">TinyMce2</option>
+				<option value=\"3\"" . ($tinyMCE == 3 ? " selected" : "") . ">tinyMCE 4</option>
+				<option value=\"2\"" . ($tinyMCE == 2 ? " selected" : "") . ">tinyMCE 3</option>
+				<option value=\"1\"" . ($tinyMCE == 1 ? " selected" : "") . ">tinyMCE 2</option>
 				<option value=\"0\"" . (!$tinyMCE ? " selected" : "") . ">" . _NO . "</option>
 				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_TINYMCE." "._TINYMCENOTE."</span></a></td>
 			</tr>
