@@ -46,7 +46,7 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - header.php: leftover array typo oversight fix with age consent feature
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
 - Bridges return! Their removal got rid of the example work, which needs to be updated as well
-- Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages (installer layout needs work, however)
+- Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages, installer
 - TinyMCE 3.4.8 added (this was from my own archives); now you have a choice of TinyMCE versions 2.0.1, 3.4.8, and 4.5.3
 
 <br>
