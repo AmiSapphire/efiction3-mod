@@ -259,9 +259,13 @@ if (!isset($_GET['action']) || $_GET['action'] != "printable")
 {
 	if (!empty($tinyMCE))
 	{
-		if($tinyMCE == 1) {
-			echo "<script src=\"" . _BASEDIR . "tinymce/jscripts/tiny_mce/tiny_mce.js\"></script>";
-			include(_BASEDIR . "tinymce/init.php");
+		if($tinyMCE == 2) {
+			echo "<script src=\"" . _BASEDIR . "tinymce3/jscripts/tiny_mce/tiny_mce.js\"></script>";
+			include(_BASEDIR . "tinymce2/init.php");
+		}
+		else if($tinyMCE == 1) {
+			echo "<script src=\"" . _BASEDIR . "tinymce2/jscripts/tiny_mce/tiny_mce.js\"></script>";
+			include(_BASEDIR . "tinymce3/init.php");
 		}
 		else {
 			echo "<script src=\"" . _BASEDIR . "tinymce4/js/tinymce/tinymce.min.js\"></script>";

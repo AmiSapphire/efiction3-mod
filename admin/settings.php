@@ -233,7 +233,7 @@ else if(isset($_POST['submit'])) {
 
 	}
 	else if($sect == "sitesettings") {
-		$tinyMCE = ($_POST['newtinyMCE'] == 1  OR $_POST['newtinyMCE'] == 2) ? $_POST['newtinyMCE'] : 0;
+		$tinyMCE = ($_POST['newtinyMCE'] == 1  OR $_POST['newtinyMCE'] == 2 OR $_POST['newtinyMCE'] == 3) ? $_POST['newtinyMCE'] : 0;
 		$allowed_tags = $_POST['newallowed_tags'];
 		$favorites = $_POST['newfavorites'] == 1 ? 1 : 0;
 		$multiplecats = $_POST['newmultiplecats'] == 1 ? 1 : 0;
@@ -396,8 +396,8 @@ else if(isset($_POST['submit'])) {
 			</tr>
 			<tr>
 				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._IMAGESIZE." <a href='#' class='pophelp'>[?]<span>"._HELP_IMAGESIZE."</span></a></legend>
-				<label for='newimageheight'>"._MAXHEIGHT.":</label> <span style='padding-left: 24.3%;'> <input  type='text' class='textbox=' name='newimageheight' value='$imageheight' size='5'> <br />
-				<label for='newimagewidth'>"._MAXWIDTH.":</label> <span style='padding-left: 25.3%;'> <input  type='text' class='textbox=' name='newimagewidth' value='$imagewidth' size='5'></fieldset></td>
+				<label for='newimageheight'>"._MAXHEIGHT.":</label> <span style='padding-left: 19.3%;'> <input  type='text' class='textbox=' name='newimageheight' value='$imageheight' size='5'> <br />
+				<label for='newimagewidth'>"._MAXWIDTH.":</label> <span style='padding-left: 20.3%;'> <input  type='text' class='textbox=' name='newimagewidth' value='$imagewidth' size='5'></fieldset></td>
 			</tr>
 			<tr>
 				<td><label for='newstore'>"._HOWSTORE.":</label></td><td><select name='newstore' onChange='if (this.disabled) this.selectedIndex=0' disabled>
@@ -410,16 +410,17 @@ else if(isset($_POST['submit'])) {
 			</tr>
 			<tr>
 				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._MAXMINWORDS."<a href='#' class='pophelp'>[?]<span>"._HELP_MINMAXWORDS."</span></a></legend>
-				<label for='newminwords'>"._MIN.":</label> <span style='padding-left: 38.44%;'> <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
-				<label for='newmaxwords'>"._MAX.":</label> <span style='padding-left: 37.7%;'> <input  type='text' class='textbox=' name='newmaxwords' value='$maxwords' size='7'></fieldset></td></tr>";
+				<label for='newminwords'>"._MIN.":</label> <span style='padding-left: 33.44%;'> <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
+				<label for='newmaxwords'>"._MAX.":</label> <span style='padding-left: 32.7%;'> <input  type='text' class='textbox=' name='newmaxwords' value='$maxwords' size='7'></fieldset></td></tr>";
 	}
 	else if($sect == "sitesettings") {
 		$output .= "<div class='sectionheader'>"._SITESETTINGS."</div>
 		<table class='acp' style='margin: 0 auto;'>
 			<tr>
 				<td><label for='newtinyMCE'>"._USETINYMCE. ": </label></td><td><select name='newtinyMCE'>
-				<option value=\"2\"" . ($tinyMCE == 2 ? " selected" : "") . ">TinyMce4</option>
-				<option value=\"1\"" . ($tinyMCE == 1 ? " selected" : "") . ">TinyMce3</option>
+				<option value=\"3\"" . ($tinyMCE == 3 ? " selected" : "") . ">TinyMce4</option>
+				<option value=\"2\"" . ($tinyMCE == 2 ? " selected" : "") . ">TinyMce3</option>
+				<option value=\"1\"" . ($tinyMCE == 1 ? " selected" : "") . ">TinyMce2</option>
 				<option value=\"0\"" . (!$tinyMCE ? " selected" : "") . ">" . _NO . "</option>
 				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_TINYMCE." "._TINYMCENOTE."</span></a></td>
 			</tr>
