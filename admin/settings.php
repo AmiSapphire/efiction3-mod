@@ -410,7 +410,7 @@ else if(isset($_POST['submit'])) {
 			</tr>
 			<tr>
 				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._MAXMINWORDS."<a href='#' class='pophelp'>[?]<span>"._HELP_MINMAXWORDS."</span></a></legend>
-				<label for='newminwords'>"._MIN.":</label> <span style='padding-left: 38.5%;'> <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
+				<label for='newminwords'>"._MIN.":</label> <span style='padding-left: 38.44%;'> <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
 				<label for='newmaxwords'>"._MAX.":</label> <span style='padding-left: 37.7%;'> <input  type='text' class='textbox=' name='newmaxwords' value='$maxwords' size='7'></fieldset></td></tr>";
 	}
 	else if($sect == "sitesettings") {
