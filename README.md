@@ -37,12 +37,17 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - Original eFiction 3 skins restored
 - Future 3.5.9 SMTP database table creation oversight fixes (also install.php consistency change)
 - SQL database engine change from MyISAM to InnoDB
-- SQL database charset changes from latin1 to utf8mb4 
+- SQL database charset changes from latin1 to utf8mb4 (certain fields are utf8mb4 'ci' for sorting purposes, however)
 - Password hashes are now bcrypt with a cost of 12 instead of MD5 (though old MD5 hashed passwords still work until changed by user)
 - install/install.php: SMTP settings table column creation oversight fix and consistency changes
 - series.php: category settings causing Fatal Error bug fix for PHP 8.x users
+- stories.php: add story with null category using 'Only one' setting causing Fatal Error bug fix for PHP 8.x users
+- categories.php: deleting only category causing Fatal Error bug fix for PHP 8.x users
 - header.php: leftover array typo oversight fix with age consent feature
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
+- Bridges return! Their removal got rid of the example work, which needs to be updated as well
+- Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages (installer layout needs work, however)
+- TinyMCE 3.4.8 added (this was from my own archives); now you have a choice of TinyMCE versions 2.0.1, 3.4.8, and 4.5.3
 
 <br>
 
