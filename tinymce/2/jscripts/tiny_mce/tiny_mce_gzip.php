@@ -1,183 +1,88 @@
 <?php
-/**
- * $Id: tiny_mce_gzip.php 315 2007-10-25 14:03:43Z spocke $
- *
- * @author Moxiecode
- * @copyright Copyright © 2005-2006, Moxiecode Systems AB, All rights reserved.
- *
- * This file compresses the TinyMCE JavaScript using GZip and
- * enables the browser to do two requests instead of one for each .js file.
- * Notice: This script defaults the button_tile_map option to true for extra performance.
- */
+	/**
+	 * $RCSfile: tiny_mce_gzip.php,v $
+	 * $Revision: 1.1 $
+	 * $Date: 2005/06/14 18:55:34 $
+	 *
+	 * @author Moxiecode
+	 * @copyright Copyright © 2004, Moxiecode Systems AB, All rights reserved.
+	 *
+	 * This file compresses the TinyMCE JavaScript using GZip and
+	 * enables the browser to do two requests instead of one for each .js file.
+	 * Notice: This script defaults the button_tile_map option to true for extra performance.
+	 *
+	 * Todo:
+	 *  - Add local file cache for the GZip:ed version.
+	 */
 
-	// Set the error reporting to minimal.
-	@error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	// General options
+	$suffix = "";							// Set to "_src" to use source version
+	$expiresOffset = 3600 * 24 * 10;		// 10 days util client cache expires
 
-	// Get input
-	$plugins = explode(',', getParam("plugins", ""));
-	$languages = explode(',', getParam("languages", ""));
-	$themes = explode(',', getParam("themes", ""));
-	$diskCache = getParam("diskcache", "") == "true";
-	$isJS = getParam("js", "") == "true";
-	$compress = getParam("compress", "true") == "true";
-	$core = getParam("core", "true") == "true";
-	$suffix = getParam("suffix", "_src") == "_src" ? "_src" : "";
-	$cachePath = realpath("."); // Cache path, this is where the .gz files will be stored
-	$expiresOffset = 3600 * 24 * 10; // Cache for 10 days in browser cache
-	$content = "";
-	$encodings = array();
-	$supportsGzip = false;
-	$enc = "";
-	$cacheKey = "";
+	// Get data to load
+	$theme = isset($_REQUEST['theme']) ? $_REQUEST['theme'] : "";
+	$language = isset($_REQUEST['language']) ? $_REQUEST['language'] : "";
+	$plugins = isset($_REQUEST['plugins']) ? $_REQUEST['plugins'] : "";
 
-	// Custom extra javascripts to pack
-	$custom = array(/*
-		"some custom .js file",
-		"some custom .js file"
-	*/);
-
-	// Headers
-	header("Content-type: text/javascript");
-	header("Vary: Accept-Encoding");  // Handle proxies
+	// GZip compress and cache it for 10 days
+	ob_start ("ob_gzhandler");
+	header("Content-type: text/javascript; charset: UTF-8");
+	header("Cache-Control: must-revalidate");
 	header("Expires: " . gmdate("D, d M Y H:i:s", time() + $expiresOffset) . " GMT");
 
-	// Is called directly then auto init with default settings
-	if (!$isJS) {
-		echo getFileContents("tiny_mce_gzip.js");
-		echo "tinyMCE_GZ.init({});";
-		die();
-	}
+	if ($theme) {
+		// Write main script and patch some things
+		echo file_get_contents(realpath("tiny_mce" . $suffix . ".js"));
+		echo 'TinyMCE.prototype.loadScript = function() {};';
+		echo "tinyMCE.init(TinyMCECompressed_settings);";
 
-	// Setup cache info
-	if ($diskCache) {
-		if (!$cachePath)
-			die("alert('Real path failed.');");
+		// Load theme, language pack and theme language packs
+		echo file_get_contents(realpath("themes/" . $theme . "/editor_template" . $suffix . ".js"));
+		echo file_get_contents(realpath("themes/" . $theme . "/langs/" . $language . ".js"));
+		echo file_get_contents(realpath("langs/" . $language . ".js"));
 
-		$cacheKey = getParam("plugins", "") . getParam("languages", "") . getParam("themes", "") . $suffix;
+		// Load all plugins and their language packs
+		$plugins = explode(",", $plugins);
+		foreach ($plugins as $plugin) {
+			$pluginFile = realpath("plugins/" . $plugin . "/editor_plugin" . $suffix . ".js");
+			$languageFile = realpath("plugins/" . $plugin . "/langs/" . $language . ".js");
 
-		foreach ($custom as $file)
-			$cacheKey .= $file;
+			if ($pluginFile)
+				echo file_get_contents($pluginFile);
 
-		$cacheKey = md5($cacheKey);
-
-		if ($compress)
-			$cacheFile = $cachePath . "/tiny_mce_" . $cacheKey . ".gz";
-		else
-			$cacheFile = $cachePath . "/tiny_mce_" . $cacheKey . ".js";
-	}
-
-	// Check if it supports gzip
-	if (isset($_SERVER['HTTP_ACCEPT_ENCODING']))
-		$encodings = explode(',', strtolower(preg_replace("/\s+/", "", $_SERVER['HTTP_ACCEPT_ENCODING'])));
-
-	if ((in_array('gzip', $encodings) || in_array('x-gzip', $encodings) || isset($_SERVER['---------------'])) && function_exists('ob_gzhandler') && !ini_get('zlib.output_compression')) {
-		$enc = in_array('x-gzip', $encodings) ? "x-gzip" : "gzip";
-		$supportsGzip = true;
-	}
-
-	// Use cached file disk cache
-	if ($diskCache && $supportsGzip && file_exists($cacheFile)) {
-		if ($compress)
-			header("Content-Encoding: " . $enc);
-
-		echo getFileContents($cacheFile);
-		die();
-	}
-
-	// Add core
-	if ($core == "true") {
-		$content .= getFileContents("tiny_mce" . $suffix . ".js");
-
-		// Patch loading functions
-		$content .= "tinyMCE_GZ.start();";
-	}
-
-	// Add core languages
-	foreach ($languages as $lang)
-		$content .= getFileContents("langs/" . $lang . ".js");
-
-	// Add themes
-	foreach ($themes as $theme) {
-		$content .= getFileContents( "themes/" . $theme . "/editor_template" . $suffix . ".js");
-
-		foreach ($languages as $lang)
-			$content .= getFileContents("themes/" . $theme . "/langs/" . $lang . ".js");
-	}
-
-	// Add plugins
-	foreach ($plugins as $plugin) {
-		$content .= getFileContents("plugins/" . $plugin . "/editor_plugin" . $suffix . ".js");
-
-		foreach ($languages as $lang)
-			$content .= getFileContents("plugins/" . $plugin . "/langs/" . $lang . ".js");
-	}
-
-	// Add custom files
-	foreach ($custom as $file)
-		$content .= getFileContents($file);
-
-	// Restore loading functions
-	if ($core == "true")
-		$content .= "tinyMCE_GZ.end();";
-
-	// Generate GZIP'd content
-	if ($supportsGzip) {
-		if ($compress) {
-			header("Content-Encoding: " . $enc);
-			$cacheData = gzencode($content, 9, FORCE_GZIP);
-		} else
-			$cacheData = $content;
-
-		// Write gz file
-		if ($diskCache && $cacheKey != "")
-			putFileContents($cacheFile, $cacheData);
-
-		// Stream to client
-		echo $cacheData;
-	} else {
-		// Stream uncompressed content
-		echo $content;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	function getParam($name, $def = false) {
-		if (!isset($_GET[$name]))
-			return $def;
-
-		return preg_replace("/[^0-9a-z\-_,]+/i", "", $_GET[$name]); // Remove anything but 0-9,a-z,-_
-	}
-
-	function getFileContents($path) {
-		$path = realpath($path);
-
-		if (!$path || !@is_file($path))
-			return "";
-
-		if (function_exists("file_get_contents"))
-			return @file_get_contents($path);
-
-		$content = "";
-		$fp = @fopen($path, "r");
-		if (!$fp)
-			return "";
-
-		while (!feof($fp))
-			$content .= fgets($fp);
-
-		fclose($fp);
-
-		return $content;
-	}
-
-	function putFileContents($path, $content) {
-		if (function_exists("file_put_contents"))
-			return @file_put_contents($path, $content);
-
-		$fp = @fopen($path, "wb");
-		if ($fp) {
-			fwrite($fp, $content);
-			fclose($fp);
+			if ($languageFile)
+				echo file_get_contents($languageFile);
 		}
+
+		die;
 	}
 ?>
+
+var TinyMCECompressed_settings = null;
+
+function TinyMCECompressed() {
+}
+
+TinyMCECompressed.prototype.init = function(settings) {
+	var elements = document.getElementsByTagName('script');
+	var scriptURL = "";
+
+	for (var i=0; i<elements.length; i++) {
+		if (elements[i].src && elements[i].src.indexOf("tiny_mce_gzip.php") != -1) {
+			scriptURL = elements[i].src;
+			break;
+		}
+	}
+
+	settings["theme"] = typeof(settings["theme"]) != "undefined" ? settings["theme"] : "default";
+	settings["plugins"] = typeof(settings["plugins"]) != "undefined" ? settings["plugins"] : "";
+	settings["language"] = typeof(settings["language"]) != "undefined" ? settings["language"] : "en";
+	settings["button_tile_map"] = typeof(settings["button_tile_map"]) != "undefined" ? settings["button_tile_map"] : true;
+
+	scriptURL += "?theme=" + escape(settings["theme"]) + "&language=" + escape(settings["language"]) + "&plugins=" + escape(settings["plugins"]);
+	document.write('<sc'+'ript language="javascript" type="text/javascript" src="' + scriptURL + '"></script>');
+
+	TinyMCECompressed_settings = settings;
+}
+
+var tinyMCE = new TinyMCECompressed();
