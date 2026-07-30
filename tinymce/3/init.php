@@ -13,7 +13,8 @@ echo "
 			echo "
 	tinyMCE.init({ 
 		theme: 'advanced',
-		height: '250',
+		height: '300',
+		width: '580',
 		language: '$language',
 		convert_urls: 'false',
 		mode: 'textareas',
@@ -24,8 +25,9 @@ echo "
 		theme_advanced_buttons3_add_before: 'tablecontrols,separator',
 		theme_advanced_buttons3_add: 'advhr',
 		theme_advanced_toolbar_align: 'center',
-		theme_advanced_toolbar_location: 'bottom',
+		theme_advanced_toolbar_location: 'top',
 		theme_advanced_statusbar_location: 'bottom',
+		theme_advanced_resizing_use_cookie: false,
 		theme_advanced_path: 'false',
 		editor_deselector: 'mceNoEditor',
 ";

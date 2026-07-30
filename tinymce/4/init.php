@@ -1,11 +1,11 @@
 <?php
-$image_list_path = STORIESPATH . "/" . USERUID . "../images/imagelist.js";
+$image_list_path = STORIESPATH . "/" . USERUID . "/images/imagelist.js";
 $image_list_exists = file_exists($image_list_path); 
  
 if (USERUID && $image_list_exists)
 {
 echo "
-<script src='".STORIESPATH . "/" . USERUID . "../images/imagelist.js"."'></script>";
+<script src='".STORIESPATH . "/" . USERUID . "/images/imagelist.js"."'></script>";
 } 
 echo "
 	<script language=\"javascript\" type=\"text/javascript\"><!--";
@@ -30,8 +30,8 @@ echo "
 		invalid_styles: 'color,font-size,margin,line-height,font-family,margin-top,margin-bottom',
 		plugins: 'wordcount emoticons fullscreen anchor code hr image link paste ',
 		skin: 'lightgray',
-		min_height: 250,
-		width: 440,
+		height: 300,
+		width: 580,
 	    browser_spellcheck: true,
 		relative_urls: false,
 		remove_script_host: false,
@@ -53,7 +53,7 @@ echo "
 		echo "
 		theme_modern_resizing: true,".($current == "adminarea" ? "\n\t\tentity_encoding: 'raw'" : "\n\t\tinvalid_elements: 'script,object,applet,iframe'")."
    });
-	
+
 ";
 	}
 	echo "
@@ -63,21 +63,8 @@ var tinyMCEmode = true;
 
 		if (tinyMCE.get(id) == null)
 		tinymce.EditorManager.execCommand('mceAddEditor',true, id);
-		//tinyMCE.execCommand('mceAddControl', false, id);
 		else
 		tinymce.EditorManager.execCommand('mceRemoveEditor', true, id);
-		//	tinyMCE.execCommand('mceRemoveControl', false, id);
 	}
 ";
-/*echo "
-var tinyMCEmode = true;
-	function toogleEditorMode(id) {
-		var elm = document.getElementById(id);
-
-		if (tinyMCE.get(id) == null)
-			tinyMCE.execCommand('mceAddControl', false, id);
-		else
-			tinyMCE.execCommand('mceRemoveControl', false, id);
-	}
-";*/
 echo " --></script>";
