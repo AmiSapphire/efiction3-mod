@@ -1,11 +1,11 @@
 <?php
-$image_list_path = STORIESPATH . "/" . USERUID . "/images/imagelist.js";
+$image_list_path = STORIESPATH . "/" . USERUID . "../images/imagelist.js";
 $image_list_exists = file_exists($image_list_path); 
  
 if (USERUID && $image_list_exists)
 {
 echo "
-<script src='".STORIESPATH . "/" . USERUID . "/images/imagelist.js"."'></script>";
+<script src='".STORIESPATH . "/" . USERUID . "../images/imagelist.js"."'></script>";
 } 
 echo "
 	<script language=\"javascript\" type=\"text/javascript\"><!--";
@@ -23,13 +23,15 @@ echo "
 		echo "
 	tinymce.init({
   		selector: 'textarea:not(.mceNoEditor)',
+  		resize: 'both',
   		menubar: false,
 		language: '$tinylanguage',
   		theme: 'modern',
 		invalid_styles: 'color,font-size,margin,line-height,font-family,margin-top,margin-bottom',
 		plugins: 'wordcount emoticons fullscreen anchor code hr image link paste ',
 		skin: 'lightgray',
-		min_height: 200,
+		min_height: 250,
+		width: 440,
 	    browser_spellcheck: true,
 		relative_urls: false,
 		remove_script_host: false,
