@@ -18,7 +18,7 @@ echo "
 		convert_urls: 'false',
 		mode: 'textareas',
 		extended_valid_elements: 'a[name|href|target|title]',
-		plugins: 'advhr,advimage,advlink,searchreplace,contextmenu,preview,fullscreen,paste" . ($current == "adminarea" ? ",codeprotect" : "") . "',
+		plugins: 'advhr,advimage,advlink,searchreplace,contextmenu,preview,fullscreen,paste,wordcount" . ($current == "adminarea" ? ",codeprotect" : "") . "',
 		theme_advanced_buttons1_add: 'fontsizeselect',
 		theme_advanced_buttons2_add: 'separator,pasteword,pastetext',
 		theme_advanced_buttons3_add_before: 'tablecontrols,separator',
