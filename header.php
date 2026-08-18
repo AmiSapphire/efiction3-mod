@@ -259,7 +259,11 @@ if (!isset($_GET['action']) || $_GET['action'] != "printable")
 {
 	if (!empty($tinyMCE))
 	{
-		if($tinyMCE == 3) {
+		if($tinyMCE == 4) {
+			echo "<script src=\"" . _BASEDIR . "tinymce/6/js/tinymce/tinymce.min.js\"></script>";
+			include(_BASEDIR . "tinymce/6/init.php");
+		}
+		else if($tinyMCE == 3) {
 			echo "<script src=\"" . _BASEDIR . "tinymce/4/js/tinymce/tinymce.min.js\"></script>";
 			include(_BASEDIR . "tinymce/4/init.php");
 		}
@@ -270,10 +274,6 @@ if (!isset($_GET['action']) || $_GET['action'] != "printable")
 		else if($tinyMCE == 1) {
 			echo "<script src=\"" . _BASEDIR . "tinymce/2/jscripts/tiny_mce/tiny_mce.js\"></script>";
 			include(_BASEDIR . "tinymce/2/init.php");
-		}
-		else {
-			echo "<script src=\"" . _BASEDIR . "tinymce/6/js/tinymce/tinymce.min.js\"></script>";
-			include(_BASEDIR . "tinymce/6/init.php");
 		}
 	}
 }
