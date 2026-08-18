@@ -233,7 +233,7 @@ else if(isset($_POST['submit'])) {
 
 	}
 	else if($sect == "sitesettings") {
-		$tinyMCE = ($_POST['newtinyMCE'] == 1  OR $_POST['newtinyMCE'] == 2 OR $_POST['newtinyMCE'] == 3) ? $_POST['newtinyMCE'] : 0;
+		$tinyMCE = ($_POST['newtinyMCE'] == 1  OR $_POST['newtinyMCE'] == 2 OR $_POST['newtinyMCE'] == 3 OR $_POST['newtinyMCE'] == 4) ? $_POST['newtinyMCE'] : 0;
 		$allowed_tags = $_POST['newallowed_tags'];
 		$favorites = $_POST['newfavorites'] == 1 ? 1 : 0;
 		$multiplecats = $_POST['newmultiplecats'] == 1 ? 1 : 0;
@@ -418,6 +418,7 @@ else if(isset($_POST['submit'])) {
 		<table class='acp' style='margin: 0 auto;'>
 			<tr>
 				<td><label for='newtinyMCE'>"._USETINYMCE. ": </label></td><td><select name='newtinyMCE'>
+				<option value=\"4\"" . ($tinyMCE == 4 ? " selected" : "") . ">tinyMCE 4</option>
 				<option value=\"3\"" . ($tinyMCE == 3 ? " selected" : "") . ">tinyMCE 4</option>
 				<option value=\"2\"" . ($tinyMCE == 2 ? " selected" : "") . ">tinyMCE 3</option>
 				<option value=\"1\"" . ($tinyMCE == 1 ? " selected" : "") . ">tinyMCE 2</option>
