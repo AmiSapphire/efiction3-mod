@@ -436,7 +436,7 @@ else if(isset($_POST['submit'])) {
 				</select><a href='#' class='pophelp'>[?]<span>"._HELP_FAVORITES."</span></a></td>
 			</tr>
 			<tr>
-				<td><label for='newmultplecats'>"._NUMCATS.": </label></td><td><select name='newmultiplecats'>
+				<td><label for='newmultiplecats'>"._NUMCATS.": </label></td><td><select name='newmultiplecats'>
 				<option value='1'".($multiplecats == "1" ? "selected" : "").">"._MORETHANONE."</option>
 				<option value='0'".($multiplecats == "0" ? "selected" : "").">"._ONLYONE."</option>
 				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_NUMCATS."</span></a></td>
