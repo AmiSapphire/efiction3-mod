@@ -237,12 +237,13 @@ else if(isset($_POST['submit'])) {
 		$allowed_tags = $_POST['newallowed_tags'];
 		$favorites = $_POST['newfavorites'] == 1 ? 1 : 0;
 		$multiplecats = $_POST['newmultiplecats'] == 1 ? 1 : 0;
+		$setreg = $_POST['newsetreg'] == 1 ? 1 : 0;
 		$newscomments = $_POST['newnewscomments'] == 1 ? 1 : 0;
 		$logging = $_POST['newlogging'] == 1 ? 1 : 0;
 		$maintenance = $_POST['newmaint'] == 1 ? 1 : 0;
 		$debug = $_POST['newdebug'] == 1 ? 1 : 0;
 		$captcha = $_POST['newcaptcha'] == 1 ? 1 : 0;
-		$result = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET tinyMCE = '$tinyMCE', favorites = '$favorites', multiplecats = '$multiplecats', allowed_tags = '$allowed_tags', newscomments = '$newscomments', logging = '$logging', maintenance = '$maintenance', debug = '$debug', captcha = '$captcha' WHERE sitekey ='".SITEKEY."'");
+		$result = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET tinyMCE = '$tinyMCE', favorites = '$favorites', multiplecats = '$multiplecats', setreg = '$setreg', allowed_tags = '$allowed_tags', newscomments = '$newscomments', logging = '$logging', maintenance = '$maintenance', debug = '$debug', captcha = '$captcha' WHERE sitekey ='".SITEKEY."'");
 	}
 	else if($sect == "display") {
 		$dateformat = $_POST['newdateformat'] ? descript(strip_tags($_POST['newdateformat'])) : descript(strip_tags($_POST['customdateformat']));
@@ -418,7 +419,7 @@ else if(isset($_POST['submit'])) {
 		<table class='acp' style='margin: 0 auto;'>
 			<tr>
 				<td><label for='newtinyMCE'>"._USETINYMCE. ": </label></td><td><select name='newtinyMCE'>
-				<option value=\"4\"" . ($tinyMCE == 4 ? " selected" : "") . ">tinyMCE 4</option>
+				<option value=\"4\"" . ($tinyMCE == 4 ? " selected" : "") . ">tinyMCE 6</option>
 				<option value=\"3\"" . ($tinyMCE == 3 ? " selected" : "") . ">tinyMCE 4</option>
 				<option value=\"2\"" . ($tinyMCE == 2 ? " selected" : "") . ">tinyMCE 3</option>
 				<option value=\"1\"" . ($tinyMCE == 1 ? " selected" : "") . ">tinyMCE 2</option>
@@ -439,6 +440,12 @@ else if(isset($_POST['submit'])) {
 				<option value='1'".($multiplecats == "1" ? "selected" : "").">"._MORETHANONE."</option>
 				<option value='0'".($multiplecats == "0" ? "selected" : "").">"._ONLYONE."</option>
 				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_NUMCATS."</span></a></td>
+			</tr>
+			<tr>
+				<td><label for='newsetreg'>"._SETREG.": </label></td><td><select name='newsetreg'>
+				<option value='1'".($setreg == "1" ? "selected" : "").">"._YES."</option>
+				<option value='0'".($setreg == "0" ? "selected" : "").">"._NO."</option>
+				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_SETREG."</span></a></td>
 			</tr>
 			<tr>
 				<td><label for='newnewscomments'>"._NEWSCOMMENTS.": </label></td><td><select name='newnewscomments'>

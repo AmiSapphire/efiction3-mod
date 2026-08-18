@@ -286,6 +286,8 @@ elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 9)  // 3.
 {
 	if ($confirm == "yes")
 	{
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'setreg'")))
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `setreg` tinyint(1) NOT NULL DEFAULT '1' AFTER `multiplecats`");
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'smtp_port'")))
 			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `smtp_port` varchar(5) NOT NULL DEFAULT ''");
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'smtp_secure'")))

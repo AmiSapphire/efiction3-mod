@@ -303,6 +303,7 @@ define ("_PWDREQUIRED", "A password is required to access this function.");
 define ("_PENEMAILREQUIRED", "You must fill out the penname and email fields. Please <a href=\"user.php?action=newaccount\">try again</a>.");
 define ("_PENNAMEINUSE", "This penname is already in use.");
 define ("_REALNAME", "Real name");
+define ("_REGDISABLED", "The administrator has disabled new user registrations to this website.");
 define ("_REGISTER", "Register");
 define ("_REGLOG", "%1\$s (%2\$d) registered from IP address %3\$s.");
 define ("_SIGNUPSUBJECT", "Welcome to $sitename");

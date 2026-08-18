@@ -515,6 +515,7 @@ CREATE TABLE `fanfiction_settings` (
   `allowed_tags` varchar(200) NOT NULL default '<b><i><u><center><hr><p><br /><br><blockquote><ol><ul><li><img><strong><em>',
   `favorites` tinyint(1) NOT NULL default '0',
   `multiplecats` tinyint(1) NOT NULL default '0',
+  `setreg` tinyint(1) NOT NULL default '1',
   `newscomments` tinyint(1) NOT NULL default '0',
   `logging` tinyint(1) NOT NULL default '0',
   `maintenance` tinyint(1) NOT NULL default '0',

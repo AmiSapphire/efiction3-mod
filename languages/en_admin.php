@@ -211,6 +211,7 @@ define ("_SAMEWINDOW", "Same Window");
 define ("_SECURITYDELETE", "You have not deleted the install folder! Please do so immediately to prevent a security breach.");
 define ("_SELF", "member selected");
 define ("_SELECTONE", "Select One");
+define ("_SETREG", "Enable New User Registrations");
 define ("_SETTINGS", "Settings");
 define ("_SITEINFO", "Site Information"); 
 define ("_SITEKEY", "Site Key");  
@@ -330,6 +331,7 @@ define ("_HELP_MINMAXWORDS", "You may set a minimum and/or maximum word count fo
 define ("_HELP_ALLOWEDTAGS", "List the tags you wish to allow in form input throughout the site.");
 define ("_HELP_FAVORITES", "Allow members to list their favorite stories, series, and authors within their profile.");
 define ("_HELP_NUMCATS", "If you have only one category, you should set this to 'only one'.  Doing so will create shortcuts in a few areas where of the site where category selection is required when there is more than one category.");
+define ("_HELP_SETREG", "Enables or disables user registration to your website.");
 define ("_HELP_NEWSCOMMENTS", "Defines whether or not members can make comments on news stories.");
 define ("_HELP_DATEFORMAT", "Sets the date format to be used throughout the site.  You may select one of the formats in the list or define a custom format using PHP's date( ) format options.");
 define ("_HELP_TIMEFORMAT", "Sets the time format to be used on news items.  The time format selected will be placed after the dateformat selected in the option above.  As with the date format, you may select on of the formats in the list or define your own custom format.");

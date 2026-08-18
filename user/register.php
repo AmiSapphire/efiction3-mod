@@ -24,5 +24,9 @@
 
 if(!defined("_CHARSET")) exit( );
 
-include("user/editbio.php");
+if(isset($setreg) && $setreg == 0) {
+$output .= "<div align='center'>"._REGDISABLED."</div>";
+}
+
+else include("user/editbio.php");
 ?>
