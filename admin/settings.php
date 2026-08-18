@@ -410,7 +410,7 @@ else if(isset($_POST['submit'])) {
 				<td><label for='newstoriespath'>"._STORIESPATH.":</label></td><td><input type='text' class='textbox=' name='newstoriespath' value='$storiespath'> <a href='#' class='pophelp'>[?]<span>"._HELP_STORIESPATH."</span></a></td>
 			</tr>
 			<tr>
-				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._MAXMINWORDS."<a href='#' class='pophelp'>[?]<span>"._HELP_MINMAXWORDS."</span></a></legend>
+				<td colspan='2'><fieldset style='margin: 0 auto;'><legend>"._MAXMINWORDS." <a href='#' class='pophelp'>[?]<span>"._HELP_MINMAXWORDS."</span></a></legend>
 				<label for='newminwords'>"._MIN.":</label> <span style='padding-left: 38.44%;'> <input  type='text' class='textbox=' name='newminwords' value='$minwords' size='5'> <br />
 				<label for='newmaxwords'>"._MAX.":</label> <span style='padding-left: 37.7%;'> <input  type='text' class='textbox=' name='newmaxwords' value='$maxwords' size='7'></fieldset></td></tr>";
 	}
@@ -433,7 +433,7 @@ else if(isset($_POST['submit'])) {
 				<td><label for='newfavorites'>"._FAVORITES.": </label></td><td><select name='newfavorites'>
 				<option value='1'".($favorites == "1" ? " selected" : "").">"._YES."</option>
 				<option value='0'".($favorites == "0" ? " selected" : "").">"._NO."</option>
-				</select><a href='#' class='pophelp'>[?]<span>"._HELP_FAVORITES."</span></a></td>
+				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_FAVORITES."</span></a></td>
 			</tr>
 			<tr>
 				<td><label for='newmultiplecats'>"._NUMCATS.": </label></td><td><select name='newmultiplecats'>
@@ -475,7 +475,7 @@ else if(isset($_POST['submit'])) {
 				<td><label for='newcaptcha'>"._CAPTCHA.": </label></td><td><select name='newcaptcha'>
 				<option value='1'".($captcha == "1" ? " selected" : "").">"._YES."</option>
 				<option value='0'".(!isset($captcha) || $captcha == "0" ? " selected" : "").">"._NO."</option>
-				</select><a href='#' class='pophelp'>[?]<span>"._HELP_CAPTCHA."</span></a></td></tr>";
+				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_CAPTCHA."</span></a></td></tr>";
 	}
 	else if($sect == "display") {
 		$settings = dbquery("SELECT defaultsort, displayindex FROM ".$settingsprefix."fanfiction_settings WHERE sitekey ='".SITEKEY."'");

@@ -96,7 +96,7 @@ else if(!empty($_GET['delete'])) {
 	}
 }
 else {
-	$output .= "<form name=\"list\" action=\"\"><div class='sectionheader'>"._PANELS." <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_PANELS."</span></A><br /> <select name=\"list\" onchange=\"if(this.selectedIndex.value != 'false') document.location = document.list.list.options[document.list.list.selectedIndex].value\">";
+	$output .= "<form name=\"list\" action=\"\"><div class='sectionheader'>"._PANELS." <A HREF=\"#\" class=\"pophelp\" style='font-size: 12pt;'>[?]<span>"._HELP_PANELS."</span></A><br /> <select name=\"list\" onchange=\"if(this.selectedIndex.value != 'false') document.location = document.list.list.options[document.list.list.selectedIndex].value\">";
 	$output .= "<option value=\"admin.php?action=panels\">"._ALL."</option>";
 	$paneltypelist = dbquery("SELECT DISTINCT panel_type FROM ".TABLEPREFIX."fanfiction_panels ORDER BY panel_type");
 	while($t = dbrow($paneltypelist)) {
