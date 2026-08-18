@@ -48,6 +48,7 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - Bridges return! Their removal got rid of the example work, which needs to be updated as well
 - Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages, installer
 - TinyMCE 3.4.8 added (this was from my own archives); now you have a choice of TinyMCE versions 2.1.2, 3.4.8, 4.5.12, and 6.8.6 - replaces eFiction 3.5.x's original 3.0.9
+- Setting to enable or disable new user registrations - sorely needed for some archives
 
 <br>
 
