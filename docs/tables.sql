@@ -149,7 +149,7 @@ CREATE TABLE `fanfiction_chapters` (
 CREATE TABLE `fanfiction_characters` (
   `charid` int(11) NOT NULL auto_increment,
   `catid` int(11) NOT NULL default '0',
-  `charname` varchar(60) NOT NULL default '' COLLATE=utf8mb4_unicode_ci,
+  `charname` varchar(60) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
   `bio` text NOT NULL,
   `image` varchar(200) NOT NULL default '',
   PRIMARY KEY  (`charid`),
@@ -364,7 +364,7 @@ CREATE TABLE `fanfiction_panels` (
 
 CREATE TABLE `fanfiction_ratings` (
   `rid` int(11) NOT NULL auto_increment,
-  `rating` varchar(60) NOT NULL default '' COLLATE=utf8mb4_unicode_ci,
+  `rating` varchar(60) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
   `ratingwarning` int(11) NOT NULL default '0',
   `warningtext` text NOT NULL,
   PRIMARY KEY  (`rid`),
