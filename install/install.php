@@ -210,13 +210,27 @@ switch ($_GET['step'])
 		else
 		{
 			$output .= "<div id='pagetitle'>" . _ADMINACCT . "</div><form method=\"POST\" class='tblborder' style='margin: 1em auto; width: 400px;' enctype=\"multipart/form-data\" action=\"install.php?step=9\">
-			<div class='row'><label for='newpenname'>" . _PENNAME . ":</label> 
-			<input name=\"newpenname\" type=\"text\" class=\"textbox\" maxlength=\"200\" value=\"" . $user['penname'] . "\"></div>
-		 	<div class='row'><label for='email'>" . _EMAIL . ":</label> <INPUT  type=\"text\" class=\"textbox=\" name=\"email\" value=\"" . $user['email'] .
-				"\" maxlength=\"200\"></div>
-			<div class='row'><label for='password'>" . _PASSWORD . ":</label>  <INPUT name=\"password\" class=\"textbox\" value=\"\" type=\"password\"></div> 
-			<div class='row'><label for='password2'>" . _PASSWORD2 . ":</label> <INPUT name=\"password2\" class=\"textbox=\" value=\"\" type=\"password\"></div>
-			<div style='text-align: center;'><INPUT type=\"submit\"class=\"button\" name=\"submit\" value=\"submit\"></div></form>";
+			<table class='acp' style='margin: 0 auto;'>
+				<tr>
+					<td><label for='newpenname'>" . _PENNAME . ":</label></td>
+					<td><input name=\"newpenname\" type=\"text\" class=\"textbox\" maxlength=\"200\" value=\"" . $user['penname'] . "\"></td>
+				</tr>
+				<tr>
+					<td><label for='email'>" . _EMAIL . ":</label></td>
+					<td><INPUT  type=\"text\" class=\"textbox=\" name=\"email\" value=\"" . $user['email'] . "\"maxlength=\"200\"></td>
+				</tr>
+				<tr>
+					<td><label for='password'>" . _PASSWORD . ":</label></td>
+					<td><INPUT name=\"password\" class=\"textbox\" value=\"\" type=\"password\"></td>
+				</tr>
+				<tr>
+					<td><label for='password2'>" . _PASSWORD2 . ":</label></td>
+					<td><INPUT name=\"password2\" class=\"textbox=\" value=\"\" type=\"password\"></td>
+				</tr>
+			</table>
+			<div style='text-align: center; margin: 0.5em;'><INPUT type=\"submit\"class=\"button\" name=\"submit\" value=\"submit\"></div>
+			</div></form>
+			";
 		}
 		break;
 
