@@ -48,11 +48,8 @@ if($userinfo['bio']) {
 if($userinfo['image'])
 	$tpl->assign("image", "<img src=\"".$userinfo['image']."\">");
 
-/* don't display member if it was added by admin - release them rather */
-if(isset($userinfo['admicreated']) && $userinfo['admicreated'] == 0) {
-	$tpl->assign("membersince", date("$dateformat", $userinfo['date']));
-	$tpl->assign("userlevel", isset($userinfo['level']) && $userinfo['level'] > 0 && $userinfo['level'] < 4 ? _ADMINISTRATOR.(isADMIN ? " - ".$userinfo['level'] : "") : _MEMBER);
-}
+$tpl->assign("userlevel", isset($userinfo['level']) && $userinfo['level'] > 0 && $userinfo['level'] < 4 ? _ADMINISTRATOR.(isADMIN ? " - ".$userinfo['level'] : "") : _MEMBER);
+
 /* Dynamic authorinfo fields */
 $result2 = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_authorinfo WHERE uid = '$uid'");
 $dynamicfields = "";
