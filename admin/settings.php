@@ -636,6 +636,7 @@ else if(isset($_POST['submit'])) {
 	if($sect == "email") {
 		$output .= "<div class='sectionheader'>"._TESTSMTP_HEADER."</div>
 		<div align='center'>
+			<p>
 				<form method='POST' action='admin.php?action=settings&amp;sect=email' style='display:inline'>
 					<input type='submit' class='button' name='testsmtp' value='"._TESTSMTP."'>
 				</form>
