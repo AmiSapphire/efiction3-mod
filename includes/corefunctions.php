@@ -248,10 +248,10 @@ function format_link($text, $title = "", $target = 0) {
 function title_link($stories) {
 	global $ratingslist, $ageconsent, $disablepopups;
 
-	$rating = $stories['rid'];
+	$rating = isset($stories['rid']) ? $stories['rid'] : null;
 	$warningtext = !empty($ratingslist[$rating]['warningtext']) ? addslashes(strip_tags($ratingslist[$rating]['warningtext'])) : "";
 		if(empty($ratingslist[$rating]['ratingwarning']))
-			$title = "<a href=\""._BASEDIR."viewstory.php?sid=".$stories['sid']."\">".$stories['title']."</a>";
+			$title = "<a href=\""._BASEDIR."viewstory.php?sid=".(isset($stories['sid']) ? $stories['sid'] : null)."\">".(isset($stories['title']) ? $stories['title'] : null)."</a>";
 		else {
 			$warning = "";
 			$warninglevel = sprintf("%03b", $ratingslist[$rating]['ratingwarning']);

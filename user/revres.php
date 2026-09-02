@@ -77,7 +77,7 @@ if(!defined("_CHARSET")) exit( );
 			if($type == "ST") {
 				$storyquery = dbquery("SELECT s.title, s.uid, r.rid, r.rating, r.ratingwarning, r.warningtext, s.sid FROM ".TABLEPREFIX."fanfiction_stories as s, ".TABLEPREFIX."fanfiction_ratings as r WHERE s.sid = '".$reviews['item']."' AND s.rid = r.rating LIMIT 1");
 				$story = dbassoc($storyquery);
-				$authoruid = $story['uid'];
+				$authoruid = isset($story['uid']) ? $story['uid'] : null;
 				$title = title_link($story);
 			}
 			else if($type == "SE") {
@@ -107,7 +107,7 @@ if(!defined("_CHARSET")) exit( );
 			$revlist->newBlock("reviewsblock");
 			$revlist->assign("reviewer"   , $reviewer );
 			$revlist->assign("review"   , $reviews['review']);
-			$revlist->assign("chapter", (isset($chaptitle) ? _CHAPTER." $chapnum: $chaptitle" : ($story['title'] ? $story['title'] : _NONE)) );
+			$revlist->assign("chapter", (isset($chaptitle) ? _CHAPTER." $chapnum: $chaptitle" : (isset($story['title']) ? $story['title'] : _NONE)) );
 			$revlist->assign("reviewdate", date("$dateformat", $reviews['date']) );
 			$revlist->assign("rating", ratingpics($reviews['rating']) );
 			$revlist->assign("member", $member );
