@@ -26,15 +26,15 @@ if(!defined("_CHARSET")) exit( );
 	$tpl->assign("sid", $stories['sid']);
 	unset($challengelinks, $challengeadmin, $serieslinks, $categorylinks, $adminlinks, $authlink);
 	if($stories['coauthors'] == 1) {
-		$array_coauthors = array();
+		$coauthors = array();
 		$coauth = dbquery("SELECT "._PENNAMEFIELD." as penname, co.uid FROM ".TABLEPREFIX."fanfiction_coauthors AS co LEFT JOIN "._AUTHORTABLE." ON co.uid = "._UIDFIELD." WHERE co.sid = '".$stories['sid']."'");
 		while($c = dbassoc($coauth)) {
-			$array_coauthors[$c['uid']] = $c['penname'];
+			$coauthors[$c['uid']] = $c['penname'];
 		}
-		$stories['coauthors_array'] = $array_coauthors;
-		unset($array_coauthors);
+		$stories['coauthors'] = $coauthors;
+		unset($coauthors);
 	}
-	else  $stories['coauthors_array'] = array( );	 
+	else if(empty($stories['coauthors'])) $stories['coauthors'] = array( );
 	$tpl->assign("title"   , stripslashes(title_link($stories)) );
 	$tpl->assign("author"   , author_link($stories));
 	$tpl->assign("summary", stripslashes($stories['summary']) );
@@ -108,7 +108,7 @@ if(!defined("_CHARSET")) exit( );
 	}
 	$tpl->assign("wordcount"   , $stories['wordcount'] ? $stories['wordcount'] : "0" );
 	$tpl->assign("numreviews"   , ($reviewsallowed == "1" ? "<a href=\""._BASEDIR."reviews.php?type=ST&amp;item=".$stories['sid']."\">".$stories['reviews']."</a>" : "") );
-	if((isADMIN && uLEVEL < 4) || USERUID == $stories['uid'] || (is_array($stories['coauthors']) && array_key_exists(USERUID, $stories['coauthors_array'])))
+	if((isADMIN && uLEVEL < 4) || USERUID == $stories['uid'] || (is_array($stories['coauthors']) && array_key_exists(USERUID, $stories['coauthors'])))
 		$adminlinks .= "[<a href=\""._BASEDIR."stories.php?action=editstory&amp;sid=".$stories['sid'].(isADMIN ? "&amp;admin=1" : "")."\">"._EDIT."</a>] [<a href=\""._BASEDIR."stories.php?action=delete&amp;sid=".$stories['sid'].(isADMIN ? "&amp;admin=1" : "")."\">"._DELETE."</a>]";
 	global $featured;
 	if($stories['featured'] == 1) {
@@ -126,6 +126,6 @@ if(!defined("_CHARSET")) exit( );
 	$tpl->assign("oddeven", ($count % 2 ? "odd" : "even"));
 	$tpl->assign("reportthis", "[<a href=\""._BASEDIR."contact.php?action=report&amp;url=viewstory.php?sid=".$stories['sid']."\">"._REPORTTHIS."</a>]");
 	if(isADMIN && uLEVEL < 4) $tpl->assign("adminlinks", "<div class=\"adminoptions\"><span class='label'>"._ADMINOPTIONS.":</span> ".$adminlinks."</div>");
-	else if(isMEMBER && (USERUID == $stories['uid'] || array_key_exists(USERUID, $stories['coauthors_array']))) $tpl->assign("adminlinks", "<div class=\"adminoptions\"><span class='label'>"._OPTIONS.":</span> ".$adminlinks."</div>");
+	else if(isMEMBER && (USERUID == $stories['uid'] || array_key_exists(USERUID, $stories['coauthors']))) $tpl->assign("adminlinks", "<div class=\"adminoptions\"><span class='label'>"._OPTIONS.":</span> ".$adminlinks."</div>");
 	$count++;
 ?>
