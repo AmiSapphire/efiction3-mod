@@ -46,7 +46,7 @@ if(!defined("_CHARSET")) exit( );
 	else {
 		$reviewid = isset($_GET['reviewid']) && isNumber($_GET['reviewid']) ? $_GET['reviewid'] : false;
 		if(!$reviewid) accessDenied( );
-		$result = dbquery("SELECT review.*, review.date as date FROM ".TABLEPREFIX."fanfiction_reviews as review LEFT JOIN ".TABLEPREFIX."fanfiction_authors as member ON member.uid = review.uid WHERE review.reviewid = '$reviewid' LIMIT 1");
+		$result = dbquery("SELECT review.*, UNIX_TIMESTAMP(review.date) as date FROM ".TABLEPREFIX."fanfiction_reviews as review LEFT JOIN ".TABLEPREFIX."fanfiction_authors as member ON member.uid = review.uid WHERE review.reviewid = '$reviewid' LIMIT 1");
 		$reviews = dbassoc($result);
 		if(!empty($reviews['respond'])) {
 			$tpl->assign("output", write_message(_ALREADYRESPONDED));
@@ -67,14 +67,13 @@ if(!defined("_CHARSET")) exit( );
 			}
 		}
 		$user = dbassoc(dbquery($query2));
-		$array_coauthors = array();
 		if(!empty($user['coauthors'])) {
 			$coQuery = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '".$reviews['item']."'");
 			while($c = dbassoc($coQuery)) {
-				$array_coauthors[] = $c['uid'];
+				$coauthors[] = $c['uid'];
 			}
 		}
-		if(USERUID == $user['uid'] || (!empty($user['coauthors']) && in_array(USERUID, $array_coauthors))) {
+		if(USERUID == $user['uid'] || (!empty($user['coauthors']) && in_array(USERUID, $coauthors))) {
 			if($type == "ST") {
 				$storyquery = dbquery("SELECT s.title, s.uid, r.rid, r.rating, r.ratingwarning, r.warningtext, s.sid FROM ".TABLEPREFIX."fanfiction_stories as s, ".TABLEPREFIX."fanfiction_ratings as r WHERE s.sid = '".$reviews['item']."' AND s.rid = r.rating LIMIT 1");
 				$story = dbassoc($storyquery);
