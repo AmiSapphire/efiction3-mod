@@ -278,7 +278,7 @@ function title_link($stories) {
 
 // Same with the author list
 function author_link($stories) {
-	if(is_array($stories['coauthors'])) {
+	if ((!empty($stories['coauthors'])) && (is_array($stories['coauthors']))) {
 		$authlink[] = "<a href=\""._BASEDIR."viewuser.php?uid=".$stories['uid']."\">".$stories['penname']."</a>";
 		//not needed, why is it there?
 		//$coauth = dbquery("SELECT "._PENNAMEFIELD." as penname, co.uid FROM ".TABLEPREFIX."fanfiction_coauthors AS co LEFT JOIN "._AUTHORTABLE." ON co.uid = "._UIDFIELD." WHERE co.sid = '".$stories['sid']."'");
