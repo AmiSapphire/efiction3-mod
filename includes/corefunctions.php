@@ -481,7 +481,7 @@ function ratingpics($rating) {
 	$ratingpics = "";
 
 	if($ratings == "3") { 
-		$ratingpics = "<span title=\""._LIKES_NUMBER. "\"><b>" . $rating . "</b></span>";
+		$ratingpics = "<span title=\""._LIKES_NUMBER. "\"><b>Likes:</b> " . $rating . "</span>";
 	}	
 	elseif($ratings == "2") {
 		if($rating >= 0.5)
