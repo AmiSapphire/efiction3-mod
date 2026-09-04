@@ -85,7 +85,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header('Content-type: image/png');
 imagepng($image);
-imagedestroy($image);
+unset($image);
 
 exit( );
 ?> 
