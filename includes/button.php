@@ -8,7 +8,7 @@ define("_BASEDIR", "../");
 include("../config.php");
 unset($_SESSION[$sitekey.'_digit']);
 
-$image = imagecreate(140, 40);
+$image = imagecreate(280, 80);
 
 $white    = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
 $gray    = imagecolorallocate($image, 0xC0, 0xC0, 0xC0);
@@ -31,6 +31,8 @@ return $color;
 
 putenv('GDFONTPATH=' . realpath('.'));
 
+$folder=dir("cFonts/"); //The directory where your fonts reside
+
 while($font=$folder->read()) {
 if(stristr($font,'.ttf')) {
   // Check GD Version 2.4.0 or later
@@ -48,27 +50,27 @@ $rC = rgb_rand(0, 175);
 $rColors[$i] = imagecolorallocate($image, $rC['r'], $rC['g'], $rC['b']);
 
 for ($x = 0; $x < 2; $x++) {
-  $x1 = rand(0,140);
-  $y1 = rand(0,40);
-  $x2 = rand(0,140);
-  $y2 = rand(0,40);
+  $x1 = rand(0,280);
+  $y1 = rand(0,80);
+  $x2 = rand(0,280);
+  $y2 = rand(0,80);
   imageline($image, $x1, $y1, $x2, $y2 , $rColors[$i]);  
 }
 
 }
 
 /* generate random dots in background */
-for( $i=0; $i<(140*40)/3; $i++ ) {
-  imagefilledellipse($image, mt_rand(0,140), mt_rand(0,40), 1, 1, $gray);
+for( $i=0; $i<(280*80)/3; $i++ ) {
+  imagefilledellipse($image, mt_rand(0,280), mt_rand(0,80), 1, 1, $gray);
 }
 
 for ($i = 0; $i < 5; $i++) {
- $x = $x + mt_rand(16, 24);
- $y = mt_rand(26, 32); 
- $angle = mt_rand(-15, 15);
+ $x = $x + mt_rand(32, 48);
+ $y = mt_rand(52, 64);
+ $angle = mt_rand(-30, 30);
  $fnt = mt_rand(0, sizeof($fontList) - 1);
  $colori = $rColors[$i];
- imagettftext($image, mt_rand(20, 24), $angle,  $x, $y, $colori, $fontList[$fnt], $cnum[$i]); 
+ imagettftext($image, mt_rand(40, 48), $angle, $x, $y, $colori, $fontList[$fnt], $cnum[$i]);
 
 }
  

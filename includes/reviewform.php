@@ -48,7 +48,7 @@ if($ratings == "1") {
 	}
 	$form .= "<option value=\"-1\"".($review['rating'] == -1 || $action != "edit" ? " selected" : "").">"._NONE."</option></select></div>";
 }
-if(!USERUID && !empty($captcha)) $form .= "<div><span class=\"label\">"._CAPTCHANOTE."</span><input MAXLENGTH=5 SIZE=5 name=\"userdigit\" type=\"text\" value=\"\"><br /><img width=120 height=30 src=\""._BASEDIR."includes/button.php\" style=\"border: 1px solid #111;\"></div>";
+if(!USERUID && !empty($captcha)) $form .= "<div><span class=\"label\">"._CAPTCHANOTE."</span><input MAXLENGTH=5 SIZE=5 name=\"userdigit\" type=\"text\" value=\"\"><br /><img width=240 height=60 src=\""._BASEDIR."includes/button.php\" style=\"border: 1px solid #111;\"></div>";
 
 $form .= "<INPUT type=\"hidden\" name=\"chapid\" value=\"".(isset($chapid) ? $chapid : "")."\"><div style=\"text-align: center; margin: 1ex;\"><INPUT type=\"submit\" class=\"button\" name=\"submit\" value=\""._SUBMIT."\"></div>";
 if(!empty($rateonly)) $form .= "<div>"._REVIEWNOTE."</div>";

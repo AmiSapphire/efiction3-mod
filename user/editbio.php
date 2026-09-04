@@ -239,7 +239,7 @@ function random_string ($charset_string, $length)
 		if($action != "register" || $pwdsetting)
 	 	$output .= "<div><label for='password'>"._PASSWORD.":</label>  <INPUT name=\"password\" class=\"textbox\" value=\"\" type=\"password\">".($action == "register" ? "<font color=\"red\">*</font>" : "")."</div>
 			<div><label for='password2'>"._PASSWORD2.":</label> <INPUT name=\"password2\" class=\"textbox=\" value=\"\" type=\"password\">".($action == "register" ? "<font color=\"red\">*</font>" : "")."</div>";
-		if(!empty($captcha) && $action == "register") $output .= "<div><label for='userdigit'>"._CAPTCHANOTE."</label><input MAXLENGTH=5 SIZE=5 name=\"userdigit\" type=\"text\" value=\"\"><div style='text-align: center;'><img width=120 height=30 src=\""._BASEDIR."includes/button.php\" style=\"border: 1px solid #111;\"></div></div>";
+		if(!empty($captcha) && $action == "register") $output .= "<div><label for='userdigit'>"._CAPTCHANOTE."</label><input MAXLENGTH=5 SIZE=5 name=\"userdigit\" type=\"text\" value=\"\"><div style='text-align: center;'><img width=240 height=60 src=\""._BASEDIR."includes/button.php\" style=\"border: 1px solid #111;\"></div></div>";
 	 	$output .= "<div style='text-align: center; margin: 1em;'><INPUT type=\"hidden\" name=\"uid\" value=\"".(isset($user) ? $user['uid'] : "")."\"><INPUT type=\"submit\" class=\"button\" name=\"submit\" value=\""._SUBMIT."\">";
 	 	if(!isADMIN && $action != "register")
 	 	{
