@@ -23,7 +23,7 @@
 
 //Begin basic page setup
 $current = "series";
-if($_GET['action'] == "add" || $_GET['action'] == "edit") $displayform = 1;
+if((isset($_GET['action']))== "add" || (isset($_GET['action'])) == "edit") $displayform = 1;
 
 include ("header.php");
 //make a new TemplatePower object
