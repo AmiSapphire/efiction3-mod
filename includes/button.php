@@ -31,13 +31,16 @@ return $color;
 
 putenv('GDFONTPATH=' . realpath('.'));
 
-$folder=dir("cFonts/"); //The directory where your fonts reside
-
 while($font=$folder->read()) {
-  if(stristr($font,'.ttf')) $fontList[] = "cFonts/".$font;
+if(stristr($font,'.ttf')) {
+  // Check GD Version 2.4.0 or later
+  if (version_compare(GD_VERSION, '2.4.0', '>=')) {
+    $fontList[] = "cFonts/".str_replace(".ttf", "", $font);
+    } else {
+    $fontList[] = "cFonts/".$font;
+    }
+  }
 }
-
-$folder->close();
 
 for ($i = 0; $i < 5; $i++) {
 $cnum[$i] = rand(0,9);
@@ -63,7 +66,6 @@ for ($i = 0; $i < 5; $i++) {
  $x = $x + mt_rand(16, 24);
  $y = mt_rand(26, 32); 
  $angle = mt_rand(-15, 15);
- $c = $color[$i];
  $fnt = mt_rand(0, sizeof($fontList) - 1);
  $colori = $rColors[$i];
  imagettftext($image, mt_rand(20, 24), $angle,  $x, $y, $colori, $fontList[$fnt], $cnum[$i]); 
@@ -85,4 +87,3 @@ imagedestroy($image);
 
 exit( );
 ?> 
-
