@@ -7,7 +7,6 @@ define("_BASEDIR", "../");
 define("_CHARSET", "utf-8");
 
 include("../config.php");
-include("../includes/dbfunctions.php");
 list($tableprefix, $language) = dbrow(dbquery("SELECT tableprefix, language FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '$sitekey'"));
 define("TABLEPREFIX", $tableprefix);
 if(file_exists(_BASEDIR."languages/{$language}.php")) include (_BASEDIR."languages/{$language}.php");

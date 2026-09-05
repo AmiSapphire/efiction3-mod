@@ -26,7 +26,6 @@
 		if(!defined("_LOGINCHECK")) exit( );
 		define("_BASEDIR", "");
 		include_once("config.php");
-		include(_BASEDIR . "includes/dbfunctions.php");
 		$settings = dbquery("SELECT tableprefix, maintenance, sitekey, debug FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '".$sitekey."'");
 		list($tableprefix, $maintenance, $sitekey, $debug) = dbrow($settings);
 		$tempdebug = $debug;

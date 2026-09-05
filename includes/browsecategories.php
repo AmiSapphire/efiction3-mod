@@ -1,7 +1,6 @@
 <?php
 define("_BASEDIR", "../");
 include("../config.php");
-include("../includes/dbfunctions.php");
 list($tableprefix) = dbrow(dbquery("SELECT tableprefix FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '$sitekey'"));
 define("TABLEPREFIX", $tableprefix);
 include("../includes/queries.php");

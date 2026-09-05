@@ -6,4 +6,5 @@ $dbpass = "dbpass";
 $sitekey = "";
 $settingsprefix = "settings";
 
+include("includes/dbfunctions.php");
 ?>

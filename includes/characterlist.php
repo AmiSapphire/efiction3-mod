@@ -1,7 +1,6 @@
 <?php
 define("_BASEDIR", "../");
 include("../config.php");
-include("../includes/dbfunctions.php");
 list($tableprefix, $lang) = dbrow(dbquery("SELECT tableprefix, language FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '$sitekey'"));
 define("TABLEPREFIX", $tableprefix);
 include(_BASEDIR."languages/$lang.php");
