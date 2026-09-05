@@ -29,7 +29,7 @@ if(isset($_GET['benchmark'])) {
 }
 $headerSent = false;
 
-// Defines the character set for your language/location
+// Defines the character set for the header - preferably at UTF-8
 define ("_HEADERCHARSET", "utf-8");
 
 //default values to avoid ajax issue when notice error are on
