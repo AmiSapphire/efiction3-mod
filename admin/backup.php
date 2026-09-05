@@ -6,8 +6,6 @@
 // Based on eFiction 1.1
 // Copyright (C) 2003 by Rebecca Smallwood.
 // http://efiction.sourceforge.net/
-//
-// Size fix / UTF-8 feature 2016-05-18
 // ----------------------------------------------------------------------
 // LICENSE
 //
@@ -23,7 +21,7 @@
 //
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
-define("_CHARSET", "utf-8");
+
 define("_BASEDIR", "../");
 include("../config.php");
 

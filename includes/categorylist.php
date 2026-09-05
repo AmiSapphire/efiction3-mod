@@ -1,6 +1,6 @@
 <?php
 define("_BASEDIR", "../");
-define("_CHARSET", "utf-8");
+define("_CATCHARSET", "utf-8");
 
 include("../config.php");
  
@@ -8,7 +8,7 @@ include("../config.php");
 list($tableprefix, $lang) = dbrow(dbquery("SELECT tableprefix, language FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '$sitekey'"));
 define("TABLEPREFIX", $tableprefix);
  
-header("Content-Type: text/javascript; charset="._CHARSET,true);
+header("Content-Type: text/javascript; charset="._CATCHARSET,true);
 include("../includes/queries.php");
 
 $catid = isset($_GET['catid']) && preg_match("/^[0-9]+$/", $_GET['catid']) ? $_GET['catid'] : -1;

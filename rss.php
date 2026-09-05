@@ -34,7 +34,7 @@ foreach($settings as $var => $val) {
 }
 define("TABLEPREFIX", $tableprefix);
 define("SITEKEY", $sitekey);
-define("_CHARSET", "utf-8");
+define("_RSSCHARSET", "utf-8");
 
   include_once("includes/queries.php");
   if(file_exists("languages/{$language}.php")) include("languages/{$language}.php");
@@ -51,7 +51,7 @@ while($rate = dbassoc($ratlist)) {
 	$ratings[$rate['rid']] = $rate['rating'];
 }
 
-  $rss="<?xml version=\"1.0\" encoding=\""._CHARSET."\"?>\n"; 
+  $rss="<?xml version=\"1.0\" encoding=\""._RSSCHARSET."\"?>\n";
   $rss.="<rss version=\"2.0\">\n"; 
   $rss.="<channel>\n"; 
   $rss.="<copyright>Copyright ".date("Y")."</copyright>\n"; 

@@ -30,7 +30,7 @@ if(isset($_GET['benchmark'])) {
 $headerSent = false;
 
 // Defines the character set for your language/location
-define ("_CHARSET", "utf-8");
+define ("_HEADERCHARSET", "utf-8");
 
 //default values to avoid ajax issue when notice error are on
 $allowed_tags = '';
@@ -62,7 +62,7 @@ if(ini_get('register_globals')) {
 Header('Cache-Control: private, no-cache, must-revalidate, max_age=0, post-check=0, pre-check=0');
 header ("Pragma: no-cache"); 
 header ("Expires: 0"); 
-header("Content-Type: text/html; charset="._CHARSET);
+header("Content-Type: text/html; charset="._HEADERCHARSET);
 
 // Locate config.php and set the basedir path
 $folder_level = "";

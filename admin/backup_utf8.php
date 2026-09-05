@@ -23,8 +23,8 @@
 //
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
+
 define("_BASEDIR", "../");
-define("_CHARSET", "utf-8");
 include("../config.php");
  
 $settingsresults = dbquery("SELECT * FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '$sitekey'");
