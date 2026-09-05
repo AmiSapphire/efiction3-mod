@@ -26,7 +26,6 @@ error_reporting(-1);
 
 define("_BASEDIR", "");  
 require_once("config.php"); 
-require_once("includes/dbfunctions.php");
 
 $settingsresults = dbquery("SELECT sitename, url, siteemail, slogan, language, tableprefix, dateformat FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '$sitekey'");
 $settings = dbassoc($settingsresults);
