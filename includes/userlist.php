@@ -21,7 +21,7 @@ echo "var element = '".$_GET['element']."';\n";
 while($u = dbassoc($users)) {
 	$userlist[$u['uid']] = $u['username'];
 }
-if(count($userlist) > 0) {
+if(is_countable($userlist) > 0) {
 	$x = 0;
 	foreach($userlist as $k => $v) {
 		echo "userList[$x] =  new Array('$k','$v');\n";
