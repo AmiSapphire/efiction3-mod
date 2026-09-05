@@ -112,7 +112,6 @@ else if (isset($_REQUEST['language']))
 else
 {
 	include("../config.php");
-	//include("../includes/dbfunctions.php");
 
 	$dbconnect = dbconnect($dbhost, $dbuser, $dbpass, $dbname);
 	$settings = dbquery("SELECT tableprefix, language FROM " . $settingsprefix . "fanfiction_settings WHERE sitekey = '" . $sitekey . "'");
@@ -850,11 +849,8 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_modules` (
 
 	case "2";
 		include("../config.php");
-		//include("../includes/dbfunctions.php");
 		if (dbnumrows(dbquery("SHOW TABLES LIKE '" . $settingsprefix . "fanfiction_settings'")))
 		{
-			//include("../config.php");
-			//include("../includes/dbfunctions.php");
 			$dbconnect = dbconnect($dbhost, $dbuser, $dbpass, $dbname);
 			$settings = dbquery("SELECT tableprefix, language FROM " . $settingsprefix . "fanfiction_settings WHERE sitekey = '" . $sitekey . "'");
 			list($tableprefix, $language) = dbrow($settings);
@@ -1058,7 +1054,6 @@ if(!empty(\$sitekey)) \$dbconnect = dbconnect(\$dbhost, \$dbuser,\$dbpass, \$dbn
 		{
 			if (file_exists("../config.php") && !isset($mysqli_access)) {
 				include("../config.php");
-				//include("../includes/dbfunctions.php");
 			}
 			if (isset($tinyMCE)) $output .= write_message(_CONFIG2DETECTED);
 			else if (isset($sitename) && $sitename) $output .= write_message(_CONFIG1DETECTED);
