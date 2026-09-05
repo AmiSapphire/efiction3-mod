@@ -39,12 +39,18 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - SQL database engine change from MyISAM to InnoDB
 - SQL database charset changes from latin1 to utf8mb4 (certain fields are utf8mb4 'ci' for sorting purposes, however)
 - Password hashes are now bcrypt with a cost of 12 instead of MD5 (though old MD5 hashed passwords still work until changed by user)
+- includes/button: GD captcha font path handling fix for PHP 8.6/GD 2.4.0 users and remove unused variable
+- includes/corefunctions.php: occasional foreach array|object, string given PHP warning fix
 - install/install.php: SMTP settings table column creation oversight fix and consistency changes
-- series.php: category settings causing Fatal Error bug fix for PHP 8.x users
+- series.php: category settings causing Fatal Error bug for PHP 8.x users and Undefined array key PHP warning fixes
 - stories.php: add story with null category using 'Only one' setting causing Fatal Error bug fix for PHP 8.x users
 - categories.php: deleting only category causing Fatal Error bug fix for PHP 8.x users
 - header.php: leftover array typo oversight fix with age consent feature
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
+- install/corefunctions, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
+- stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
+- docs/config.php, includes/browsecategories.php, includes/categorylist.php, includes/characterlist.php, includes/userlist.php, install/install.php, user/login.php: redundant dbfunctions.php entries including cleanup
+- header.php, rss.php, admin/backup.php, admin/backup_utf8.php, includes/categorylist.php, includes/userlist.php, languages/en.php: possible CHARSET definition breakage - mostly reverted as one former config.php line does belong in includes/dbfunctions.php
 - Bridges return! Their removal got rid of the example work, which needs to be updated as well
 - Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages, installer
 - TinyMCE 3.4.8 added (this was from my own archives); now you have a choice of TinyMCE versions 2.1.2, 3.4.8, 4.5.12, and 6.8.6 - replaces eFiction 3.5.x's original 3.0.9
