@@ -72,7 +72,6 @@ if(!defined("_BASEDIR")) define("_BASEDIR", $folder_level);
 if (file_exists(_BASEDIR . "config.php"))
 {
 	include_once(_BASEDIR . "config.php");
-	include_once(_BASEDIR . "includes/dbfunctions.php");
 }
 
 if(empty($sitekey)) {
