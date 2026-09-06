@@ -28,17 +28,20 @@ echo "
 		language: '$tinylanguage',
   		theme: 'silver',
 		invalid_styles: 'color,font-size,margin,line-height,font-family,margin-top,margin-bottom',
-		plugins: 'wordcount emoticons fullscreen anchor code image link',
-		skin: 'tinymce-5',
+		plugins: 'wordcount emoticons fullscreen anchor code hr image link paste ',
+		skin: 'oxide',
 		min_height: 300,
 		min_width: 200,
-		width: 580,
+		width: 500,
 		toolbar_location: 'top',
 	    browser_spellcheck: true,
-		relative_urls: true,
+		relative_urls: false,
 		remove_script_host: false,
     	convert_urls: true,
+		paste_word_valid_elements: 'b,strong,i,em,h1,h2,u,p,ol,ul,li,a[href],span,color,font-size,font-color,font-family,mark,table,tr,td',
 		toolbar1: 'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist | undo redo | fullscreen code | link unlink | emoticons image anchor hr ',	image_advtab: true,
+     	paste_word_valid_elements: 'b,strong,i,em,p,span,u,strike,br',
+    	paste_retain_style_properties: 'text-decoration,text-align',
 	    menu: {
 			file: { title: 'File', items: 'newdocument' },
 			edit: { title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall' },
@@ -48,11 +51,11 @@ echo "
 			tools: { title: 'Tools', items: '' }
     	},";
 		if (USERUID && $image_list_exists)
-			echo "	image_list: tinyMCE6ImageList ,";
+			echo "	image_list: tinyMCE5ImageList ,";
 		echo "
 		theme_silver_resizing: true,".($current == "adminarea" ? "\n\t\tentity_encoding: 'raw'" : "\n\t\tinvalid_elements: 'script,object,applet,iframe'")."
    });
-
+	
 ";
 	}
 	echo "
