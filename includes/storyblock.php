@@ -94,7 +94,7 @@ if(!defined("_CHARSET")) exit( );
 	$tpl->assign("ratingpics"   , ratingpics($stories['rating']) );
 	$tpl->assign("reviews"   , ($reviewsallowed ? "<a href=\""._BASEDIR."reviews.php?type=ST&amp;item=".$stories['sid']."\">"._REVIEWS."</a>" : "") );
 	if(isMEMBER && !empty($favorites)) 
-		$tpl->assign("addtofaves", "[<a href=\""._BASEDIR."user.php?action=favst&amp;add=1&amp;sid=".$stories['sid']."\">"._ADDSTORY2FAVES."</a>] [<a href=\""._BASEDIR."user.php?action=favau&amp;add=".$stories['uid'].(count($stories['coauthors_array']) ? ",".implode(",", array_keys($stories['coauthors_array'])) : "")."\">"._ADDAUTHOR2FAVES."</a>]");
+		$tpl->assign("addtofaves", "[<a href=\""._BASEDIR."user.php?action=favst&amp;add=1&amp;sid=".$stories['sid']."\">"._ADDSTORY2FAVES."</a>] [<a href=\""._BASEDIR."user.php?action=favau&amp;add=".$stories['uid'].(count($stories['coauthors']) ? ",".implode(",", array_keys($stories['coauthors'])) : "")."\">"._ADDAUTHOR2FAVES."</a>]");
 	
 	$numchapsquery = dbquery("SELECT count(sid) FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '".$stories['sid']."' AND validated > 0");
 	list($chapters) = dbrow($numchapsquery);
