@@ -1,12 +1,12 @@
 <?php
 $image_list_path = STORIESPATH . "/" . USERUID . "/images/imagelist.js";
-$image_list_exists = file_exists($image_list_path); 
- 
+$image_list_exists = file_exists($image_list_path);
+
 if (USERUID && $image_list_exists)
 {
 echo "
 <script src='".STORIESPATH . "/" . USERUID . "/images/imagelist.js"."'></script>";
-} 
+}
 echo "
 	<script language=\"javascript\" type=\"text/javascript\"><!--";
 	$tinylanguage = $language;
@@ -32,10 +32,11 @@ echo "
 		skin: 'tinymce-5',
 		min_height: 300,
 		min_width: 200,
+		height: 300,
 		width: 580,
 		toolbar_location: 'top',
 	    browser_spellcheck: true,
-		relative_urls: true,
+		relative_urls: false,
 		remove_script_host: false,
     	convert_urls: true,
 		toolbar1: 'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist | undo redo | fullscreen code | link unlink | emoticons image anchor hr ',	image_advtab: true,
