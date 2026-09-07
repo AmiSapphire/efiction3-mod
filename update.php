@@ -422,7 +422,7 @@ function do_version_check_359()
 {
 	$check_359 = false;
 
-	$required = array('smtp_port', 'smtp_secure');
+	$required = array('setreg', 'smtp_port', 'smtp_secure');
 	foreach ($required as $f)
 	{
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM " . TABLEPREFIX . "fanfiction_settings LIKE '{$f}'")))
