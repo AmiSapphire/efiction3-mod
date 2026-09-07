@@ -49,7 +49,7 @@ echo "
 			tools: { title: 'Tools', items: '' }
     	},";
 		if (USERUID && $image_list_exists)
-			echo "	image_list: tinyMCE4ImageList ,";
+			echo "	image_list: tinyMCENewImageList ,";
 		echo "
 		theme_modern_resizing: true,".($current == "adminarea" ? "\n\t\tentity_encoding: 'raw'" : "\n\t\tinvalid_elements: 'script,object,applet,iframe'")."
    });

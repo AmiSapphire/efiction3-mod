@@ -33,7 +33,7 @@ function buildImageList( ) {
 				$path =  STORIESPATH . "/" . USERUID . "/images/".$file;
 				$image_files[] = "[\"" . STORIESPATH . "/" . USERUID . "/images/$file\", \"" . STORIESPATH . "/" . USERUID . "/images/$file\"]";
 
-				$image4_files[] = '{ "title": "'. $file. '", "value": "'.$path.'" }';
+				$image_new_files[] = '{ "title": "'. $file. '", "value": "'.$path.'" }';
 		 
 			}
 		}
@@ -44,8 +44,8 @@ function buildImageList( ) {
 			$text .= ");\n\n";
 			fwrite($handle, $text);
 
-			$text = "var tinyMCE4ImageList = [\n";
-			$text .= implode(", \n", $image4_files);
+			$text = "var tinyMCENewImageList = [\n";
+			$text .= implode(", \n", $image_new_files);
 			$text .= "];\n\n";
 			fwrite($handle, $text);
 
