@@ -26,17 +26,19 @@ if(!defined("_CHARSET")) exit( );
 
 // Build the user's profile information
 $tpl->newBlock("profile");
-$result2 = dbquery("SELECT *, UNIX_TIMESTAMP(date) as date FROM "._AUTHORTABLE." LEFT JOIN ".TABLEPREFIX."fanfiction_authorprefs as ap ON ap.uid = "._UIDFIELD." WHERE "._UIDFIELD." = '$uid' LIMIT 1");
+$result2 = dbquery("SELECT *, date as date FROM "._AUTHORTABLE." LEFT JOIN ".TABLEPREFIX."fanfiction_authorprefs as ap ON ap.uid = "._UIDFIELD." WHERE "._UIDFIELD." = '$uid' LIMIT 1");
 $userinfo = dbassoc($result2);
 $nameinfo = "";
 if($userinfo['email'])
 	$nameinfo .= " [<a href=\"viewuser.php?action=contact&amp;uid=".$userinfo['uid']."\">"._CONTACT."</a>]";
-if(!empty($favorites) && $loggedin && $userinfo['uid'] != USERUID) {
+if(!empty($favorites) && isMEMBER && $userinfo['uid'] != USERUID) {
 	$fav = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_favorites WHERE uid = '".USERUID."' AND type = 'AU' AND item = '".$userinfo['uid']."'");
-	if(dbnumrows($fav) == 0) $nameinfo .= " [<a href=\"user.php?uid=USERUID&amp;action=favau&amp;author=".$userinfo['uid']."\">"._ADDAUTHOR2FAVES."</a>]";
+	if(dbnumrows($fav) == 0) $nameinfo .= " [<a href=\"user.php?action=favau&amp;uid=".USERUID."&amp;add=".$userinfo['uid']."\">"._ADDAUTHOR2FAVES."</a>]";
 }
+ 
 $tpl->assign("userpenname", $userinfo['penname']." ".$nameinfo);
 $tpl->assign("membersince", date("$dateformat", $userinfo['date']));
+
 if($userinfo['realname'])
 	$tpl->assign("realname", $userinfo['realname']);
 if($userinfo['bio']) {
@@ -45,7 +47,9 @@ if($userinfo['bio']) {
 }
 if($userinfo['image'])
 	$tpl->assign("image", "<img src=\"".$userinfo['image']."\">");
+
 $tpl->assign("userlevel", isset($userinfo['level']) && $userinfo['level'] > 0 && $userinfo['level'] < 4 ? _ADMINISTRATOR.(isADMIN ? " - ".$userinfo['level'] : "") : _MEMBER);
+
 /* Dynamic authorinfo fields */
 $result2 = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_authorinfo WHERE uid = '$uid'");
 $dynamicfields = "";
@@ -72,9 +76,13 @@ while($field = dbassoc($result2)) {
 		$dynamicfields .= "<div class='authorfields'><span class='label'>".$fieldinfo['field_title'].":</span> ".$thisfield."</div>";
 	}
 }
+$codequery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'userprofile'");
+while($code = dbassoc($codequery)) {
+	eval($code['code_text']);
+}
 if(!empty($dynamicfields)) $tpl->assign("authorfields", $dynamicfields);
-$tpl->assign("reportthis", "[<a href=\""._BASEDIR."contact.php?action=report&amp;url=viewuser.php?uid=".$uid."\">"._REPORTTHIS."</a>]");
 /* End dynamic fields */
+$tpl->assign("reportthis", "[<a href=\""._BASEDIR."contact.php?action=report&amp;url=viewuser.php?uid=".$uid."\">"._REPORTTHIS."</a>]");
 $adminopts = "";
 if(isADMIN && uLEVEL < 3) {
 	$adminopts .= "<div class=\"adminoptions\"><span class='label'>"._ADMINOPTIONS.":</span> ".(isset($userinfo['validated']) && $userinfo['validated'] ? "[<a href=\"admin.php?action=members&amp;revoke=$uid\" class=\"vuadmin\">"._REVOKEVAL."</a>] " : "[<a href=\"admin.php?action=members&amp;validate=$uid\" class=\"vuadmin\">"._VALIDATE."</a>] ")."[<a href=\"user.php?action=editbio&amp;uid=$uid\" class=\"vuadmin\">"._EDIT."</a>] [<a href=\"admin.php?action=members&amp;delete=$uid\" class=\"vuadmin\">"._DELETE."</a>]";

@@ -24,5 +24,16 @@
 
 if(!defined("_CHARSET")) exit( );
 
-include("user/editbio.php");
+// This is to show the registration page as admin regardless of the registration setting
+// for the Page Links section in the Admin Panel
+
+if((isADMIN && uLEVEL == 1) && (isset($setreg) && $setreg == 0)) {
+    include ("user/editbio.php");
+}
+
+else if ((!isADMIN && uLEVEL != 1) && (isset($setreg) && $setreg == 0)) {
+    $output .= "<div align='center' style='margin-top: 1em;'>"._REGDISABLED."</div>";
+}
+
+else include("user/editbio.php");
 ?>

@@ -2,7 +2,6 @@
 if(!defined("_LOGOUTCHECK")) exit( );
 	define("_BASEDIR", "");
 	include("config.php");
-	include("includes/queries.php");
 	session_start( );
 	foreach ($_SESSION as $VarName => $Value)  { 
 		if(substr($VarName, 0, strlen($sitekey)) == $sitekey) {
@@ -30,4 +29,5 @@ include("includes/pagesetup.php");
 $output .= write_message(_ACTIONSUCCESSFUL);
 $tpl->assign("output", $output);
 $tpl->printToScreen( );
+exit( );
 ?>

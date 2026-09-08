@@ -41,33 +41,67 @@ function random_string ($charset_string, $length)
 }
 
 }
-if($loggedin) accessDenied( );
+if(isMEMBER) accessDenied( );
 	$output = "<div id=\"pagetitle\">"._LOSTPASSWORD."</div>";
 
 	  if(isset($_POST['submit'])) {
-		  $result = dbquery("SELECT "._UIDFIELD." as uid, "._PENNAMEFIELD." as penname FROM "._AUTHORTABLE." WHERE email = '$_POST[email]'");
-		  list($uid, $penname) = dbrow($result);
-		  if(dbnumrows($result) == 0) $output .= write_message(_BADEMAIL);
-		  else {
-			include("includes/emailer.php");
-			mt_srand((double)microtime() * 1000000);
-			$charset = '23456789' . 'abcdefghijkmnpqrstuvwxyz' . 'ABCDEFGHJKLMNPQRSTUVWXYZ';		
-			$pass = random_string($charset, 10);
-			$encryppass = md5($pass);
-			$subject = _NEWPWDSUB;
-			$mailtext = sprintf(_NEWPWDMSG, $pass);
+		if(validEmail($_POST['email'])) {
+			$result = dbquery("SELECT "._UIDFIELD." as uid, "._PENNAMEFIELD." as penname, "._EMAILFIELD." AS email FROM "._AUTHORTABLE." WHERE email = '".strtolower(escapestring(descript($_POST['email'])))."'");
+			list($uid, $penname, $email) = dbrow($result);
+			if(dbnumrows($result) == 0) $output .= write_message(_BADEMAIL);
+			else {
+				include("includes/emailer.php");
+				mt_srand((double)microtime() * 1000000);
+				$charset = '23456789' . 'abcdefghijkmnpqrstuvwxyz' . 'ABCDEFGHJKLMNPQRSTUVWXYZ';		
+				$pass = random_string($charset, 10);
+				$encryppass = password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+				$subject = _NEWPWDSUB;
+				$mailtext = sprintf(_NEWPWDMSG, $pass);
 
 		
-			$result = sendemail($penname, $_POST['email'], $sitename, $siteemail, $subject, $mailtext, "html");
-			if($result) {
-				$output .= write_message(_PASSWORDSENT);
-				dbquery("UPDATE "._AUTHORTABLE." SET password='$encryppass' WHERE uid = '".$uid."'");
+				$result = sendemail($penname, $email, $sitename, $siteemail, $subject, $mailtext, "html");
+				if($result) {
+					$output .= write_message(_PASSWORDSENT);
+					dbquery("UPDATE ".substr(_AUTHORTABLE, 0, strpos(_AUTHORTABLE, "as author"))." SET password='$encryppass' WHERE uid = '".$uid."'");
+				}
+				else $output .=  write_message(_EMAILFAILED);
+				if($logging) 
+					dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_log (`log_action`, `log_uid`, `log_ip`, `log_type`, `log_timestamp`) VALUES('".escapestring(sprintf(_LOG_LOST_PASSWORD, $penname, $uid, ($result ? _YES : _NO)))."', '$uid', INET6_ATON('".$_SERVER['REMOTE_ADDR']."'), 'LP', " . time() . ")");
+
+
+				/* lost password notice */
+				if (isset($notifications))
+				{
+					$notifications = unserialize($notifications);
+				}
+	 
+				if (isset($notifications['lostpassword_notify'])  && $notifications['lostpassword_notify'])
+				{
+				
+					if (isset($notifications['registration_toemail'])  && $notifications['registration_toemail'])
+					{
+						$RegSubject = "Lost Password Notice";
+						$RegIP = $_SERVER['REMOTE_ADDR'];
+						$RegHost = gethostbyaddr($RegIP);
+						$RegNoticeTo = $notifications['registration_toemail'];
+						$RegMessage = "Username: $penname" . "\r\n" . "Email: $email" . "\r\n" . "IP: $RegIP" . "\r\n" . "Host: $RegHost";
+						$RegMessage .= " Asked for new password";
+						$RegMessage .= "<br>Profile link: " . "<a href='".$url."/viewuser.php?uid=" . $uid . "'>" . $penname . "</a>";
+
+						$RegNoticeTo_array = explode(',', $RegNoticeTo);
+						foreach ($RegNoticeTo_array as $RegNoticeTo_email)
+						{
+							if (validEmail($RegNoticeTo_email))
+							{
+								sendemail($sitename, $RegNoticeTo_email, $siteemail, $siteemail, $RegSubject,  $RegMessage);
+							}
+						}
+					}
+				}	 
 			}
-			else $output .=  write_message(_EMAILFAILED);
-			if($logging) 
-				dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_log (`log_action`, `log_uid`, `log_ip`, `log_type`) VALUES('".escapestring(sprintf(_LOG_LOST_PASSWORD, $penname, $uid, ($result ? _YES : _NO)))."', '$uid', INET_ATON('".$_SERVER['REMOTE_ADDR']."'), 'LP')");
 
 		}
+		else $output .= write_message(_BADEMAIL);
 	}
 	else {
 		$output .= "<form method=\"POST\" enctype=\"multipart/form-data\" action=\"user.php?action=lostpassword\">

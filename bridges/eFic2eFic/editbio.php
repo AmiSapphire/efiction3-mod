@@ -53,9 +53,9 @@ function random_string ($charset_string, $length)
 		$email = escapestring($_POST['email']);
 		if(!isset($email) && !isADMIN) $output .= "<div style='text-align: center;'>"._EMAILREQUIRED."</div>";
 		else if($penname && !preg_match("!^[a-z0-9-_ ]{3,30}$!i", $penname)) $output .= "<div style='text-align: center;'>"._BADUSERNAME."</div>";
-		else if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email)) $output .= "<div style='text-align: center;'>"._INVALIDEMAIL." "._TRYAGAIN."</div>";
+		else if(!validEmail($email)) $output .= "<div style='text-align: center;'>"._INVALIDEMAIL." "._TRYAGAIN."</div>";
 		else if($action == "register") {
-			if(!$penname || empty($email) || !eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email) || !preg_match("!^[a-z0-9-_ ]{3,30}$!i", $penname)) $output .= write_error(_PENEMAILREQUIRED);
+			if(!$penname || !preg_match("!^[a-z0-9-_ ]{3,30}$!i", $penname)) $output .= write_error(_PENEMAILREQUIRED);
 			else if($pwdsetting && empty($_POST['password'])) $output .= write_error(_PWDREQUIRED."  "._TRYAGAIN);
 			else  {
 				$result = dbquery("SELECT "._PENNAMEFIELD." FROM "._AUTHORTABLE." WHERE "._PENNAMEFIELD." = '".escapestring($penname)."'");
@@ -67,7 +67,7 @@ function random_string ($charset_string, $length)
 					if(!$pwdsetting) {
 						$charset = '23456789' . 'abcdefghijkmnpqrstuvwxyz' . 'ABCDEFGHJKLMNPQRSTUVWXYZ';
 						$pass = random_string($charset, 10);
-						$encryppass = md5($pass);
+						$encryppass = password_hash($pass, PASSWORD_BCRYPT, ['cost' => 12]);
 					}
 					else {
 						if($_POST['password'] != $_POST['password2']) {
@@ -78,11 +78,11 @@ function random_string ($charset_string, $length)
 							exit( );
 						}
 						$pass = $_POST['password2'];
-						$encryppass = md5($pass);
+						$encryppass = password_hash($pass, PASSWORD_BCRYPT, ['cost' => 12]);
 					}
-					dbquery("INSERT INTO ".substr(_AUTHORTABLE, 0, strpos(_AUTHORTABLE, "as author"))." (penname, realname, bio, email, date, password) VALUES ('".escapestring($penname)."', '".escapestring(strip_tags($_POST['realname']))."', '".strip_tags(escapestring($_POST['bio']), $allowed_tags)."', '$email', now(), '$encryppass')");
+					dbquery("INSERT INTO ".substr(_AUTHORTABLE, 0, strpos(_AUTHORTABLE, "as author"))." (penname, realname, bio, email, date, password) VALUES ('".escapestring($penname)."', '".escapestring(strip_tags($_POST['realname']))."', '".strip_tags(escapestring($_POST['bio']), $allowed_tags)."', '$email'," . time() . ", '$encryppass')");
 					$useruid = dbinsertid();
-					if($logging) dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_log (`log_action`, `log_uid`, `log_ip`, `log_type`) VALUES('".escapestring(sprintf(_LOG_REGISTER, $penname, $useruid, $_SERVER['REMOTE_ADDR']))."', '".$useruid."', INET_ATON('".$_SERVER['REMOTE_ADDR']."'), 'RG')");
+					if($logging) dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_log (`log_action`, `log_uid`, `log_ip`, `log_type`, `log_timestamp`) VALUES('".escapestring(sprintf(_LOG_REGISTER, $penname, $useruid, $_SERVER['REMOTE_ADDR']))."', '".$useruid. "', INET6_ATON('".$_SERVER['REMOTE_ADDR']."'), 'RG', " . time() . ")");
 					if(empty($siteskin)) {
 						$skinquery = dbquery("SELECT skin FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '".SITEKEY."'");
 						list($skin) = dbrow($skinquery);
@@ -108,6 +108,35 @@ function random_string ($charset_string, $length)
 					if(!$pwdsetting) $mailtext .= _SIGNUPWARNING;
 					include("includes/emailer.php");
 					sendemail($penname, $email, $sitename, $siteemail, $subject, $mailtext, "html");
+
+					/* registration notice */
+					if (isset($notifications))
+					{
+						$notifications = unserialize($notifications);
+					}
+
+					if(isset($notifications['registration_notify'])  && $notifications['registration_notify'])  {
+						if (isset($notifications['registration_toemail'])  && $notifications['registration_toemail'])
+						{
+							$RegSubject = "Registration Notice";
+							$RegIP = $_SERVER['REMOTE_ADDR'];
+							$RegHost = gethostbyaddr($RegIP);
+							$RegNoticeTo = $notifications['registration_toemail'];
+							$RegMessage = "Username: $penname" . "\r\n" . "Email: $email" . "\r\n" . "IP: $RegIP" . "\r\n" . "Host: $RegHost";
+							$RegMessage .= " registered on your site";
+							$RegMessage .= "<br>Profile link: " . "<a href='" . $url . "/viewuser.php?uid=" . $useruid . "'>" . $penname . "</a>";
+
+							$RegNoticeTo_array=explode(',', $RegNoticeTo);
+							foreach ($RegNoticeTo_array AS $RegNoticeTo_email) {
+								if(validEmail($RegNoticeTo_email)) {
+									sendemail($sitename, $RegNoticeTo_email, $siteemail, $siteemail, $RegSubject,  $RegMessage);
+								}
+							}
+
+						}
+					}
+					/* registration notice end */
+
 					dbquery("UPDATE ".TABLEPREFIX."fanfiction_stats SET newestmember = '".$useruid."', members = members + 1");
 					if(defined("AUTHORPREFIX")) dbquery("UPDATE ".AUTHORPREFIX."fanfiction_stats SET newestmember = '".$useruid."', members = members + 1");
 					unset($_POST['submit']);
@@ -121,7 +150,7 @@ function random_string ($charset_string, $length)
 		else{
 			 if(($_POST['password']) && ($_POST['password2'])) {
 				if($_POST['password'] == $_POST['password2']) {
-					$encryppassword = md5($_POST['password']);
+					$encryppassword = password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
 					dbquery("UPDATE "._AUTHORTABLE." SET password='$encryppassword' WHERE uid = '$uid'");
 				}
 				else $output .=  write_error(_PASSWORDTWICE);
@@ -133,7 +162,7 @@ function random_string ($charset_string, $length)
 				}
 				else {
 					dbquery("UPDATE "._AUTHORTABLE." SET penname = '".escapestring($penname)."' WHERE uid = '$_POST[uid]'");
-					if($logging) dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_log (`log_action`, `log_uid`, `log_ip`, `log_type`) VALUES('".escapestring(sprintf(_NEWPEN, USERPENNAME, USERUID, $_POST[oldpenname], $uid, $penname))."', '".USERUID."', INET_ATON('".$_SERVER['REMOTE_ADDR']."'), 'EB')");
+					if($logging) dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_log (`log_action`, `log_uid`, `log_ip`, `log_type`, `log_timestamp`) VALUES('".escapestring(sprintf(_NEWPEN, USERPENNAME, USERUID, $_POST['oldpenname'], $uid, $penname))."', '".USERUID."', INET6_ATON('".$_SERVER['REMOTE_ADDR']."'), 'EB', " . time() . ")");
 				}
 			}
 /* The section adds fields from the authorfields table to the authorinfo table allowing dynamic additions to the bio/registration page */
@@ -151,7 +180,7 @@ function random_string ($charset_string, $length)
 			}
 /* End dynamic fields */
 			dbquery("UPDATE "._AUTHORTABLE." SET realname='".descript(strip_tags(escapestring($_POST['realname'])), $allowed_tags)."', email='$email', bio='".descript(strip_tags(escapestring($_POST['bio']), $allowed_tags))."', image='".($imageupload && !empty($_POST['image']) ? escapestring($_POST['image']) : "")."' WHERE uid = '$uid'");
-			$output .= write_message(_ACTIONSUCCESSFUL."  ".(isset($_GET['uid']) ? _BACK2ADMIN : _BACK2ACCT));
+			$output .= write_message(_ACTIONSUCCESSFUL."  ".(isset($_GET['uid']) ? _BACK2ADMIN : _BACK2ACCT." "._LOGINAGAIN));
 		}
 	}
 	else {
@@ -168,7 +197,7 @@ function random_string ($charset_string, $length)
 			list($tos) = dbrow($query);
 			$output .= "<div class='tblborder' style='width: 90%; margin: 1em auto;'>$tos</div>";
 		}
-		$output .= "<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" style='margin: 0 auto;' action=\"user.php?action=$action".($uid != USERUID ? "&uid=".$uid : "")."\">
+		$output .= "<div id='settingsform'><form method=\"POST\" id=\"editbio\" name=\"editbio\" enctype=\"multipart/form-data\" style='width: 260%; margin: 0 auto;' action=\"user.php?action=$action".($uid != USERUID ? "&uid=".$uid : "")."\">
 		<div><label for='newpenname'>"._PENNAME.":</label>";
 		if((isADMIN && uLEVEL == 1) || $action == "register")
 			$output .= "<INPUT name=\"newpenname\" type=\"text\" class=\"textbox\" maxlength=\"200\" value=\"".(isset($user) ? $user['penname'] : "")."\"><INPUT name=\"oldpenname\" type=\"hidden\" value=\"".(isset($user) ? $user['penname'] : "")."\"><font color=\"red\">*</font> ";

@@ -22,36 +22,75 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
 
-if(!defined("_LOGINCHECK")) exit( );
-	if(isset($_POST['submit']) && preg_match("!^[a-z0-9_ ]{3,30}$!i", $_POST['penname'])) {
+	if(isset($_POST['submit']) && preg_match("!^[-a-z0-9_ ]{3,30}$!i", $_POST['penname'])) {
+		if(!defined("_LOGINCHECK")) exit( );
 		define("_BASEDIR", "");
 		include_once("config.php");
 		$settings = dbquery("SELECT tableprefix, maintenance, sitekey, debug FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '".$sitekey."'");
 		list($tableprefix, $maintenance, $sitekey, $debug) = dbrow($settings);
+		$tempdebug = $debug;
+		$debug = 0;
+		define("TABLEPREFIX", $tableprefix);
+		define("SITEKEY", $sitekey);
 		include_once("includes/queries.php");
 		$result = dbquery("SELECT *, "._UIDFIELD." as uid FROM "._AUTHORTABLE." LEFT JOIN ".$tableprefix."fanfiction_authorprefs AS ap ON ap.uid = "._UIDFIELD." WHERE "._PENNAMEFIELD." = '".$_POST['penname']."'");
 		$passwd = dbassoc($result);
+		if(!dbnumrows($result)) {
+			require_once("header.php");
+			//make a new TemplatePower object
+			if(file_exists("$skindir/default.tpl")) $tpl = new TemplatePower( "$skindir/default.tpl" );
+			else $tpl = new TemplatePower("default_tpls/default.tpl");
+			include_once("includes/pagesetup.php");
+			$output = write_error(_NOSUCHACCOUNT);
+			$tpl->assign("output", $output);
+			$tpl->printToScreen( );
+			dbclose( );
+			exit( );
+		}
 		if($maintenance && $passwd['level'] < 0) {
 			header("Location: maintenance.php");
 			exit( );
 		}
-		$encryptedpassword = md5($_POST['password']);
+		$encryptedpasswordb = $passwd['password'];
+		$encryptedpasswordm = md5($_POST['password']);
 		if($passwd['level'] == -1) {
 			require_once("header.php");
 			//make a new TemplatePower object
 			if(file_exists("$skindir/default.tpl")) $tpl = new TemplatePower( "$skindir/default.tpl" );
 			else $tpl = new TemplatePower("default_tpls/default.tpl");
-			include_once("includes/corefunctions.php");
-			accessDenied( );
+			include_once("includes/pagesetup.php");
+			$output = write_error(_ACCOUNTLOCKED);
+			$tpl->assign("output", $output);
+			$tpl->printToScreen( );
+			dbclose( );
+			exit( );
 		}
-		if(isset($_POST['cookiecheck'])) {
-			setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
-			setcookie($sitekey."_salt", md5($passwd['email']+$encryptedpassword),  time()+60*60*24*30, "/");
-		}
-		if($passwd['password'] == $encryptedpassword) {
+		if(password_verify($_POST['password'], $encryptedpasswordb) == $encryptedpasswordb) {
+			if(isset($_POST['cookiecheck'])) {
+				setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
+				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordb),  time()+60*60*24*30, "/");
+			}
 			if(!isset($_SESSION)) session_start( );
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
-			$_SESSION[$sitekey."_salt"] = md5($passwd['email']+$encryptedpassword);
+			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordb);
+			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");
+			while($code = dbassoc($logincode)) {
+				eval($code['code_text']);
+			}
+		}
+
+		else if($passwd['password'] == $encryptedpasswordm) {
+			if(isset($_POST['cookiecheck'])) {
+				setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
+				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordm),  time()+60*60*24*30, "/");
+			}
+			if(!isset($_SESSION)) session_start( );
+			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
+			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordm);
+			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");
+			while($code = dbassoc($logincode)) {
+				eval($code['code_text']);
+			}
 		}
 
 		else { 
@@ -67,8 +106,12 @@ if(!defined("_LOGINCHECK")) exit( );
 			dbclose( );
 			exit( );
 		}
+		$debug = $tempdebug;
 	}
-	else if(!isMEMBER) {
+	else {
+		require_once("header.php");
+		if(!isMEMBER) {
+		
 		$output .= "<div id=\"pagetitle\">"._MEMBERLOGIN."</div>";
 		$output .= "<div style=\"width: 250px; margin: 0 auto; text-align: center;\"><form method=\"POST\" enctype=\"multipart/form-data\" action=\"user.php?action=login".(isset($_GET['sid']) && isNumber($_GET['sid']) ? "&amp;sid=".$_GET['sid'] : "")."\">
 		<div class=\"label\" style=\"float: left;  width: 30%; text-align: right;\"><label for=\"penname\">"._PENNAME.":</label></div><INPUT type=\"text\" class=\"textbox\" name=\"penname\" id=\"penname\"><br />
@@ -82,6 +125,12 @@ if(!defined("_LOGINCHECK")) exit( );
 			if($link['link_access'] == 2 && !isADMIN) continue;
 			$pagelinks[$link['link_name']] = array("id" => $link['link_id'], "text" => $link['link_text'], "url" => _BASEDIR.$link['link_url'], "link" => "<a href=\"".$link['link_url']."\" title=\"".$link['link_text']."\"".($link['link_target'] ? " target=\"_blank\"" : "").($current == $link['link_name'] ? " id=\"current\"" : "").">".$link['link_text']."</a>");
 		}
-		$output .= "<div style='text-align: center;'>".$pagelinks['register']['link']." | ".$pagelinks['lostpassword']['link']."</div>";
+		$output .= "<div style='text-align: center;'>";
+		if(isset($pagelinks['register'])) {
+			$output .= $pagelinks['register']['link']." | ";
+		}
+		$output .= $pagelinks['lostpassword']['link']."</div>";
+		 
 	}
+}
 ?>
