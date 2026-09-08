@@ -237,7 +237,7 @@ CREATE TABLE `fanfiction_comments` (
 CREATE TABLE `fanfiction_favorites` (
   `uid` int(11) NOT NULL default '0',
   `item` int(11) NOT NULL default '0',
-  `type` char(2) NOT NULL default '',
+  `type` char(2) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
   `comments` text,
   UNIQUE KEY `byitem` (`item`,`type`,`uid`),
   UNIQUE KEY `byuid` (`uid`,`type`,`item`)

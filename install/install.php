@@ -655,7 +655,7 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
 				$favorites = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_favorites` (
   `uid` int(11) NOT NULL default '0',
   `item` int(11) NOT NULL default '0',
-  `type` char(2) NOT NULL default '',
+  `type` char(2) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
   `comments` text NOT NULL,
   UNIQUE KEY `byitem` (`item`,`type`,`uid`),
   UNIQUE KEY `byuid` (`uid`,`type`,`item`)
