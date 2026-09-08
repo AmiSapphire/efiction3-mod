@@ -163,7 +163,7 @@ if($imageupload) {
 	if(isset($_POST['submit'])) {
 		$multi_upload = new multi_upfiles;
 		$multi_upload->upload_dir = STORIESPATH."/".USERUID."/images/"; // "files" is the folder for the uploaded files (you have to create this folder)
-		$multi_upload->extensions = array(".png", ".gif", ".jpg", ".jpeg"); // specify the allowed extensions here
+		$multi_upload->extensions = array(".png", ".gif", ".jpg", ".jpeg", ".webp"); // specify the allowed extensions here
 		$multi_upload->message[] = $multi_upload->extra_text(4); // a different standard message for multiple files
 		//$multi_upload->rename_file = true; // set to "true" if you want to rename all files with a timestamp value
 		$multi_upload->do_filename_check = "n"; // check filename ...
