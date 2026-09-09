@@ -1,4 +1,7 @@
 <?php
+
+error_reporting(0);
+
 // Defines the character set for your language/location
 
 define ("_CHARSET", "UTF-8");
