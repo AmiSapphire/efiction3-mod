@@ -1,9 +1,6 @@
 <?php
-// temp error message suppression - for stories.php when adding a new story or editing an existing one
-// main purpose is to stop web server error log spam with stories.php - this has very unintended effects
-// should properly fix this before PHP 9.0
-// Reference: https://wiki.php.net/rfc/undefined_variable_error_promotion
-error_reporting(0);
+// fix - needed for PHP 8
+include(""._BASEDIR."/includes/load-bearing.php");
 
 // Defines the character set for your language/location
 
