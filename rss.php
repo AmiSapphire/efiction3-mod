@@ -20,19 +20,6 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
 
-/* PHP 8 fix */
-$allowed_tags = '';
-$recentdays = '';
-$sitename = '';
-$url = '';
-$multiplecats = '';
-$minwords = '';
-$maxwords = '';
-$action = '';
-$pwdsetting = '';
-$imagewidth = '';
-$imageheight = '';
-
 define("_BASEDIR", "");  
 require_once("config.php"); 
 
