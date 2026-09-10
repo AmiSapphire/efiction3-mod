@@ -347,7 +347,7 @@ else if(isset($_POST['submit'])) {
 				<td><label for='newlanguage'>"._LANGUAGE.":</label></td><td><select name='newlanguage'>";
 		$directory = opendir(_BASEDIR."languages");
 			while($filename = readdir($directory)) {
-				if($filename=="." || $filename==".." || substr($filename, 2) == "_admin.php") continue;
+				if($filename=="." || $filename==".." || $filename=="mailer" || substr($filename, 2) == "_admin.php") continue;
 				$output .= "<option value='".substr($filename, 0, 2)."'".
 					($language == substr($filename, 0, strpos($filename, ".php")) ? " selected" : "").">
 				".substr($filename, 0, strpos($filename, ".php"))."</option>";
