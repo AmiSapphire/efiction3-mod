@@ -1,6 +1,6 @@
 <?php
 // fix - needed for PHP 8
-include(""._BASEDIR."/includes/load-bearing.php");
+include(""._BASEDIR."./includes/load-bearing.php");
 
 // Defines the character set for your language/location
 
