@@ -65,7 +65,7 @@ if (ini_get("magic_quotes_gpc"))
 }
 
 define("_BASEDIR", "../");
-define("_CHARSET", "utf-8");
+
 Header('Cache-Control: private, no-cache, must-revalidate, max_age=0, post-check=0, pre-check=0');
 header("Pragma: no-cache");
 header("Expires: 0");
@@ -1082,7 +1082,7 @@ if(!empty(\$sitekey)) \$dbconnect = dbconnect(\$dbhost, \$dbuser,\$dbpass, \$dbn
 				$directory = opendir("../languages");
 				while ($filename = readdir($directory))
 				{
-					if ($filename == "." || $filename == ".." || substr($filename, 2) == "_admin.php") continue;
+					if ($filename == "." || $filename == ".." || $filename == "mailer" || substr($filename, 2) == "_admin.php") continue;
 					$output .= "<option value=\"" . substr($filename, 0, 2) . "\"" .
 						($language == substr($filename, 0, strpos($filename, ".php")) ? " selected" : "") . ">
 					" . substr($filename, 0, strpos($filename, ".php")) . "</option>";
