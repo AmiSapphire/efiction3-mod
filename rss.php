@@ -20,9 +20,18 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
 
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(-1);
+/* PHP 8 fix */
+$allowed_tags = '';
+$recentdays = '';
+$sitename = '';
+$url = '';
+$multiplecats = '';
+$minwords = '';
+$maxwords = '';
+$action = '';
+$pwdsetting = '';
+$imagewidth = '';
+$imageheight = '';
 
 define("_BASEDIR", "");  
 require_once("config.php"); 
@@ -61,7 +70,7 @@ while($rate = dbassoc($ratlist)) {
   $rss.="<title>".xmlentities( $sitename)."</title>\n"; 
   $rss.="<managingEditor>$siteemail</managingEditor>\n"; 
   $rss.="<webMaster>$siteemail</webMaster>\n"; 
-  $rss.="<language>$language</language>\n"; 
+  $rss.="<language>$language</language>\n";
 
   $query = _STORYQUERY." ORDER BY updated DESC LIMIT 20";
   $results = dbquery($query);
