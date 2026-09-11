@@ -21,6 +21,18 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
 
+// 'temp' error suppression for MySQL/MariaDB behavior in PHP 8 starting with 8.1
+//
+// script works right to an extent, but...
+// mysqli STRICT enabled - shows a MYSQL error message in place of the Search Results header (not ideal)
+// mysqli STRICT disabled - brings up a PHP warning regarding accessing num_rows on false in another script
+//
+// this only affects searching a penname that is confirmed not to exist
+
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
+mysqli_report(MYSQLI_REPORT_OFF);
 
 // Page Setup
 // Set the current page id.  Because search does multiple things there are multiple possibilities
