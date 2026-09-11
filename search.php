@@ -21,18 +21,6 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // ----------------------------------------------------------------------
 
-// 'temp' error suppression for MySQL/MariaDB behavior in PHP 8 starting with 8.1
-//
-// script works right to an extent, but...
-// mysqli STRICT enabled - shows a MYSQL error message in place of the Search Results header (not ideal)
-// mysqli STRICT disabled - brings up a PHP warning regarding accessing num_rows on false in another script
-//
-// this only affects searching a penname that is confirmed not to exist
-
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(0);
-mysqli_report(MYSQLI_REPORT_OFF);
 
 // Page Setup
 // Set the current page id.  Because search does multiple things there are multiple possibilities
@@ -92,7 +80,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 			while($auth = dbassoc($authorquery)) {
 				$authorlist[] = $auth['uid'];
 			}
-			if(count($authorlist) > 0) {
+			if(is_countable($authorlist) > 0) {
 				$authors = implode(",",$authorlist);
 				$query = "SELECT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM ("._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories) LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE "._UIDFIELD." = stories.uid AND stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0) ";
 				$countquery = "SELECT COUNT(stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0)";
