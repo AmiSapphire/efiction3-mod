@@ -82,7 +82,7 @@ if(isset($_GET['edit']) || isset($_GET["new"])) {
 		$access = 0;
 		$accesskey = "";
 	}
-	$output .= "<form method=\"POST\" id=\"settingsform\" enctype=\"multipart/form-data\" action=\"admin.php?action=links".($edit ? "&amp;edit=$edit" : "")."\">
+	$output .= "<form method=\"POST\" id=\"settingsform\" style=\"width: 35em; margin-right: -2%;\" enctype=\"multipart/form-data\" action=\"admin.php?action=links".($edit ? "&amp;edit=$edit" : "")."\">
 	<p><label for=\"link_name\">"._NAME.":</label> <input type=\"text\" class=\"textbox\" name=\"link_name\" value=\"$name\"> <br />
 	<label for=\"link_text\">"._LINKTEXT.":</label> <input type=\"text\" class=\"textbox\" name=\"link_text\" value=\"$text\"><br />
 	<label for=\"link_key\">"._LINKKEY.":</label> <input type=\"text\" class=\"textbox\" name=\"link_key\" value=\"$accesskey\" size=\"1\"><br />
@@ -96,7 +96,7 @@ if(isset($_GET['edit']) || isset($_GET["new"])) {
 		<option value=\"1\"".($access == 1 ? " selected" : "").">"._MEMBERS."</option>
 		<option value=\"2\"".($access == 2 ? " selected" : "").">"._ADMINS."</option>
 	</select><br />
-	<INPUT type=\"submit\" class=\"button\" name=\"submit\" id=\"submit\" value=\""._SUBMIT."\"></form>";
+	<INPUT type=\"submit\" class=\"button\" style=\"margin-left: 31.8%; margin-top: 0.3em;\" name=\"submit\" id=\"submit\" value=\""._SUBMIT."\"></form>";
 	$output .= write_message(_NAMECONVENTIONS);
 }
 else {
