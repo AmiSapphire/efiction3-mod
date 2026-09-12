@@ -44,6 +44,7 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - includes/userlist.php: Uncaught TypeError for Co-Authors field in PHP 8.x when searching for a user with the first character yields no results - discovered this one entirely by accident due to a typo... slipped my hand on the keyboard!
 - install/install.php: SMTP settings table column creation oversight fix, consistency changes, and cleanup
 - user/manageimages.php: Add support for WebP images
+- search.php: failed penname search causes PHP warning fix for PHP 8.x users - MySQL error message overwriting the Search Results header due to an assumption of an array count of author data
 - series.php: category settings causing Fatal Error bug for PHP 8.x users and Undefined array key PHP warning fixes
 - stories.php: add story with null category using 'Only one' setting causing Fatal Error bug fix for PHP 8.x users
 - categories.php: deleting only category causing Fatal Error bug fix for PHP 8.x users
