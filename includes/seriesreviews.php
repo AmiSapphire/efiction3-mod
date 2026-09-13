@@ -67,11 +67,19 @@ while($parent) {
 		if($pst['sid']) $pstorylist[] = $pst['sid'];
 		else if($pst['subseriesid']) $pserieslist[] = $pst['subseriesid'];
 	}
-	$pnewrating = dbquery("SELECT AVG(rating) as totalcount FROM ".TABLEPREFIX."fanfiction_reviews 
-		WHERE ((item = '$parent' AND type = 'SE')".
-		(count($pstorylist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $pstorylist))."') > 0 AND type = 'ST')" : "").
-		(count($pserieslist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $pserieslist))."') > 0 AND type = 'SE')" : "").
-		") AND rating != '-1'");
+	if($ratings == 3) {
+		$pnewrating = dbquery("SELECT COUNT(rating) as totalcount FROM ".TABLEPREFIX."fanfiction_reviews
+			WHERE ((item = '$parent' AND type = 'SE')".
+			(count($pstorylist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $pstorylist))."') > 0 AND type = 'ST')" : "").
+			(count($pserieslist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $pserieslist))."') > 0 AND type = 'SE')" : "").
+			") AND rating != '-1'");
+	} else {
+		$pnewrating = dbquery("SELECT AVG(rating) as totalcount FROM ".TABLEPREFIX."fanfiction_reviews
+			WHERE ((item = '$parent' AND type = 'SE')".
+			(count($pstorylist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $pstorylist))."') > 0 AND type = 'ST')" : "").
+			(count($pserieslist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $pserieslist))."') > 0 AND type = 'SE')" : "").
+			") AND rating != '-1'");
+	}
 	$pnewcount = dbquery("SELECT count(review) as totalcount FROM ".TABLEPREFIX."fanfiction_reviews 
 		WHERE ((item = '$parent' AND type = 'SE')".
 		(count($pstorylist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $pstorylist))."') > 0 AND type = 'ST')" : "").
