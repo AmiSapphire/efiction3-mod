@@ -24,7 +24,7 @@
 
 if(!defined("_CHARSET")) exit( );
 
-$logtypes = array("RG" => _NEWREG, "ED" => _ADMINEDIT, "DL" => _ADMINDELETE, "VS" => _VALIDATESTORY, "LP"=> _LOSTPASSWORD, "BL" => _BADLOGIN, "RE" => "Reviews", "AM" => "Admin Maintenance", "EB" => "Edit Bio");
+$logtypes = array("RG" => _NEWREG, "ED" => _ADMINEDIT, "DL" => _ADMINDELETE, "VS" => _VALIDATESTORY, "LP"=> _LOSTPASSWORD, "BL" => _BADLOGIN, "RE" => _ADMINREVIEWS, "AM" => _ADMINMAINT, "EB" => _ADMINEDITBIO);
 $typequery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'logtype'");
 while($code = dbassoc($typequery)) {
 	eval($code['code_text']);

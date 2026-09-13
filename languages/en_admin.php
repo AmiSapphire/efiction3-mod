@@ -19,6 +19,9 @@ define ("_ALREADYUPDATED", "This update has already been completed.  No further 
 define ("_ADMINDELETE", "Admin Deletes");
 define ("_ADMINEDIT", "Admin Edits");
 define ("_ADMINEMAIL", "Admin E-mail");
+define ("_ADMINMAINT", "Admin Maintenance");
+define ("_ADMINREVIEWS", "Reviews");
+define ("_ADMINEDITBIO", "Edit Bio");
 define ("_ADMIN", "Admin");
 define ("_ADMINS", "Admins");
 define ("_AGESTATEMENT", "Age statement in user profile");
