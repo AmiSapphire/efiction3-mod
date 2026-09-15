@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 if(!defined("_CHARSET")) exit( );
 
 	if(isset($blocks[$block]['content'])) {
