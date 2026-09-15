@@ -1,7 +1,7 @@
 <?php
 if(!defined("_CHARSET")) exit( );
 
-$content = (int) $content;
+$content = '';
 
 	if(isset($blocks[$block]['content'])) {
 		foreach($blocks[$block]['content'] as $page) {
