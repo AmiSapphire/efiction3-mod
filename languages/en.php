@@ -294,6 +294,7 @@ define ("_BIO", "Bio");
 define ("_EDITPERSONAL", "Edit Personal Information");
 define ("_EMAILINUSE", "This email address has already been used to sign up for an account. If you've lost your password, please generate a new one by using the <a href=\"user.php?action=lostpassword\">lost password</a> feature.");
 define ("_ICQ", "ICQ");
+define ("_INSECUREPWD", "Your password is hashed using unsalted MD5, a known insecure hashing algorithm. Please update your password so it can be converted to the more secure bcrypt.");
 define ("_INVALIDEMAIL", "The e-mail address you supplied is an invalid format.");
 define ("_LOGINAGAIN", "However, if you have changed your password, you will have to <a href=\"login.php\">login again</a>.");
 define ("_NEWACCOUNT", "New Account");

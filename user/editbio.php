@@ -49,6 +49,16 @@ function random_string ($charset_string, $length)
 	if((!isADMIN || uLEVEL > 2) && $uid != USERUID && $action == "editbio") $output .= write_error(_NOTAUTHORIZED);
 	if(isMEMBER) $output .= "<div id=\"pagetitle\">"._EDITPERSONAL."</div>";
 	else $output .= "<div id=\"pagetitle\">"._NEWACCOUNT."</div>";
+
+	// check for MD5 password hashes after a user logs in to edit their bio and warn them if their password is insecure
+	// all MD5 hashes are 32 exact characters long, hexadecimal, 0-9 and a-f random
+	// this set is a bit cursed... but it works
+	$pwdcharlengthquery = dbquery("SELECT CHAR_LENGTH(password) FROM ".TABLEPREFIX."fanfiction_authors WHERE uid = ".USERUID.";");
+	$pwdlengthfetch = mysqli_fetch_row($pwdcharlengthquery);
+	$pwdlengthstring = end($pwdlengthfetch);
+	$pwdcheck = (int) $pwdlengthstring;
+	if ($pwdcheck == 32) $output .= "<center>"._INSECUREPWD."</center><br>";
+
 	if(!empty($_POST['submit'])) {
 		$penname = isset($_POST['newpenname']) ? escapestring($_POST['newpenname']) : false;
 		$email = escapestring($_POST['email']);
