@@ -68,7 +68,6 @@ define ("_JAVASCRIPTOFF", "You must have javascript enabled for this form to wor
 define ("_LIKE", "like");
 define ("_LIKES_NUMBER", "Number of Likes");
 define ("_LOGIN", "Log In");
-define ("_LOGINAGAIN", "<br>However, if you have changed your password, you will have to <a href=\"login.php\">login again</a>.");
 define ("_PLEASELOGIN", "Please login to access this feature.");
 define ("_MEMBER", "Member");
 define ("_MEMBERS", "Members");
@@ -296,6 +295,7 @@ define ("_EDITPERSONAL", "Edit Personal Information");
 define ("_EMAILINUSE", "This email address has already been used to sign up for an account. If you've lost your password, please generate a new one by using the <a href=\"user.php?action=lostpassword\">lost password</a> feature.");
 define ("_ICQ", "ICQ");
 define ("_INVALIDEMAIL", "The e-mail address you supplied is an invalid format.");
+define ("_LOGINAGAIN", "However, if you have changed your password, you will have to <a href=\"login.php\">login again</a>.");
 define ("_NEWACCOUNT", "New Account");
 define ("_NEWPEN", "%1\$s ( %2\$d ) changed penname %3\$s ( %4\$d ) to %5\$s.");
 define ("_MSN", "MSN IM");
