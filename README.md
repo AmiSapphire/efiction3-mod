@@ -50,6 +50,7 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - categories.php: deleting only category causing Fatal Error bug fix for PHP 8.x users
 - header.php: leftover array typo oversight fix with age consent feature
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
+- blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix
 - install/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
 - stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
 - docs/config.php, includes/browsecategories.php, includes/categorylist.php, includes/characterlist.php, includes/userlist.php, install/install.php, user/login.php: redundant dbfunctions.php entries including cleanup
@@ -57,6 +58,8 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - rss.php, includes/button.php (me), languages/en.php (me): error and warning message suppression removal - rss and en were a stupid hack for the actual problem in the next item of the list
 - languages/en.php: undefined variables warning fix for PHP 8.x - applies to any other language PHP files, so they should be updated - only needs one line and one additional file in the **includes** directory
 - admin/settings.php, install/install.php: Do not parse the mailer directory in the Admin Panel's or installer's language setting's drop-down menus
+- admin/viewlog.php, languages/en_admin.php: some hardcoded English entries have been relocated to the Admin Panel language file
+- includes/reviewform.php, includes/seriesreviews.php, reviews.php: Number of Likes - unfinished calculation fixes and updates, implement its entry in the review form as well
 - Bridges return! Their removal got rid of the example work, which is now updated as well
 - Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages, installer
 - TinyMCE versions added; now you have a choice of TinyMCE versions 2.1.2, 3.4.8, 4.5.12, 5.3.2, and 6.8.6 - replaces eFiction 3.5.x's original 3.0.9
