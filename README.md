@@ -1,6 +1,6 @@
 # eFiction 3 Mod
 
-This version is essentially a version of 'future 3.5.9' wiith some of my internal modifications. For now, there are no auto paths to patch old eFiction versions to this version, so it has to be done manually. (The update.php file needs to be cleaned up, and the 3.5.5 update does not work properly in PHP 7 anyway.)
+This version is essentially a version of 'future 3.5.9' wiith some of my internal modifications. This script can upgrade to future 3.5.9 with a few eFiction 3 Mod entries by upgrading over versions 3.5.3 to 3.5.8. After that, go to the conversion page in the Archive Conversion Panel to convert the database to eFiction 3 Mod.
 
 
 ## Requirements
@@ -17,7 +17,7 @@ Same as the usual eFiction 3.x installs.
 
 ## Updating
 
-Has to be done manually for now. Easiest if you have either unofficial versions 3.5.8, 3.5.8.f1, or future 3.5.9. If you are updating from versions 3.5.3, 3.5.5, or 3.5.6, update to at least version 3.5.8 first.
+Just place the script over your current install like any upgrade. If you have already upgraded to future 3.5.9, you need to run a MySQL query to support the Enable Registrations mod and update the 'fanfiction_authors' table's password field to support 255 characters first. (That is, until I try and add *that* to the Mod conversion script.) Both queries are in the Mod's update.php script.
 
 <br>
 
@@ -51,6 +51,7 @@ Has to be done manually for now. Easiest if you have either unofficial versions 
 - header.php: leftover array typo oversight fix with age consent feature
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
 - blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix
+- admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fix
 - install/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
 - stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
 - docs/config.php, includes/browsecategories.php, includes/categorylist.php, includes/characterlist.php, includes/userlist.php, install/install.php, user/login.php: redundant dbfunctions.php entries including cleanup
