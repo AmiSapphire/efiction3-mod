@@ -68,14 +68,14 @@ if(!empty($_GET['edit'])) {
 		$panelinfo = dbassoc($panelquery);
 		$output .= "<div class='sectionheader'>".($_GET['edit'] == "new" ? _ADDPANEL : _EDITPANEL)."</div>
 			<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" style='width: 450px; margin: 0 auto;' action=\"admin.php?action=panels&amp;edit=".$_GET['edit']."\">
-			<label for='panel_name'>"._NAME.":</label> <input type='text' class='textbox' name='panel_name' id='panel_name' value='".$panelinfo['panel_name']."'><br />
-			<label for='panel_title'>"._TITLE.":</label> <input type='text' class='textbox' name='panel_title' id='panel_title' value='".$panelinfo['panel_title']."'><br />
-			<label for='panel_url'>"._PANELURL.":</label> <input type='text' class='textbox' name='panel_url' id='panel_url' value='".$panelinfo['panel_url']."'><br />
+			<label for='panel_name'>"._NAME.":</label> <input type='text' class='textbox' name='panel_name' id='panel_name' value='".(isset($panelinfo['panel_name']) ? $panelinfo['panel_name'] : null)."'><br />
+			<label for='panel_title'>"._TITLE.":</label> <input type='text' class='textbox' name='panel_title' id='panel_title' value='".(isset($panelinfo['panel_title']) ? $panelinfo['panel_title'] : null)."'><br />
+			<label for='panel_url'>"._PANELURL.":</label> <input type='text' class='textbox' name='panel_url' id='panel_url' value='".(isset($panelinfo['panel_url']) ? $panelinfo['panel_url'] : null)."'><br />
 			<label for='panel_level'>"._LEVEL.":</label> <select name='panel_level' id='panel_level'>";
-		for($x = 0; $x < 5; $x++) { $output .= "<option".($panelinfo['panel_level'] == $x ? " selected" : "").">$x</option>"; }
+		for($x = 0; $x < 5; $x++) { $output .= "<option".(($panelinfo['panel_level'] ?? null) == $x ? " selected" : "").">$x</option>"; }
 		$output .= "</select><br />
-			<label for='panel_hidden'>"._HIDDEN.":</label> <input type='checkbox' class='checkbox' name='panel_hidden' id='panel_hidden' ".($panelinfo['panel_hidden'] ? " checked" : "")."><br />
-			<label for='panel_type'>"._TYPE.":</label> <input type='text' class='textbox' name='panel_type' id='panel_type' value='".$panelinfo['panel_type']."' size='2'><br />
+			<label for='panel_hidden'>"._HIDDEN.":</label> <input type='checkbox' class='checkbox' name='panel_hidden' id='panel_hidden' ".(($panelinfo['panel_hidden'] ?? null) ? " checked" : "")."><br />
+			<label for='panel_type'>"._TYPE.":</label> <input type='text' class='textbox' name='panel_type' id='panel_type' value='".(isset($panelinfo['panel_type']) ? $panelinfo['panel_type'] : null)."' size='2'><br />
 			<div style='margin: 1em; text-align: center;'><INPUT type=\"submit\" class=\"button\" value=\""._SUBMIT."\" name=\"submit\"></div></form></div>";
 	}
 }
