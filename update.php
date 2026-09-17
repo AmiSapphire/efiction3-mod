@@ -292,6 +292,10 @@ elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 9)  // 3.
 			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `smtp_port` varchar(5) NOT NULL DEFAULT ''");
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'smtp_secure'")))
 			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `smtp_secure` varchar(3) NOT NULL DEFAULT ''");
+		if (!dbassoc(dbquery("SELECT * FROM fanfiction_panels WHERE panel_name = 'convert';"))) {
+			dbquery("UPDATE `".TABLEPREFIX."fanfiction_panels` SET panel_order = '12' WHERE panel_name = 'modules'");
+			dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_panels`(`panel_name`, `panel_title`, `panel_url`, `panel_level`, `panel_hidden`, `panel_type`, `panel_order`) VALUES( 'convert', 'Archive Conversion', '', '1', '0', 'A', '11')");
+		}
 
 		$set_359 = do_version_check_359();
 		if ($set_359)
