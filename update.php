@@ -297,6 +297,8 @@ elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 9)  // 3.
 			dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_panels`(`panel_name`, `panel_title`, `panel_url`, `panel_level`, `panel_hidden`, `panel_type`, `panel_order`) VALUES( 'convert', 'Archive Conversion', '', '1', '0', 'A', '11')");
 		}
 
+		dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_authors` CHANGE `password` `password` varchar(255) NOT NULL DEFAULT '0'");
+
 		$set_359 = do_version_check_359();
 		if ($set_359)
 		{
