@@ -1,6 +1,6 @@
 # eFiction 3 Mod
 
-This version is essentially a version of 'future 3.5.9' wiith some of my internal modifications. This script can upgrade to future 3.5.9 with a few eFiction 3 Mod entries by upgrading over versions 3.5.3 to 3.5.8. After that, go to the conversion page in the Archive Conversion Panel to convert the database to eFiction 3 Mod.
+This version is essentially a version of 'future 3.5.9' wiith some of my internal modifications. Support of bcrypt passwords with old MD5 fallback, new user regisrations control, and more choices of tinyMCE are a few of my modifications.
 
 
 ## Requirements
@@ -17,7 +17,7 @@ Same as the usual eFiction 3.x installs.
 
 ## Updating
 
-Just place the script over your current install like any upgrade. If you have already upgraded to future 3.5.9, you need to run a MySQL query to support the Enable Registrations mod and update the 'fanfiction_authors' table's password field to support 255 characters first. (That is, until I try and add *that* to the Mod conversion script.) Both queries are in the Mod's update.php script.
+Just place the script over your current install like any upgrade. This script can upgrade to future 3.5.9 with a few eFiction 3 Mod entries by upgrading over versions 3.5.3 to 3.5.8. After that, go to the conversion page in the Archive Conversion Panel to convert the database to eFiction 3 Mod. If you have already upgraded to a clean version of future 3.5.9, you can just go straight to the Archive Conversion page and run the Mod conversion script, as the upgrade.php file will not run at that point.
 
 <br>
 

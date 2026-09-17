@@ -33,6 +33,14 @@ if($expVer[0] == 3 && ($expVer[1] == 5 || $expVer[1] >=6 && (!isset($expVer[2]) 
 if($confirm == "yes") {
 	// For converting to eFiction 3 Mod, starting with versions 3.5.9
 	if($expVer[0] == 3 && ($expVer[1] == 5 || $expVer[1] >=6 && (!isset($expVer[2]) || $expVer[2] == 9 || $expVer[2] > 0))) {
+		// only if you installed the 'clean' future 3.5.9 version prior
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'setreg'")))
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `setreg` tinyint(1) NOT NULL DEFAULT '1' AFTER `multiplecats`");
+		if (!dbassoc(dbquery("SELECT * FROM fanfiction_panels WHERE panel_name = 'convert';"))) {
+			dbquery("UPDATE `".TABLEPREFIX."fanfiction_panels` SET panel_order = '12' WHERE panel_name = 'modules'");
+			dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_panels`(`panel_name`, `panel_title`, `panel_url`, `panel_level`, `panel_hidden`, `panel_type`, `panel_order`) VALUES( 'convert', 'Archive Conversion', '', '1', '0', 'A', '11')");
+		}
+		// rest of the conversion
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorfields ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorinfo ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorprefs ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
