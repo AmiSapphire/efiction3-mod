@@ -33,6 +33,7 @@ define ("_ALLREV", "All Reviews");
 define ("_ALREADYINSTALLED", "That module is already installed.");
 define ("_ANONREV", "Anonymous Reviews");
 define ("_ANONREVIEWS", "Allow anonymous reviews");
+define ("_ARCHIVECONV", "Archive Conversion");
 define ("_ARCHIVEMAINT", "Archive Maintentance");
 define ("_AUTHORRELEASED", "The author has been removed from the admin created list, and an e-mail has been sent to them with their temporary password. <br /><br /><a href=\"admin.php?action=members\">Back to Members Maintenance</a>");
 define ("_AUTHORSONLY", "Authors Only");
@@ -78,6 +79,10 @@ define ("_CONFIRMAUTHORRELEASE", "Are you sure you want to release this author?"
 define ("_CONFIRMADMINREVOKE", "Are you sure you want to revoke this admin's privileges?");
 define ("_CONFIRMVALREVOKE", "Are you sure you want to revoke this author's validation?");
 define ("_CONFIRMVALIDATE", "Are you sure you want to validate this author?");
+define ("_CONVERT_MOD", "Convert to eFiction 3 Mod");
+define ("_CONVERT_UTF", "Convert back to Unicode 4.0");
+define ("_CONVERT_0900", "Convert to Unicode 9.0");
+define ("_CONVERT_1400", "Convert to Unicode 14.0");
 define ("_COPYRIGHT", "Copyright Footer");
 define ("_COUNTCATS", "Fix Category Counts");
 define ("_CURRENTVERSION", "The current version of eFiction is ");
@@ -388,6 +393,10 @@ define ("_HELP_UPDATE", "After uploading eFiction script updates to your archive
 define ("_HELP_CATORDER", "This option will fix errors in the numbering of the category order saved in the database.  This will <strong>not</strong> change the order of your categories only correct errors in the database numbering.");
 define ("_HELP_PANELORDER", "This option will fix errors in the numbering of the panel order saved in the database.  This will <strong>not</strong> change the order of your panels only correct errors in the database numbering.");
 define ("_HELP_RECALCSTORIES", "Click here to fix the story count for authors.");
+define("_HELP_CONVERTMOD", "This converts your current eFiction install to eFiction 3 Mod.");
+define("_HELP_CONVERTUTF", "This converts your current eFiction 3 Mod install back to supporting Unicode 4.0.");
+define("_HELP_CONVERT0900", "This converts your current eFiction 3 Mod install to support Unicode 9.0.");
+define("_HELP_CONVERT1400", "This converts your current eFiction 3 Mod install to support Unicode 14.0.");
 
 // Log strings
 

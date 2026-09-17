@@ -73,6 +73,7 @@ INSERT INTO `fanfiction_panels` (`panel_name`, `panel_title`, `panel_url`, `pane
 ('skins', 'Skins', '', 3, 6, 0, 'A'),
 ('authorfields', 'Profile Information', '', 1, 9, 0, 'A'),
 ('manual', 'Admin Manual', '', '3', '6', '0', 'A'),
-('modules', 'Modules', '', 1, '11', 0, 'A'),
-('maintenance', 'Archive Maintenance', '', 1, 10, 0, 'A');
+('modules', 'Modules', '', 1, '12', 0, 'A'),
+('maintenance', 'Archive Maintenance', '', 1, 10, 0, 'A'),
+('convert', 'Archive Conversion', '', 1, 11, 0, 'A');
 

@@ -472,8 +472,9 @@ switch ($_GET['step'])
 					array("skins", "Skins", "", "3", "6", "0", "A"),
 					array("authorfields", "Profile Information", "", "1", "9", "0", "A"),
 					array("maintenance", "Archive Maintenance", "", "1", "10", "0", "A"),
+					array("convert", "Archive Conversion", "", "1", "11", "0", "A"),
 					array("manual", "Admin Manual", "", "3", "6", "0", "A"),
-					array('modules', 'Modules', '', 1, "11", 0, 'A')
+					array('modules', 'Modules', '', 1, "12", 0, 'A')
 				);
 				$output .= "<table class='tblborder' style='margin: 1em auto; padding: 1em;' cellpadding='5'><tr><th>Panel</th><th>" . _RESULT . "</th></tr>";
 				foreach ($panellist as $panel)
