@@ -81,6 +81,7 @@ define ("_CONFIRMVALREVOKE", "Are you sure you want to revoke this author's vali
 define ("_CONFIRMVALIDATE", "Are you sure you want to validate this author?");
 define ("_CONVERT_MOD", "Convert to eFiction 3 Mod");
 define ("_CONVERT_UTF", "Convert back to Unicode 4.0");
+define ("_CONVERT_0520", "Convert to Unicode 5.2");
 define ("_CONVERT_0900", "Convert to Unicode 9.0");
 define ("_CONVERT_1400", "Convert to Unicode 14.0");
 define ("_COPYRIGHT", "Copyright Footer");
@@ -393,8 +394,9 @@ define ("_HELP_UPDATE", "After uploading eFiction script updates to your archive
 define ("_HELP_CATORDER", "This option will fix errors in the numbering of the category order saved in the database.  This will <strong>not</strong> change the order of your categories only correct errors in the database numbering.");
 define ("_HELP_PANELORDER", "This option will fix errors in the numbering of the panel order saved in the database.  This will <strong>not</strong> change the order of your panels only correct errors in the database numbering.");
 define ("_HELP_RECALCSTORIES", "Click here to fix the story count for authors.");
-define("_HELP_CONVERTMOD", "This converts your current eFiction install to eFiction 3 Mod.");
+define("_HELP_CONVERTMOD", "This converts your current eFiction install to eFiction 3 Mod. This will work to some extent in the latin1 collation as long as you are not using any multibyte characters.");
 define("_HELP_CONVERTUTF", "This converts your current eFiction 3 Mod install back to supporting Unicode 4.0.");
+define("_HELP_CONVERT0520", "This converts your current eFiction 3 Mod install to support Unicode 5.2.");
 define("_HELP_CONVERT0900", "This converts your current eFiction 3 Mod install to support Unicode 9.0.");
 define("_HELP_CONVERT1400", "This converts your current eFiction 3 Mod install to support Unicode 14.0.");
 

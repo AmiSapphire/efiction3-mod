@@ -40,7 +40,7 @@ if($confirm == "yes") {
 			dbquery("UPDATE `".TABLEPREFIX."fanfiction_panels` SET panel_order = '12' WHERE panel_name = 'modules'");
 			dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_panels`(`panel_name`, `panel_title`, `panel_url`, `panel_level`, `panel_hidden`, `panel_type`, `panel_order`) VALUES( 'convert', 'Archive Conversion', '', '1', '0', 'A', '11')");
 		}
-		// rest of the conversion
+		// initial UTF-8 conversion
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorfields ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorinfo ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorprefs ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
@@ -68,6 +68,35 @@ if($confirm == "yes") {
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_settings ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_stats ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_stories ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
+		// phase two of UTF-8 conversion
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorfields CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorinfo CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorprefs CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authors CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_blocks CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_categories CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_chapters CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_characters CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_classes CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_classtypes CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_coauthors CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_codeblocks CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_comments CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_favorites CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_inseries CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_log CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_messages CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_modules CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_news CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_pagelinks CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_panels CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_ratings CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_reviews CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_series CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_settings CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_stats CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_stories CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
+		// change collation of certain tables
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authors CHANGE `penname` `penname` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '', CHANGE `realname` `realname` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_categories CHANGE `category` `category` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_characters CHANGE `charname` `charname` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
