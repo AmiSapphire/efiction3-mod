@@ -17,6 +17,7 @@ echo "
 		width: '580',
 		language: '$language',
 		convert_urls: 'false',
+		entity_encoding: 'raw',
 		mode: 'textareas',
 		extended_valid_elements: 'a[name|href|target|title]',
 		plugins: 'advhr,advimage,advlink,searchreplace,contextmenu,preview,fullscreen,paste,wordcount" . ($current == "adminarea" ? ",codeprotect" : "") . "',

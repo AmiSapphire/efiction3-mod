@@ -38,6 +38,7 @@ echo "
 		relative_urls: false,
 		remove_script_host: false,
     	convert_urls: true,
+		entity_encoding: 'raw',
 		paste_word_valid_elements: 'b,strong,i,em,h1,h2,u,p,ol,ul,li,a[href],span,color,font-size,font-color,font-family,mark,table,tr,td',
 		toolbar1: 'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist | undo redo | fullscreen code | link unlink | emoticons image anchor hr ',	image_advtab: true,
      	paste_word_valid_elements: 'b,strong,i,em,p,span,u,strike,br',

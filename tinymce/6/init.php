@@ -39,6 +39,7 @@ echo "
 		relative_urls: false,
 		remove_script_host: false,
     	convert_urls: true,
+		entity_encoding: 'raw',
 		toolbar1: 'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist | undo redo | fullscreen code | link unlink | emoticons image anchor hr ',	image_advtab: true,
 	    menu: {
 			file: { title: 'File', items: 'newdocument' },
