@@ -41,6 +41,7 @@ if($confirm == "yes") {
 			dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_panels`(`panel_name`, `panel_title`, `panel_url`, `panel_level`, `panel_hidden`, `panel_type`, `panel_order`) VALUES( 'convert', 'Archive Conversion', '', '1', '0', 'A', '11')");
 		}
 		// initial UTF-8 conversion
+		dbquery("ALTER DATABASE $dbname DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorfields ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorinfo ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorprefs ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;");
@@ -96,7 +97,7 @@ if($confirm == "yes") {
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_settings CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_stats CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_stories CONVERT TO CHARSET utf8mb4 COLLATE utf8mb4_bin;");
-		// change collation of certain tables
+		// change collation of certain columns
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authors CHANGE `penname` `penname` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '', CHANGE `realname` `realname` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_categories CHANGE `category` `category` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_characters CHANGE `charname` `charname` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
