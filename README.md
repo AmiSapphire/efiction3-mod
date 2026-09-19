@@ -51,7 +51,7 @@ Setting the old-mode setting as blank overrides the UTF8_IS_UTF8MB3 binding to t
 
 Reference: https://mariadb.com/docs/server/server-management/variables-and-modes/old_mode
 
-Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_query($mysqli_access, "SET NAMES UTF8;");**  and uncomment the line **mysqli_query($mysqli_access, "SET NAMES UTF8MB4;");** if you are not able to configure the database configuration.
+Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_query($mysqli_access, "SET NAMES UTF8;");**  and uncomment the line **mysqli_query($mysqli_access, "SET NAMES UTF8MB4;");** if you are not able to configure the database configuration. It is recommended to uncomment the line **mysqli_query($mysqli_access, "SET collation_connection = utf8mb4_bin;");** if the UTF8MB4 line is used as well.
 
 
 ### Installation and Usage

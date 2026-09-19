@@ -24,6 +24,10 @@ function dbconnect($dbhost, $dbuser, $dbpass, $dbname ) {
 	// comment UTF8 and uncomment UTF8MB4 if needed - especially when converted to Mod
     //mysqli_query($mysqli_access, "SET NAMES UTF8MB4;");
     mysqli_query($mysqli_access, "SET NAMES UTF8;");
+
+	// if SET NAMES UTF8MB4 is uncommented, uncomment this along with UTF8MB4, especially when converted to Mod
+	//mysqli_query($mysqli_access, "SET collation_connection = utf8mb4_bin;");
+
 	return $mysqli_access;
 }
 
