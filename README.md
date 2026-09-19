@@ -40,7 +40,8 @@ character-set-server = utf8mb4
 <br>
 collation-server = utf8mb4_unicode_ci
 
-For MySQL versions starting with 8.0, the default setting for collation_server is **utf8mb4_0900_ai_ci**. For MariaDB versions starting with 11.8 (introduced in 11.6), the default setting for collation_server is **utf8mb4_uca1400_ai_ci**.
+- For MySQL versions starting with 8.0, the default setting for collation_server is **utf8mb4_0900_ai_ci**.
+- For MariaDB versions starting with 11.8 (introduced in 11.6), the default setting for collation_server is **utf8mb4_uca1400_ai_ci**.
 
 For MariaDB versions 10.6 to 11.4, this is needed:
 
