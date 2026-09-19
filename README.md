@@ -1,12 +1,12 @@
 # eFiction 3 Mod
 
-This version is essentially a version of 'future 3.5.9' wiith some of my internal modifications. Support of bcrypt passwords with old MD5 fallback, new user regisrations control, and more choices of tinyMCE are a few of my modifications.
+This version is essentially a version of 'future 3.5.9' wiith some of my internal modifications. Support of bcrypt passwords with old MD5 fallback, new user registrations control, and more choices of tinyMCE are a few of my modifications.
 
 
 ## Requirements
 
 - Minimum: PHP 7.4, MySQL 5.7.7 or MariaDB 10.6
-- Recommnended: PHP 8.4, MySQL 8.0 or MariaDB 11.4
+- Recommended: PHP 8.4, MySQL 8.0 or MariaDB 11.4
 - Tested Working: PHP: 7.4.33, 8.5.8; MariaDB: 10.6, 10.11, 11.4
 
 
@@ -18,6 +18,45 @@ Same as the usual eFiction 3.x installs.
 ## Updating
 
 Just place the script over your current install like any upgrade. This script can upgrade to future 3.5.9 with a few eFiction 3 Mod entries by upgrading over versions 3.5.3 to 3.5.8. After that, go to the conversion page in the Archive Conversion Panel to convert the database to eFiction 3 Mod. If you have already upgraded to a clean version of future 3.5.9, you can just go straight to the Archive Conversion page and run the Mod conversion script, as the upgrade.php file will not run at that point.
+
+
+## Notes
+
+
+### PHP
+
+This script is being tested for issues with future PHP 8.6.0, and anything actually unique to 8.6 was likely fixed. The other stuff would be related to older PHP 8 versions. Since some patches over time (starting in 2016) use PHP 7+ only behavior, this means that you can no longer use eFiction with PHP 5.6 and earlier. PHP should also use the UTF-8 character set to use this script. The entry in the ini file should say UTF-8 for default_charset.
+
+default_charset = "UTF-8"
+
+
+### Database
+
+Due to the community changes to this script over the years, it now handles text and data as UTF-8 as opposed to ISO-8859-1. Further changes to this script here should fully handle multibyte characters now. Yes, eFiction can now finally use emoji! To fully take advantage of this archive's character set, the database server does need to connect and use the utf8mb4 collation. This is just a sample for my.cnf or equivalent, needed for older installs and versions. Note: character_set_system is hardcoded and cannot be user-set.
+
+init-connect = 'SET NAMES utf8mb4'
+<br>
+character-set-server = utf8mb4
+<br>
+collation-server = utf8mb4_unicode_ci
+
+For MySQL versions starting with 8.0, the default setting for collation_server is **utf8mb4_0900_ai_ci**. For MariaDB versions starting with 11.8 (introduced in 11.6), the default setting for collation_server is **utf8mb4_uca1400_ai_ci**.
+
+For MariaDB versions 10.6 to 11.4, this is needed:
+
+old-mode =
+
+Setting the old-mode setting as blank overrides the UTF8_IS_UTF8MB3 binding to this variable and uses the current utf8mb4 aliasing.
+
+Reference: https://mariadb.com/docs/server/server-management/variables-and-modes/old_mode
+
+
+### Installation and Usage
+
+- The directory eFiction will be installed should have read, write and execute permissions. For Unix/Linux, it should technically be chmod'ed to 755 and chown'ed to the web server's user account. The directory should be chown'ed to the webserver user (usually daemon, www-data, or apache). Failing that, you can either chmod 755 (777 if failed somehow, should probably change it back to 755 afterwards) or create a blank config.php file (example: touch /path/to/eFiction3/config.php) in your eFiction directory and chmod that to 666.
+- Creating a series entry, adding a story to the series, then removing the story from the series can leave the Number of Stories count unchanged. This is due to the fact that some references aren't calculated automatically. In the Admin Panel > Archive Maintenance section, use 'Recalculate Reviews', 'Recalculate Stories', and 'Recalculate Site Statistics', and it should rectify this issue.
+- When using the category 'Only one' setting for a single category, the script strongly assumes to use catid=1 for adding a series to a category, so if that particular category was later removed, the Category: field will be empty. Doesn't help that you can still create more categories after the fact, which may muddy up things a bit. Using 'Fix Category Order' should fix this to some extent, but if that fails, database table editing in 'fanfiction_categories' to change the intended category to catid=1 AND changing AUTO_INCREMENT to 2 should suffice. If, somehow, there are no categories in the database and the AUTO_INCREMENT count is past 2, change AUTO_INCREMENT back to 1 and create the intended category.
+- The initial database installation script explicitly removes all the forced latin1 charset and latin1_swedish_ci collation references starting with eFiction 3.5.5 (meaning they were last present in eFiction 3.5.3). The forced latin1 charset in the script would have caused issues with much newer database installs using utf8mb3 or utf8mb4 by default. As a result, it uses the server's database settings. It, however, does force MyISAM for its database engine, and this mod forces that to InnoDB anyway, despite it being the database server default for over 15 years. I have not seen any issues regarding the InnoDB change in eFiction 3 Mod as of yet.
 
 <br>
 
@@ -55,7 +94,7 @@ Just place the script over your current install like any upgrade. This script ca
 - install/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
 - stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
 - docs/config.php, includes/browsecategories.php, includes/categorylist.php, includes/characterlist.php, includes/userlist.php, install/install.php, user/login.php: redundant dbfunctions.php entries including cleanup
-- header.php, rss.php, admin/backup.php, admin/backup_utf8.php, includes/categorylist.php, includes/userlist.php, install/install.php, languages/en.php: possible CHARSET definition breakage - mostly reverted as one former config.php line does belong in includes/dbfunctions.php
+- header.php, rss.php, admin/backup.php, admin/backup_utf8.php, includes/categorylist.php, includes/userlist.php, install/install.php, languages/en.php: possible CHARSET definition breakage - mostly reverted as one former config.php line does belong in includes/dbfunctions.php and very old editing typo causing Uncaught ValueError: Unknown format specifier message regarding changing an author with logging enabled fix
 - rss.php, includes/button.php (me), languages/en.php (me): error and warning message suppression removal - rss and en were a stupid hack for the actual problem in the next item of the list
 - languages/en.php: undefined variables warning fix for PHP 8.x - applies to any other language PHP files, so they should be updated - only needs one line and one additional file in the **includes** directory
 - admin/settings.php, install/install.php: Do not parse the mailer directory in the Admin Panel's or installer's language setting's drop-down menus
@@ -65,6 +104,7 @@ Just place the script over your current install like any upgrade. This script ca
 - Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages, installer
 - TinyMCE versions added; now you have a choice of TinyMCE versions 2.1.2, 3.4.8, 4.5.12, 5.3.2, and 6.8.6 - replaces eFiction 3.5.x's original 3.0.9
 - Setting to enable or disable new user registrations - sorely needed for some archives
+- New Archive Conversion page for Unicode database conversions - initial Mod conversion and Unicode versions 4.0, 5.2, 9.0, 14.0
 
 <br>
 
