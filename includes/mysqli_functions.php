@@ -20,6 +20,9 @@ function dbconnect($dbhost, $dbuser, $dbpass, $dbname ) {
 	}
 	//mysqli_query($mysql_access, "SET SESSION sql_mode = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION'");
 	mysqli_query($mysqli_access, "SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
+
+	// comment UTF8 and uncomment UTF8MB4 if needed - especially when converted to Mod
+    //mysqli_query($mysqli_access, "SET NAMES UTF8MB4;");
     mysqli_query($mysqli_access, "SET NAMES UTF8;");
 	return $mysqli_access;
 }
