@@ -212,7 +212,7 @@ if($current == "viewstory"){
 		$squery = dbquery("SELECT sid, inorder FROM ".TABLEPREFIX."fanfiction_chapters WHERE chapid = ".$chapid." LIMIT 1");
 		list($sid, $chapter) = dbrow($squery);
 	}
-	$titlequery = dbquery("SELECT story.title, story.coauthors, "._PENNAMEFIELD." as penname, story.summary FROM ".TABLEPREFIX."fanfiction_stories as story, "._AUTHORTABLE." WHERE sid = '$sid' AND "._UIDFIELD." = story.uid LIMIT 1");
+	$titlequery = dbquery("SELECT story.title, story.coauthors, "._PENNAMEFIELD." as penname, story.summary FROM ".TABLEPREFIX."fanfiction_stories as story, "._AUTHORTABLE." WHERE sid = '".(($sid) ?? null)."' AND "._UIDFIELD." = story.uid LIMIT 1");
 	if($story = dbassoc($titlequery)) { 
 			$authlink[] = $story['penname'];
 		if($story['coauthors']) {

@@ -32,7 +32,7 @@ else $textsize = 0;
 if(empty($chapter)) $chapter = isset($_GET['chapter']) && isNumber($_GET['chapter']) ? $_GET['chapter'] : false;
 
 	// Get the story information
-	$storyquery = dbquery("SELECT "._PENNAMEFIELD." as penname, "._UIDFIELD." as uid, story.*, story.date as date, story.updated as updated, story.validated as valid FROM ".TABLEPREFIX."fanfiction_stories as story, "._AUTHORTABLE." WHERE story.sid = '".$sid."' AND story.uid = "._UIDFIELD);
+	$storyquery = dbquery("SELECT "._PENNAMEFIELD." as penname, "._UIDFIELD." as uid, story.*, story.date as date, story.updated as updated, story.validated as valid FROM ".TABLEPREFIX."fanfiction_stories as story, "._AUTHORTABLE." WHERE story.sid = '".(($sid) ?? null)."' AND story.uid = "._UIDFIELD);
 	$storyinfo = dbassoc($storyquery);
  
 	if(!$storyinfo) {
@@ -41,7 +41,7 @@ if(empty($chapter)) $chapter = isset($_GET['chapter']) && isNumber($_GET['chapte
 		if (file_exists("$skindir/default.tpl")) $tpl = new TemplatePower("$skindir/default.tpl");
 		else $tpl = new TemplatePower("default_tpls/default.tpl");
 		$title = "Story was not found";
-		$text  = "Story with ID " . $sid . " is not in database"; 
+		$text  = "Story with ID " . (($sid) ?? null) . " is not in database";
 		include("includes/pagesetup.php");
 		$tpl->assign("output", "<div id='pagetitle'>" . $title . "</div>" . write_error($text));
 		$tpl->printToScreen();
