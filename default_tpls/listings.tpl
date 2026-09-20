@@ -24,7 +24,7 @@
 {classifications}
 <span class="label">Series:</span> {serieslinks}<br />
 <span class="label">Chapters: </span> {numchapters} {toc}<br />
-<span class="label">Completed:</span> {completed}  
+<span class="label">Completed:</span> {completed}<br />
 <span class="label">Word count:</span> {wordcount} <span class="label">Read Count:</span> {count}
 {adminlinks}</div>
 <div class="tail"><span class="label">{addtofaves} {reportthis} Published: </span>{published} <span class="label">Updated:</span> {updated}</div>
