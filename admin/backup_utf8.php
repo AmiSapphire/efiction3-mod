@@ -65,7 +65,7 @@ function datadump ($table) {
 		foreach($t AS $field => $value) {
 			//$value = utf8_encode (escapestring($value) );
 			$value = escapestring($value);
-			$value = mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
+			$value = mb_convert_encoding($value, 'UTF-8');
 			$value = str_replace("\n","\\n",$value);
 			if (isset($value)) $row[$field] = "\"$value\"";
 			else $row[$field] = "\"\"";
