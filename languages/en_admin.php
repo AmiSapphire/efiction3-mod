@@ -79,10 +79,11 @@ define ("_CONFIRMAUTHORRELEASE", "Are you sure you want to release this author?"
 define ("_CONFIRMADMINREVOKE", "Are you sure you want to revoke this admin's privileges?");
 define ("_CONFIRMVALREVOKE", "Are you sure you want to revoke this author's validation?");
 define ("_CONFIRMVALIDATE", "Are you sure you want to validate this author?");
-define ("_CONVERT_MOD", "Convert to eFiction 3 Mod");
+define ("_CONVERT_MOD", "Convert to eFiction 3 Mod (Unicode 4.0)");
+define ("_CONVERT_MOD_0900", "Convert to eFiction 3 Mod (Unicode 9.0)");
 define ("_CONVERT_UTF", "Convert back to Unicode 4.0");
 define ("_CONVERT_0520", "Convert to Unicode 5.2");
-define ("_CONVERT_0900", "Convert to Unicode 9.0");
+define ("_CONVERT_0900", "Convert back to Unicode 9.0");
 define ("_CONVERT_1400", "Convert to Unicode 14.0");
 define ("_COPYRIGHT", "Copyright Footer");
 define ("_COUNTCATS", "Fix Category Counts");
@@ -395,10 +396,11 @@ define ("_HELP_CATORDER", "This option will fix errors in the numbering of the c
 define ("_HELP_PANELORDER", "This option will fix errors in the numbering of the panel order saved in the database.  This will <strong>not</strong> change the order of your panels only correct errors in the database numbering.");
 define ("_HELP_RECALCSTORIES", "Click here to fix the story count for authors.");
 define("_HELP_CONVERTMOD", "This converts your current eFiction install to eFiction 3 Mod. This will work to some extent with a database using the latin1 collation as long as you are not using (or attempting to use) any multibyte characters.");
-define("_HELP_CONVERTUTF", "This converts your current eFiction 3 Mod install back to supporting Unicode 4.0.");
-define("_HELP_CONVERT0520", "This converts your current eFiction 3 Mod install to support Unicode 5.2.");
-define("_HELP_CONVERT0900", "This converts your current eFiction 3 Mod install to support Unicode 9.0.");
-define("_HELP_CONVERT1400", "This converts your current eFiction 3 Mod install to support Unicode 14.0.");
+define("_HELP_CONVERTMOD0900", "This converts your current eFiction install to eFiction 3 Mod but with full Unicode 9.0 support. This will work to some extent with a database using the latin1 collation as long as you are not using (or attempting to use) any multibyte characters.");
+define("_HELP_CONVERTUTF", "This converts your current eFiction 3 Mod install back to supporting Unicode 4.0 from either the 5.2, 9.0, or 14.0 database columns comversion. Primarily for use with the 4.0 conversion.");
+define("_HELP_CONVERT0520", "This converts some database columns of your current eFiction 3 Mod install to support Unicode 5.2. For use with either Mod conversion.");
+define("_HELP_CONVERT0900", "This converts your current eFiction 3 Mod install back to supporting Unicode 9.0 from either the 4.0, 5.2, or 14.0 database columns comversion. Primarily for use with the 9.0 conversion.");
+define("_HELP_CONVERT1400", "This converts some database columns of your current eFiction 3 Mod install to support Unicode 14.0. For use with either Mod conversion.");
 
 // Log strings
 

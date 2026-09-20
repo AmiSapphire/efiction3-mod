@@ -31,6 +31,9 @@ $output .= "<div id='pagetitle'>"._ARCHIVECONV."</div>";
 if($convert == "convert_mod") {
 	if(file_exists("admin/convert_mod.php")) include_once("admin/convert_mod.php");
 }
+if($convert == "convert_mod_0900") {
+	if(file_exists("admin/convert_mod_0900.php")) include_once("admin/convert_mod_0900.php");
+}
 if($convert == "convert_utf") {
 	if(file_exists("admin/convert_utf.php")) include_once("admin/convert_utf.php");
 }
@@ -44,10 +47,16 @@ if($convert == "convert_1400") {
 	if(file_exists("admin/convert_1400.php")) include_once("admin/convert_1400.php");
 }
 $output .= "
+<center>Warning: You should put the archive in maintenance mode before converting the database; it will be very live otherwise!</center>
 <ul>
 	<li><a href='admin.php?action=convert&amp;conv=convert_mod'>"._CONVERT_MOD."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERTMOD."</span></A></li>
 	<li><a href='admin.php?action=convert&amp;conv=convert_utf'>"._CONVERT_UTF."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERTUTF."</span></A></li>
-	<li><a href='admin.php?action=convert&amp;conv=convert_0520'>"._CONVERT_0520."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERT0520."</span></A></li>
+</ul>
+<ul>
+	<li><a href='admin.php?action=convert&amp;conv=convert_mod_0900'>"._CONVERT_MOD_0900."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERTMOD0900."</span></A></li>
 	<li><a href='admin.php?action=convert&amp;conv=convert_0900'>"._CONVERT_0900."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERT0900."</span></A></li>
+</ul>
+<ul>
+	<li><a href='admin.php?action=convert&amp;conv=convert_0520'>"._CONVERT_0520."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERT0520."</span></A></li>
 	<li><a href='admin.php?action=convert&amp;conv=convert_1400'>"._CONVERT_1400."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERT1400."</span></A></li>
 </ul>";
