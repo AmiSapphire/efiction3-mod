@@ -264,6 +264,7 @@ else {
 		$story = dbassoc($storyquery);
 		$title = title_link($story);
 		$authoruid = ($story['uid']) ?? null;
+		if(empty($story)) accessDenied();
 		if(!empty($story['coauthors'])) {
 			$colist = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '$item'");
 			while($c = dbassoc($colist)) {
@@ -276,6 +277,7 @@ else {
 		list($title, $authoruid) = dbrow($storyquery);
 		$titletext = $title;
 		$title = "<a href=\"series.php?seriesid=$item\">".stripslashes($title)."</a>";
+		if(empty($title && $authoruid)) accessDenied();
 	}
 	else { 
 		$titlequery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'revtitle'");
