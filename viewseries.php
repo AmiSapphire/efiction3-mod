@@ -39,6 +39,19 @@ include(_BASEDIR."includes/pagesetup.php");
 $seriesid = (isset($_GET['seriesid']) && is_numeric($_GET['seriesid'])) ? escapestring($_GET['seriesid']) : false;
 $sresult = dbquery(_SERIESQUERY." AND seriesid = '$seriesid' LIMIT 1");
 $series = dbassoc($sresult);
+if(!$series) {
+	$current = "serieserror";
+	// load our template files to set up the page.
+	if (file_exists("$skindir/default.tpl")) $tpl = new TemplatePower("$skindir/default.tpl");
+	else $tpl = new TemplatePower("default_tpls/default.tpl");
+	$title = "Series was not found";
+	$text  = "Series with ID " . (($seriesid) ?? null) . " is not in database";
+	include("includes/pagesetup.php");
+	$tpl->assign("output", "<div id='pagetitle'>" . $title . "</div>" . write_error($text));
+	$tpl->printToScreen();
+	dbclose();
+	exit();
+}
 if(file_exists("$skindir/series_title.tpl")) $titleblock = new TemplatePower( "$skindir/series_title.tpl" );
 else $titleblock = new TemplatePower( "default_tpls/series_title.tpl" );
 $titleblock->prepare( );
