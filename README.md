@@ -80,8 +80,9 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - Future 3.5.9 SMTP database table creation oversight fixes (also install.php consistency change)
 - SQL database engine change from MyISAM to InnoDB
 - SQL database charset changes from latin1 to utf8mb4 (certain fields are utf8mb4 'ci' for sorting purposes and certain count purposes, however)
-- Password hashes are now bcrypt with a cost of 12 instead of MD5 (though old MD5 hashed passwords still work until changed by user)
+- Password hashes are now bcrypt with a cost of 12 instead of MD5 (though old MD5 hashed passwords still work until changed by user; they are warned beforehand)
 - includes/button.php: GD captcha font path handling fix for PHP 8.6/GD 2.4.0 users and remove unused variable
+- includes/plain.button.php: Undefined variable PHP warning fix
 - includes/corefunctions.php: occasional foreach array|object, string given PHP warning fix
 - includes/userlist.php: Uncaught TypeError for Co-Authors field in PHP 8.x when searching for a user with the first character yields no results - discovered this one entirely by accident due to a typo... slipped my hand on the keyboard!
 - install/install.php: SMTP settings table column creation oversight fix, consistency changes, and cleanup
@@ -94,11 +95,13 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
 - blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix
 - admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fix
+- reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix
+- viewseries.php: Add a check for anyone trying to access a nonexistent or no longer existing series - null series page/various PHP warnings fix
 - install/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
-- stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
+- reviews.php, stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
 - docs/config.php, includes/browsecategories.php, includes/categorylist.php, includes/characterlist.php, includes/userlist.php, install/install.php, user/login.php: redundant dbfunctions.php entries including cleanup
 - header.php, rss.php, admin/backup.php, admin/backup_utf8.php, includes/categorylist.php, includes/userlist.php, install/install.php, languages/en.php: possible CHARSET definition breakage - mostly reverted as one former config.php line does belong in includes/dbfunctions.php and very old editing typo causing Uncaught ValueError: Unknown format specifier message regarding changing an author with logging enabled fix
-- rss.php, includes/button.php (me), languages/en.php (me): error and warning message suppression removal - rss and en were a stupid hack for the actual problem in the next item of the list
+- rss.php, includes/button.php (me), includes/plain.button.php (me), languages/en.php (me): error and warning message suppression removal - rss and en were a stupid hack for the actual problem in the next item of the list
 - languages/en.php: undefined variables warning fix for PHP 8.x - applies to any other language PHP files, so they should be updated - only needs one line and one additional file in the **includes** directory
 - admin/settings.php, install/install.php: Do not parse the mailer directory in the Admin Panel's or installer's language setting's drop-down menus
 - admin/viewlog.php, languages/en_admin.php: some hardcoded English entries have been relocated to the Admin Panel language file
