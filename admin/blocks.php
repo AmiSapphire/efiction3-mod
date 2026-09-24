@@ -39,7 +39,6 @@ function save_blocks( $blocks ) {
 }
 if(isset($_GET['admin'])) $admin = $_GET['admin'];
 else $admin = false;
-$content = "";
 
 	if($admin) {
 		$output .= "<div id='pagetitle'>"._ADMIN." - ".(isset($blocks[$_GET['admin']]['title']) ? $blocks[$_GET['admin']]['title'] : "")."</div>";
