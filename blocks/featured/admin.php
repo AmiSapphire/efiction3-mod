@@ -25,12 +25,12 @@ if($use_tpl) $tpl->gotoBlock("_ROOT");
 	}
 	else  {
 		$output .= "<div style='text-align: center;'><span class='label'>"._CURRENT.":</span><br /><div class=\"tblborder\" style=\"width: 80%; text-align: left; margin: 1ex auto;\">".($use_tpl ? _NATPL : $content)."</div><br /></div>";
-		$output .= "<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=featured\">
+		$output .= "<div id='settingsform' style=\"width: 35em; margin-right: -2%;\"><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=featured\">
 			<label for=\"tpl\">"._FORMAT.":</label><select name=\"tpl\" class=\"textbox\" id=\"tpl\"><option value=\"0\"".(!isset($blocks['featured']['tpl']) || !$blocks['featured']['tpl'] ? " selected" : "").">"._DEFAULT."</option>
 					<option value=\"1\"".(isset($blocks['featured']['tpl']) && $blocks['featured']['tpl'] ? " selected" : "").">"._USETPL."</option></select><br />
 			<label for=\"allowtags\">"._TAGS.":</label><select class=\"textbox\" name=\"allowtags\" id=\"allowtags\"><option value=\"0\"".(!isset($blocks['featured']['allowtags']) || !$blocks['featured']['allowtags'] ? " selected" : "").">"._STRIPTAGS."</option>
 					<option value=\"1\"".(isset($blocks['featured']['allowtags']) && $blocks['featured']['allowtags'] ? " selected" : "").">"._ALLOWTAGS."</option></select><br />
 			<label for=\"sumlength\">"._SUMLENGTH.":</label><input type=\"text\" class=\"textbox\" name=\"sumlength\" id=\"sumlength\" size=\"4\" value=\"".(isset($blocks['featured']['sumlength']) ? $blocks['featured']['sumlength'] : "")."\"><br />
-			<INPUT type=\"submit\" class=\"button\" name=\"submit\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._SUMNOTE."</div>";
+			<INPUT type=\"submit\" class=\"button\" style=\"margin-left: 31.8%; margin-top: 0.3em;\" name=\"submit\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._SUMNOTE."</div>";
 	}
 ?>
