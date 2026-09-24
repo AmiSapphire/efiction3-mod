@@ -25,10 +25,10 @@ include("blocks/countdown/block.php");
 	}
 	else  {
 		$output .= "<div style='text-align: center;'><b>"._CURRENT.":</b><br /><div class=\"tblborder\" style=\"width: 80%; margin: 0 auto; text-align: left;\">".$content."</div><br /></div>";
-		$output .= "<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&amp;admin=countdown\">
+		$output .= "<div id='settingsform' style=\"width: 35em; margin-right: 5%;\"><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&amp;admin=countdown\">
 			<div><label for=\"target\">"._TARGETDATE.":</label><input type=\"text\" class=\"textbox\" name=\"target\" id=\"target\" value=\"".(!empty($blocks['countdown']['target']) ? $blocks['countdown']['target'] : date("m/d/Y G:H"))."\"></div>
 			<div><label for=\"CDformat\">"._FORMATCOUNT.":</label><input type=\"text\" class=\"textbox\" name=\"CDformat\" id=\"CDformat\" size=\"40\" value=\"".(empty($blocks['countdown']['CDformat']) ? _COUNTDOWNFORMAT : $blocks['countdown']['CDformat'])."\"></div>
 			<div><label for=\"finish\">"._FINISHMESSAGE.":</label><input type=\"text\" class=\"textbox\" name=\"finish\" id=\"finish\" size=\"40\" value=\"".(empty($blocks['countdown']['finish']) ? _COUNTDOWNOVER : $blocks['countdown']['finish'])."\"></div>
-			<INPUT type=\"submit\" name=\"submit\" class=\"button\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._DATENOTE."</div>";
+			<INPUT type=\"submit\" name=\"submit\" style=' margin-left: 31.8%; margin-top: 0.3em;' class=\"button\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._DATENOTE."</div>";
 	}
 ?>
