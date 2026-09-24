@@ -28,9 +28,9 @@ include("blocks/".$blocks['news']['file']);
 	else  {
 		if(!isset($blocks['news']['sumlength'])) $blocks['news']['sumlength'] = "";
 		$output .= "<div style='text-align: center;'><b>"._CURRENT.":</b><br /><div class=\"tblborder\" style=\"width: 80%; margin: 0 auto; text-align: left;\">$content</div><br /></div>";
-		$output .= "<div><div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=news\">
+		$output .= "<div><div id='settingsform' style=\"width: 35%; margin-right: -2%;\"><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=news\">
 			<div><label for=\"num\">"._NUMNEWS.":</label><input type=\"text\" class=\"textbox\" name=\"num\" id=\"num\" size=\"4\" value=\"".$blocks['news']['num']."\"></div>
 		<div><label for=\"num\">"._SUMLENGTH.":</label><input type=\"text\" class=\"textbox\" name=\"sumlength\" id=\"sumlength\" size=\"6\" value=\"".$blocks['news']['sumlength']."\"></div>
-			<INPUT type=\"submit\" name=\"submit\" class=\"button\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='clear: both;'></div></div>";
+			<INPUT type=\"submit\" name=\"submit\" style=\"margin-left: 31.7%; margin-top: 0.3em;\" class=\"button\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='clear: both;'></div></div>";
 	}
 ?>
