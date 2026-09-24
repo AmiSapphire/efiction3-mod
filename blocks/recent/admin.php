@@ -36,6 +36,6 @@ else include("blocks/recent/en.php");
 					<option value=\"1\"".(!empty($blocks['recent']['allowtags']) ? " selected" : "").">"._ALLOWTAGS."</option></select></div>
 			<div style=\"width: 250%;\"><label for=\"sumlength\">"._SUMLENGTH.":</label><input type=\"text\" class=\"textbox\" name=\"sumlength\" id=\"sumlength\" size=\"4\" value=\"".(!empty($blocks['recent']['sumlength']) ? $blocks['recent']['sumlength'] : "")."\"></div>
 			<div style=\"width: 250%;\"><label for=\"num\">"._NUMUPDATED.":</label><input type=\"text\" class=\"textbox\" name=\"num\" id=\"num\" size=\"4\" value=\"".$blocks['recent']['num']."\"></div>
-			<INPUT style=\"margin-left: 50%;\" type=\"submit\" name=\"submit\" class=\"button\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._SUMNOTE."</div>";
+			<INPUT style=\"margin-left: 79%; margin-top: 0.3em;\" type=\"submit\" name=\"submit\" class=\"button\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._SUMNOTE."</div>";
 	}
 ?>
