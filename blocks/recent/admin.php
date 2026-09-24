@@ -30,12 +30,12 @@ else include("blocks/recent/en.php");
 	else  {
 		$output .= "<div style='text-align: center;'><b>"._CURRENT.":</b><br /><div class=\"tblborder\" style=\"width: 80%; margin: 0 auto; text-align: left;\">".(!empty($blocks['recent']['tpl']) ? _NATPL : $content)."</div><br /></div>";
 		$output .= "<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&amp;admin=recent\">
-			<div><label for=\"tpl\">"._BLOCKTYPE.":</label><select name=\"tpl\" class=\"textbox\" id=\"tpl\"><option value=\"0\"".(empty($blocks['recent']['tpl']) ? " selected" : "").">"._DEFAULT."</option>
+			<div style=\"width: 250%;\"><label for=\"tpl\">"._BLOCKTYPE.":</label><select name=\"tpl\" class=\"textbox\" id=\"tpl\"><option value=\"0\"".(empty($blocks['recent']['tpl']) ? " selected" : "").">"._DEFAULT."</option>
 					<option value=\"1\"".(!empty($blocks['recent']['tpl']) ? " selected" : "").">"._USETPL."</option></select></div>
-			<div><label for=\"allowtags\">"._TAGS.":</label><select name=\"allowtags\" class=\"textbox\" id=\"allowtags\"><option value=\"0\"".(empty($blocks['recent']['allowtags']) ? " selected" : "").">"._STRIPTAGS."</option>
+			<div style=\"width: 250%;\"><label for=\"allowtags\">"._TAGS.":</label><select name=\"allowtags\" class=\"textbox\" id=\"allowtags\"><option value=\"0\"".(empty($blocks['recent']['allowtags']) ? " selected" : "").">"._STRIPTAGS."</option>
 					<option value=\"1\"".(!empty($blocks['recent']['allowtags']) ? " selected" : "").">"._ALLOWTAGS."</option></select></div>
-			<div><label for=\"sumlength\">"._SUMLENGTH.":</label><input type=\"text\" class=\"textbox\" name=\"sumlength\" id=\"sumlength\" size=\"4\" value=\"".(!empty($blocks['recent']['sumlength']) ? $blocks['recent']['sumlength'] : "")."\"></div>
-			<div><label for=\"num\">"._NUMUPDATED.":</label><input type=\"text\" class=\"textbox\" name=\"num\" id=\"num\" size=\"4\" value=\"".$blocks['recent']['num']."\"></div>
-			<INPUT type=\"submit\" name=\"submit\" class=\"button\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._SUMNOTE."</div>";
+			<div style=\"width: 250%;\"><label for=\"sumlength\">"._SUMLENGTH.":</label><input type=\"text\" class=\"textbox\" name=\"sumlength\" id=\"sumlength\" size=\"4\" value=\"".(!empty($blocks['recent']['sumlength']) ? $blocks['recent']['sumlength'] : "")."\"></div>
+			<div style=\"width: 250%;\"><label for=\"num\">"._NUMUPDATED.":</label><input type=\"text\" class=\"textbox\" name=\"num\" id=\"num\" size=\"4\" value=\"".$blocks['recent']['num']."\"></div>
+			<INPUT style=\"margin-left: 50%;\" type=\"submit\" name=\"submit\" class=\"button\" id=\"submit\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._SUMNOTE."</div>";
 	}
 ?>
