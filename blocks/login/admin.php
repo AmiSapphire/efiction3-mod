@@ -28,8 +28,8 @@ else include("blocks/login/en.php");
 	else {
 		if(empty($blocks['login']['template'])) $template = "";
 		else $template = $blocks['login']['template'];
-		$output .= "<div style='text-align: center;'><span class='label'>"._CURRENT.":</span><br /><div class=\"tblborder\" style=\"width: 80%; text-align: left; margin: 1ex auto;\">$content</div></div><br />";
-		$output .= _LOGINNOTE."<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=login\">
+		$output .= "<div style='text-align: center;'><span class='label'>"._CURRENT.":</span><br /><div class=\"tblborder\" style=\"width: 80%; text-align: left; margin: 1ex auto;\">$content</div></div><br /><center>";
+		$output .= _LOGINNOTE."</center><div id='settingsform' style=\"width: 50%; margin-right: -2%;\"><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=login\">
 			<div><label for=\"template\">"._TEMPLATE.":</label><span style='clear: left;'>&nbsp;</span></div>
 			<div class=\"shorttextarea\"><textarea name=\"template\" rows=\"5\" style=\"width: 100%;\" cols=\"40\">".stripslashes($template)."</textarea>";
 		if($tinyMCE) 
@@ -41,6 +41,6 @@ else include("blocks/login/en.php");
 			<label for=\"acctlink\">"._ACCTLINK."</label> <select name=\"acctlink\" id=\"acctlink\" class=\"textbox\" ><option value=\"0\"".(empty($blocks['login']['acctlink']) ? " selected" : "").">"._NO."</option>
 					<option value=\"1\"".(!empty($blocks['login']['acctlink']) ? " selected" : "").">"._YES."</option>
 			</select><br />
-			<INPUT type=\"submit\" class=\"button\" id=\"submit\" name=\"submit\" value=\""._SUBMIT."\"></form></div>";
+			<INPUT type=\"submit\" style=\"margin-left: 31.2%; margin-top: 0.3em;\" class=\"button\" id=\"submit\" name=\"submit\" value=\""._SUBMIT."\"></form></div>";
 	}
 ?>
