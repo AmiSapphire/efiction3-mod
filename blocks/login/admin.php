@@ -33,7 +33,7 @@ else include("blocks/login/en.php");
 			<div><label for=\"template\">"._TEMPLATE.":</label><span style='clear: left;'>&nbsp;</span></div>
 			<div class=\"shorttextarea\"><textarea name=\"template\" rows=\"5\" style=\"width: 100%;\" cols=\"40\">".stripslashes($template)."</textarea>";
 		if($tinyMCE) 
-			$output .= "<div class='tinytoggle'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('template');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div>";
+			$output .= "<div class='tinytoggle' style=\"margin-left: -24%;\"><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('template');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div>";
 		$output .= "</div>
 			<label for=\"form\">"._DEFAULTOPTS.":</label> <select name=\"form\" id=\"form\" class=\"textbox\" ><option value=\"0\"".(empty($blocks['login']['form']) ? " selected" : "").">"._SHORT."</option>
 					<option value=\"1\"".(!empty($blocks['login']['form']) ? " selected" : "").">"._LONG."</option>
