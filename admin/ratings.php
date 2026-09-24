@@ -68,22 +68,22 @@ $output .= "<div id=\"pagetitle\">"._RATINGS."</div>";
 		}
 		$output .= "<form method=\"POST\" id='settingsform' enctype=\"multipart/form-data\" action=\"admin.php?action=ratings&rid=".$_GET['rid']."\">
 			<div class='sectionheader'>".($new ? _NEWRAT : _EDITRAT)."</div>
-			<div><label for='rating'>"._RATING.": </label> 
-			<INPUT  type=\"text\" class=\"textbox=\" name=\"rating\"".($new ? "" : "value=\"".$rating['rating']."\"")."><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_RATING."</span></A>";
+			<div style=\"width: 170%;\"><label for='rating'>"._RATING.": </label>
+			<INPUT  type=\"text\" class=\"textbox=\" name=\"rating\"".($new ? "" : "value=\"".$rating['rating']."\"")."> <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_RATING."</span></A>";
 		if(isset($rating)) 
 			$output .= "<input type=\"hidden\" name=\"oldrating\" value=\"".$rating['rating']."\">";
 		$warninglevel = isset($rating) ? sprintf("%03b", $rating['ratingwarning']) : array(0,0,0);
-		$output .= "</div><div><label for='ratingwarning'>"._WARNINGPOP.": </label>
+		$output .= "</div><div style=\"width: 170%;\"><label for='ratingwarning'>"._WARNINGPOP.": </label>
 		<INPUT type=\"checkbox\" class=\"checkbox\" name=\"ratingwarning\"".(!$new && $warninglevel[2] ? " checked" : "")."><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_RATINGWARNING."</span></A></div>
-		<div><label for='ageconsent'>"._AGECHECK.": </label>
+		<div style=\"width: 170%;\"><label for='ageconsent'>"._AGECHECK.": </label>
 		<INPUT type=\"checkbox\" class=\"checkbox\" name=\"ageconsent\"".(!$new && $warninglevel[1] ? " checked" : "")."><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_RATINGCONSENT."</span></A></div>
-		<div><label for='rusersonly'>"._RUSERSONLY.": </label>
+		<div style=\"width: 170%;\"><label for='rusersonly'>"._RUSERSONLY.": </label>
 		<INPUT type=\"checkbox\" class=\"checkbox\" name=\"rusersonly\"".(!$new && $warninglevel[0] ? " checked" : "")."><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_RATINGUSERS."</span></A></div>
-		<div><label for='warningtext'>"._WARNINGTEXT.": </label>
+		<div style=\"width: 170%;\"><label for='warningtext'>"._WARNINGTEXT.": </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_RATINGWARNTEXT."</span></A></div>
 		<textarea class=\"textarea\" name=\"warningtext\" cols=\"35\" rows=\"4\">".($new ? "" : $rating['warningtext'])."</TEXTAREA>";
 		if($tinyMCE) 
 			$output .= "<div class='tinytoggle'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('warningtext');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div>";	
-		$output .= "</div><div style='text-align: center;'><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_RATINGWARNTEXT."</span></A></div><INPUT type=\"submit\" class=\"button\" id='submit' value=\""._SUBMIT."\" name=\"submit\">";
+		$output .= "<div style='text-align: center;'></div><INPUT type=\"submit\" class=\"button\" id='submit' value=\""._SUBMIT."\" name=\"submit\">";
 	}
 	if($showlist) {
 		$result = dbquery("SELECT * from ".TABLEPREFIX."fanfiction_ratings");
