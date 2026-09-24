@@ -137,11 +137,11 @@ if(!defined("_CHARSET")) exit( );
 		$output .= "</table></p>";
 		$output .= "<div class='sectionheader'>"._ADDNEWCHARS."</div>
 		<div><form method=\"POST\" name=\"addform\" enctype=\"multipart/form-data\" id='settingsform' action=\"admin.php?action=characters&do=addform&catid=$cat\">
-		<div><label for='numchars'>"._NUMCHARS.":</label><select name=\"numchars\">";
+		<div style=\"width: 250%;\"><label style=\"margin-top: 0.4em;\" for='numchars'>"._NUMCHARS.":</label><select name=\"numchars\">";
 		for($x = 1; $x < $itemsperpage + 1; $x++) {
 			$output .= "<option value=\"$x\">$x</option>";
 		}
-		$output .= "</select><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_NUMCHARS."</span></A></div><div id='submitdiv'><INPUT type=\"submit\" class=\"button\" id='submit' value=\""._SUBMIT."\" name=\"submit\"></div>
+		$output .= "</select> <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_NUMCHARS."</span></A></div><div id='submitdiv'><INPUT type=\"submit\" class=\"button\" id='submit' value=\""._SUBMIT."\" name=\"submit\"></div>
 			</form><div style='clear: both;'>&nbsp;</div></div>";
 	}
 ?>
