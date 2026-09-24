@@ -26,12 +26,12 @@ if(!empty($blocks['random']['tpl'])) $tpl->gotoBlock("_ROOT");
 	}
 	else  {
 		$output .= "<div style='text-align: center;'><b>"._CURRENT.":</b><br /><div class=\"tblborder\" style=\"width: 80%; margin: 1ex auto; text-align: left;\">".(!empty($blocks['random']['tpl']) ? _NATPL : $content)."</div><br /></div>";
-		$output .= "<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=random\">
+		$output .= "<div id='settingsform' style=\"width: 35em; margin-right: -2%;\"><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=random\">
 			<label for=\"tpl\">"._BLOCKTYPE.":</label><select class=\"textbox\" name=\"tpl\" id=\"tpl\"><option value=\"0\"".(empty($blocks['random']['tpl']) ? " selected" : "").">"._DEFAULT."</option>
 					<option value=\"1\"".(!empty($blocks['random']['tpl']) ? " selected" : "").">"._USETPL."</option></select><br />
 			<label for=\"allowtags\">"._TAGS.":</label><select class=\"textbox\" name=\"allowtags\" id=\"allowtags\"><option value=\"0\"".(empty($blocks['random']['allowtags']) ? " selected" : "").">"._STRIPTAGS."</option>
 					<option value=\"1\"".(!empty($blocks['random']['allowtags']) ? " selected" : "").">"._ALLOWTAGS."</option></select><br />
 			<label for=\"sumlength\">"._SUMLENGTH.":</label><input type=\"text\" class=\"textbox\" name=\"sumlength\" id=\"sumlength\" size=\"4\" value=\"".(!empty($blocks['random']['sumlength']) ? $blocks['random']['sumlength'] : "")."\"><br />
-			<INPUT type=\"submit\" name=\"submit\" id=\"submit\" class=\"button\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._SUMNOTE."</div>";
+			<INPUT type=\"submit\" name=\"submit\" id=\"submit\" style=\"margin-left: 31.8%; margin-top: 0.3em;\" class=\"button\" value=\""._SUBMIT."\"></form></div><div style='text-align: center;'>"._SUMNOTE."</div>";
 	}
 ?>
