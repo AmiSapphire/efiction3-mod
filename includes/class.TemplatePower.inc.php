@@ -39,7 +39,7 @@ define("T_BYVAR", 1);
 define("TP_ROOTBLOCK", '_ROOT');
 
 
-#[AllowDynamicProperties]
+#[\AllowDynamicProperties]
 class TemplatePowerParser
 {
   protected $tpl_base;              //Array( [filename/varcontent], [T_BYFILE/T_BYVAR] )
