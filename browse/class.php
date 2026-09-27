@@ -41,6 +41,7 @@ else if(isset($type_id)) {
 	$output .= "<div id='pagetitle'>".$classtypelist[$type_id]['title']."</div>";
 	foreach($classlist as $c => $i) {
 		if($i['type'] == $type_id) $clist[] = "<a href='browse.php?type=class&amp;type_id=$type_id&amp;classid=$c'>".$i['name']."</a><br />";
+		else $clist[] = '';
 	}
 	$total = count($clist);
 	$count = 0;
