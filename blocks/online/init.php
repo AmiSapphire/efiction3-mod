@@ -31,5 +31,5 @@ dbquery("CREATE TABLE IF NOT EXISTS `".TABLEPREFIX. "fanfiction_online` (
   `online_uid` int(11) NOT NULL default '0',
   `online_ip` varbinary(16) DEFAULT NULL,
   `online_timestamp` int(11) NOT NULL default '0'
-) ENGINE=MyISAM;");
+) ENGINE=InnoDB;");
 ?>

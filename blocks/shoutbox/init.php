@@ -33,5 +33,5 @@ dbquery("CREATE TABLE IF NOT EXISTS `".TABLEPREFIX."fanfiction_shoutbox` (
   `shout_message` varchar(200) NOT NULL default '',
   `shout_datestamp` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`shout_id`)
-) ENGINE=MyISAM;");
+) ENGINE=InnoDB;");
 ?>
