@@ -28,6 +28,7 @@ if(!defined("_CHARSET")) exit( );
 
 $convert = isset($_GET['conv']) ? $_GET['conv'] : false;
 $output .= "<div id='pagetitle'>"._ARCHIVECONV."</div>";
+$output .= "<center>Warning: You should put the archive in maintenance mode before converting the database; it will be very live otherwise!</center>";
 if($convert == "convert_mod") {
 	if(file_exists("admin/convert_mod.php")) include_once("admin/convert_mod.php");
 }
@@ -47,7 +48,6 @@ if($convert == "convert_1400") {
 	if(file_exists("admin/convert_1400.php")) include_once("admin/convert_1400.php");
 }
 $output .= "
-<center>Warning: You should put the archive in maintenance mode before converting the database; it will be very live otherwise!</center>
 <ul>
 	<li><a href='admin.php?action=convert&amp;conv=convert_mod'>"._CONVERT_MOD."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERTMOD."</span></A></li>
 	<li><a href='admin.php?action=convert&amp;conv=convert_utf'>"._CONVERT_UTF."</a>  <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_CONVERTUTF."</span></A></li>
