@@ -101,6 +101,9 @@ if($confirm == "yes") {
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authors CHANGE `penname` `penname` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '', CHANGE `realname` `realname` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_categories CHANGE `category` `category` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_characters CHANGE `charname` `charname` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '';");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_classes CHANGE `class_name` `class_name` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '';");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_classtypes CHANGE `classtype_name` `classtype_name` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '';");
+		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_classtypes CHANGE `classtype_title` `classtype_title` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_favorites CHANGE `type` `type` CHAR(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_ratings CHANGE `rating` `rating` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_series CHANGE `title` `title` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '', CHANGE `summary` `summary` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;");

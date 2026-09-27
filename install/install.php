@@ -616,15 +616,15 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
 				$classes = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_classes` (
   `class_id` int(11) NOT NULL auto_increment,
   `class_type` int(11) NOT NULL default '0',
-  `class_name` varchar(100) NOT NULL default '',
+  `class_name` varchar(100) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY  (`class_id`),
   KEY `byname` (`class_type`,`class_name`,`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;");
 				$output .= "<tr><td>" . $tableprefix . "fanfiction_classes</td><td align='center'>" . ($classes ? "<img src=\"../images/check.gif\">" : "<img src=\"../images/X.gif\">") . "</td></tr>";
 				$classtypes = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_classtypes` (
   `classtype_id` int(11) NOT NULL auto_increment,
-  `classtype_name` varchar(50) NOT NULL default '',
-  `classtype_title` varchar(50) NOT NULL default '',
+  `classtype_name` varchar(50) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
+  `classtype_title` varchar(50) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY  (`classtype_id`),
   UNIQUE KEY `classtype_name` (`classtype_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;");
