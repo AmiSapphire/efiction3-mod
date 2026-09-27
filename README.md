@@ -97,6 +97,8 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fix
 - reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix
 - viewseries.php: Add a check for anyone trying to access a nonexistent or no longer existing series - null series page/various PHP warnings fix
+- browse/ratings.php: Uncaught TypeError in PHP 8 with visiting the Browse Ratings page with no ratings listed and Undefined variable PHP warning fixes
+- browse/class.php: Uncaught TypeError in PHP 8 with visiting a classification type that has no classifications listed fix
 - install/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
 - reviews.php, stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
 - docs/config.php, includes/browsecategories.php, includes/categorylist.php, includes/characterlist.php, includes/userlist.php, install/install.php, user/login.php: redundant dbfunctions.php entries including cleanup
