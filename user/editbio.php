@@ -54,7 +54,7 @@ function random_string ($charset_string, $length)
 	// all MD5 hashes are 32 exact characters long, hexadecimal, 0-9 and a-f random
 	// this set is a bit cursed... but it works
 	$pwdcharlengthquery = dbquery("SELECT CHAR_LENGTH(password) FROM ".TABLEPREFIX."fanfiction_authors WHERE uid = ".USERUID.";");
-	$pwdlengthfetch = mysqli_fetch_row($pwdcharlengthquery);
+	$pwdlengthfetch = dbrow($pwdcharlengthquery);
 	$pwdlengthstring = end($pwdlengthfetch);
 	$pwdcheck = (int) $pwdlengthstring;
 	if ($pwdcheck == 32) $output .= "<center>"._INSECUREPWD."</center><br>";
