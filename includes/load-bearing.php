@@ -6,33 +6,33 @@ if(!isset($allowed_tags)){
 $allowed_tags = 'Variable allowed_tags is not set';
 }
 if(!isset($recentdays)){
-$recentdays = 'Varaible recentdays is not set';
+$recentdays = 'Variable recentdays is not set';
 }
 if(!isset($sitename)){
 $sitename = 'Variable sitename is not set';
 }
 if(!isset($url)){
-$url = 'Varaible url is not set';
+$url = 'Variable url is not set';
 }
 if(!isset($multiplecats)){
 $multiplecats = 'Variable multiplecats is not set';
 }
 if(!isset($minwords)){
-$minwords = 'Varaible minwords is not set';
+$minwords = 'Variable minwords is not set';
 }
 if(!isset($maxwords)){
 $maxwords = 'Variable maxwords is not set';
 }
 if(!isset($action)){
-$action = 'Varaible action is not set';
+$action = 'Variable action is not set';
 }
 if(!isset($pwdsetting)){
 $pwdsetting = 'Variable pwdsetting is not set';
 }
 if(!isset($imagewidth)){
-$imagewidth = 'Varaible imagewidth is not set';
+$imagewidth = 'Variable imagewidth is not set';
 }
 if(!isset($imageheight)){
-$imageheight = 'Varaible imageheight is not set';
+$imageheight = 'Variable imageheight is not set';
 }
 ?>
