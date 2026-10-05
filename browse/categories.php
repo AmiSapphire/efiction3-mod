@@ -82,6 +82,7 @@ $disablesorts = array("categories");
 			$output .= "</div>";
 		}
 	}
+	else $output .= write_message(_NORESULTS);
 	if($catid > 0) {
 		$storyquery .= _ORDERBY;
 		$numrows = search(_STORYQUERY.$storyquery, _STORYCOUNT.$countquery, "browse.php?");

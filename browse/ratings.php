@@ -53,6 +53,7 @@ else {
 		}
 		$output .= "</div>".($displaycolumns ? "</div>" : "")."<div class='cleaner'>&nbsp;</div></div>";
 	}
+	else $output .= write_message(_NORESULTS);
 }
 
 ?>
