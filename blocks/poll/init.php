@@ -42,5 +42,6 @@ dbquery("CREATE TABLE IF NOT EXISTS `".TABLEPREFIX. "fanfiction_poll` (
 `poll_start` int(10) unsigned NOT NULL default '0',
 `poll_end` int(10) unsigned NOT NULL default '0',
 `poll_results` VARCHAR( 250 ) NULL ,
-PRIMARY KEY ( `poll_id` ))");
+PRIMARY KEY ( `poll_id` )
+) ENGINE=InnoDB;");
 ?>
