@@ -36,7 +36,7 @@ if($confirm == "yes") {
 		// only if you installed the 'clean' future 3.5.9 version prior
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'setreg'")))
 			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `setreg` tinyint(1) NOT NULL DEFAULT '1' AFTER `multiplecats`");
-		if (!dbassoc(dbquery("SELECT * FROM fanfiction_panels WHERE panel_name = 'convert';"))) {
+		if (!dbassoc(dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_name = 'convert' AND panel_title = 'Archive Conversion';"))) {
 			dbquery("UPDATE `".TABLEPREFIX."fanfiction_panels` SET panel_order = '12' WHERE panel_name = 'modules'");
 			dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_panels`(`panel_name`, `panel_title`, `panel_url`, `panel_level`, `panel_hidden`, `panel_type`, `panel_order`) VALUES( 'convert', 'Archive Conversion', '', '1', '0', 'A', '11')");
 		}
