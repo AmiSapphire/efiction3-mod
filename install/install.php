@@ -520,8 +520,7 @@ switch ($_GET['step'])
   KEY `uid` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;");
 				$output .= "<tr><td>" . $tableprefix . "fanfiction_authorinfo</td><td align='center'>" . ($authorinfo ? "<img src=\"../images/check.gif\">" : "<img src=\"../images/X.gif\">") . "</td></tr>";
-				$authorprefs = dbquery("
-CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
+				$authorprefs = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
   `uid` int(11) NOT NULL default '0',
   `newreviews` tinyint(1) NOT NULL default '0',
   `newrespond` tinyint(1) NOT NULL default '0',
@@ -692,8 +691,7 @@ CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_authorprefs` (
   KEY `message_name` (`message_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;");
 				$output .= "<tr><td>" . $tableprefix . "fanfiction_messages</td><td align='center'>" . ($messages ? "<img src=\"../images/check.gif\">" : "<img src=\"../images/X.gif\">") . "</td></tr>";
-				$modules = dbquery("
-CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_modules` (
+				$modules = dbquery("CREATE TABLE IF NOT EXISTS `" . $tableprefix . "fanfiction_modules` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL default 'Test Module',
   `version` varchar(10) NOT NULL default '1.0',
