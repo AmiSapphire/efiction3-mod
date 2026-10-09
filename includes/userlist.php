@@ -1,11 +1,6 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(-1);
-
 define("_BASEDIR", "../");
 define("_USERCHARSET", "utf-8");
-
 include("../config.php");
 list($tableprefix, $language) = dbrow(dbquery("SELECT tableprefix, language FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '$sitekey'"));
 define("TABLEPREFIX", $tableprefix);
