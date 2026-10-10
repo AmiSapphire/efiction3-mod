@@ -229,7 +229,7 @@ if($current == "viewstory"){
 		//header("Content-Disposition: inline; filename=\"".$titleinfo."\"");
  	}
 }
-if($current == "viewuser" && isNumber($uid)) {
+if($current == "viewuser" && (isNumber($uid ?? null))) {
 	$author = dbquery("SELECT "._PENNAMEFIELD." as penname FROM "._AUTHORTABLE." WHERE "._UIDFIELD." = '".$uid."'");
 	list($penname) = dbrow($author);
 	$titleinfo = "$sitename :: $penname";

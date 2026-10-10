@@ -29,23 +29,23 @@ $tpl->newBlock("profile");
 $result2 = dbquery("SELECT *, date as date FROM "._AUTHORTABLE." LEFT JOIN ".TABLEPREFIX."fanfiction_authorprefs as ap ON ap.uid = "._UIDFIELD." WHERE "._UIDFIELD." = '$uid' LIMIT 1");
 $userinfo = dbassoc($result2);
 $nameinfo = "";
-if($userinfo['email'])
+if(isset($userinfo['email']))
 	$nameinfo .= " [<a href=\"viewuser.php?action=contact&amp;uid=".$userinfo['uid']."\">"._CONTACT."</a>]";
-if(!empty($favorites) && isMEMBER && $userinfo['uid'] != USERUID) {
-	$fav = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_favorites WHERE uid = '".USERUID."' AND type = 'AU' AND item = '".$userinfo['uid']."'");
-	if(dbnumrows($fav) == 0) $nameinfo .= " [<a href=\"user.php?action=favau&amp;uid=".USERUID."&amp;add=".$userinfo['uid']."\">"._ADDAUTHOR2FAVES."</a>]";
+if(!empty($favorites) && isMEMBER && isset($userinfo['uid']) != USERUID) {
+	$fav = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_favorites WHERE uid = '".USERUID."' AND type = 'AU' AND item = '".(isset($userinfo['uid']))."'");
+	if(dbnumrows($fav) == 0) $nameinfo .= " [<a href=\"user.php?action=favau&amp;uid=".USERUID."&amp;add=".(isset($userinfo['uid']))."\">"._ADDAUTHOR2FAVES."</a>]";
 }
  
-$tpl->assign("userpenname", $userinfo['penname']." ".$nameinfo);
-$tpl->assign("membersince", date("$dateformat", $userinfo['date']));
+$tpl->assign("userpenname", ($userinfo['penname'] ?? null)." ".$nameinfo);
+$tpl->assign("membersince", date("$dateformat", ($userinfo['date'] ?? null)));
 
-if($userinfo['realname'])
+if(isset($userinfo['realname']))
 	$tpl->assign("realname", $userinfo['realname']);
-if($userinfo['bio']) {
+if(isset($userinfo['bio'])) {
 	$bio = nl2br($userinfo['bio']);	
 	$tpl->assign("bio", stripslashes($bio));
 }
-if($userinfo['image'])
+if(isset($userinfo['image']))
 	$tpl->assign("image", "<img src=\"".$userinfo['image']."\">");
 
 $tpl->assign("userlevel", isset($userinfo['level']) && $userinfo['level'] > 0 && $userinfo['level'] < 4 ? _ADMINISTRATOR.(isADMIN ? " - ".$userinfo['level'] : "") : _MEMBER);
@@ -86,7 +86,7 @@ $tpl->assign("reportthis", "[<a href=\""._BASEDIR."contact.php?action=report&amp
 $adminopts = "";
 if(isADMIN && uLEVEL < 3) {
 	$adminopts .= "<div class=\"adminoptions\"><span class='label'>"._ADMINOPTIONS.":</span> ".(isset($userinfo['validated']) && $userinfo['validated'] ? "[<a href=\"admin.php?action=members&amp;revoke=$uid\" class=\"vuadmin\">"._REVOKEVAL."</a>] " : "[<a href=\"admin.php?action=members&amp;validate=$uid\" class=\"vuadmin\">"._VALIDATE."</a>] ")."[<a href=\"user.php?action=editbio&amp;uid=$uid\" class=\"vuadmin\">"._EDIT."</a>] [<a href=\"admin.php?action=members&amp;delete=$uid\" class=\"vuadmin\">"._DELETE."</a>]";
-	$adminopts .= " [<a href=\"admin.php?action=members&amp;".($userinfo['level'] < 0 ? "unlock=".$userinfo['uid']."\" class=\"vuadmin\">"._UNLOCKMEM : "lock=".$userinfo['uid']."\" class=\"vuadmin\">"._LOCKMEM)."</a>]";
+	$adminopts .= " [<a href=\"admin.php?action=members&amp;".(isset($userinfo['level']) < 0 ? "unlock=".($userinfo['uid'] ?? null)."\" class=\"vuadmin\">"._UNLOCKMEM : "lock=".($userinfo['uid'] ?? null)."\" class=\"vuadmin\">"._LOCKMEM)."</a>]";
 	$adminopts .= " [<a href=\"admin.php?action=admins&amp;".(isset($userinfo['level']) && $userinfo['level'] > 0 ? "revoke=$uid\" class=\"vuadmin\">"._REVOKEADMIN."</a>] [<a href=\"admin.php?action=admins&amp;do=edit&amp;uid=$uid\" class=\"vuadmin\">"._EDITADMIN : "do=new&amp;uid=$uid\" class=\"vuadmin\">"._MAKEADMIN)."</a>]</div>";
 	$tpl->assign("adminoptions", $adminopts);
 }
