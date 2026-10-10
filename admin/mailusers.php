@@ -27,7 +27,7 @@ if(!defined("_CHARSET")) exit( );
 	include("includes/emailer.php");
 	$cat = isset($_GET['cat']) ? $_GET['cat'] : -1;
 
-	$output .= "<div style='text-align: center;'><h4>"._MAILUSERS."</h4></div>";
+	$output .= "<div id=\"pagetitle\">"._MAILUSERS."</div>";
 	if(isset($_POST['submit'])) {
 		$who = isset($_POST['who']) ? $_POST['who'] : false;
 		$category = isset($_POST['category']) ? $_POST['category'] : false;
