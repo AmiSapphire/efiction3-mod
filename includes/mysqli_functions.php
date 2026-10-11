@@ -22,8 +22,8 @@ function dbconnect($dbhost, $dbuser, $dbpass, $dbname ) {
 	mysqli_query($mysqli_access, "SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
 
 	// comment UTF8 and uncomment UTF8MB4 if needed - especially when converted to Mod
-    //mysqli_set_charset($mysqli_access, "SET NAMES utf8mb4;");
-    mysqli_set_charset($mysqli_access, "utf8;");
+    //mysqli_set_charset($mysqli_access, "utf8mb4");
+    mysqli_set_charset($mysqli_access, "utf8");
 
 	// comment UTF8 and uncomment UTF8MB4 if needed - especially when converted to Mod
     //mysqli_query($mysqli_access, "SET NAMES UTF8MB4;");
