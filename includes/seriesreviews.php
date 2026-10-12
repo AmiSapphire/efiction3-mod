@@ -55,7 +55,7 @@ $newcount = dbquery("SELECT count(reviewid) as totalcount FROM ".TABLEPREFIX."fa
 	(count($serieslist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $serieslist))."') > 0 AND type = 'SE')" : "").
 	") AND review != 'No Review'");
 list($totalcount) = dbrow($newcount);
-if($totalcount) $update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_series SET rating = '".round($totalreviews??0)."', reviews = '$totalcount' WHERE seriesid = '$thisseries'");
+if($totalcount) $update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_series SET rating = '".round($totalreviews ?? 0)."', reviews = '$totalcount' WHERE seriesid = '$thisseries'");
 $parentq = dbquery("SELECT seriesid FROM ".TABLEPREFIX."fanfiction_inseries WHERE subseriesid = '$thisseries' AND seriesid != '$thisseries'");
 if(dbnumrows($parentq) > 0) list($parent) = dbrow($parentq);
 else $parent = false;
