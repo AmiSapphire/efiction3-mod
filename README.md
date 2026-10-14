@@ -97,10 +97,12 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fix
 - reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix
 - viewseries.php: Add a check for anyone trying to access a nonexistent or no longer existing series - null series page/various PHP warnings fix
+- viewuser.php: Add a check for anyone trying to access any nonexistent or formerly existing users - this also applies to UID 0, which should never exist
 - browse/ratings.php: Uncaught TypeError in PHP 8 with visiting the Browse Ratings page with no ratings listed and Undefined variable PHP warning fixes
-- browse/class.php: Uncaught TypeError in PHP 8 with visiting a classification type that has no classifications listed fix
+- browse/class.php: Uncaught TypeError in PHP 8 with visiting a classification type that has no classifications listed fixes - also Undefined array key, Trying to access array offset on null, and second Uncaught TypeError fixes
 - install/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
 - reviews.php, stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
+- header.php, user/profile.php: Trying to access array on null and Undefined variable PHP warnings dirty fix for trying to access nonexistent or formerly existing user profiles
 - docs/config.php, includes/browsecategories.php, includes/categorylist.php, includes/characterlist.php, includes/userlist.php, install/install.php, user/login.php: redundant dbfunctions.php entries including cleanup
 - header.php, rss.php, admin/backup.php, admin/backup_utf8.php, includes/categorylist.php, includes/userlist.php, install/install.php, languages/en.php: possible CHARSET definition breakage - mostly reverted as one former config.php line does belong in includes/dbfunctions.php and very old editing typo causing Uncaught ValueError: Unknown format specifier message regarding changing an author with logging enabled fix
 - rss.php, includes/button.php (me), includes/plain.button.php (me), languages/en.php (me): error and warning message suppression removal - rss and en were a stupid hack for the actual problem in the next item of the list
