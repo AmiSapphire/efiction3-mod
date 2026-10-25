@@ -1028,12 +1028,12 @@ switch ($_GET['step'])
 				$language = $_POST['language'];
 				$settingsprefix = descript($_POST['settingsprefix']);
 				$text = "<?php \n".
-					"\$dbhost = \"$dbhost\";\n".
-					"\$dbname = \"$dbname\";\n".
-					"\$dbuser= \"$dbuser\";\n".
-					"\$dbpass = \"$dbpass\";\n".
-					"\$sitekey = \"$sitekey\";\n".
-					"\$settingsprefix = \"$settingsprefix\";\n\n".
+					"\$dbhost = ".var_export(($dbhost), true).";\n".
+					"\$dbname = ".var_export(($dbname), true).";\n".
+					"\$dbuser= ".var_export(($dbuser), true).";\n".
+					"\$dbpass = ".var_export(($dbpass), true).";\n".
+					"\$sitekey = ".var_export(($sitekey), true).";\n".
+					"\$settingsprefix = ".var_export(($settingsprefix), true).";\n\n".
 					"include(\"includes/dbfunctions.php\");\n".
 					"?>";
 

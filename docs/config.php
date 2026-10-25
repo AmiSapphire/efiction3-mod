@@ -1,10 +1,10 @@
 <?php 
-$dbhost = "localhost";
-$dbname = "dbname";
-$dbuser= "dbuser";
-$dbpass = "dbpass";
-$sitekey = "";
-$settingsprefix = "settings";
+$dbhost = 'localhost';
+$dbname = 'dbname';
+$dbuser= 'dbuser';
+$dbpass = 'dbpass';
+$sitekey = '';
+$settingsprefix = 'settings';
 
 include("includes/dbfunctions.php");
 ?>
