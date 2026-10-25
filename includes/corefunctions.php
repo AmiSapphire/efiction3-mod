@@ -593,3 +593,9 @@ function fixup_newlines($string)
 	$string = str_replace(array("\\r\\n", "\\n\\r", "\\r", "\\n"), "<br />", $string);
 	return $string;
 }
+
+// ---- Modernization shims (PHP 8.x) ------------------------------------
+// utf8_encode()/utf8_decode() are deprecated as of PHP 8.2 and removed in PHP 9.
+if(!function_exists('utf8_encode')) { function utf8_encode($s) { return iconv('ISO-8859-1', 'UTF-8', $s); } }
+if(!function_exists('utf8_decode')) { function utf8_decode($s) { return iconv('UTF-8', 'ISO-8859-1', $s); } }
+?>
