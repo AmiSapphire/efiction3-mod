@@ -32,7 +32,7 @@ function featured( ) {
 	if($_GET['feature'])
 		dbquery("UPDATE ".TABLEPREFIX."fanfiction_stories SET featured = 1 WHERE sid = ".$_GET['feature']);
 	$fquery = "SELECT stories.*, stories.title as title, author.penname, DATE_FORMAT(FROM_UNIXTIME(stories.updated), '%Y.%m.%d') as updatesort, DATE_FORMAT(stories.date, '$datim') as date, DATE_FORMAT(FROM_UNIXTIME(stories.updated), '$datim') as updated FROM ".TABLEPREFIX."fanfiction_authors as author, ".TABLEPREFIX."fanfiction_stories as stories WHERE stories.featured > 0 AND stories.uid = author.uid ORDER BY stories.featured";
-	$fresult = dbquery($fquery) or die(_FATALERROR."Query: ".$fquery."<br />Error: (". $dbconnect->errno.") ". $dbconnect->error);
+	$fresult = dbquery($fquery) or die(_FATALERROR."Query: ".$fquery."<br />Error: ".dberror());
 	$output = "<center><table class=\"tblborder\" cellpadding=\"5\"><tr><th colspan=\"2\" align=\"center\">"._FEATUREDSTORIES."</th></tr>";
 	if(!dbnumrows($fresult)) $output .= "<tr><td colspan=\"2\" align=\"center\">"._NOSTORIES."</td><tr>";
 	while($story = dbassoc($fresult)) {
@@ -48,7 +48,7 @@ function submitted()
 	global $tableprefix, $admincats, $allowed_tags, $dbconnect;
 		$output = "<center><h4>"._SUBMITTED."</h4></center>";
 		$query = "SELECT story.title as storytitle, chapter.uid, chapter.sid, story.catid, chapter.chapid, chapter.inorder, chapter.title, author.penname FROM (".TABLEPREFIX."fanfiction_chapters as chapter, ".TABLEPREFIX."fanfiction_authors as author) LEFT JOIN ".TABLEPREFIX."fanfiction_stories as story ON story.sid = chapter.sid WHERE chapter.validated = '0' AND chapter.uid = author.uid ORDER BY story.title ASC, chapter.inorder ASC";
-		$result = dbquery($query) or die(_FATALERROR."Query: ".$query."<br />Error: (". $dbconnect->errno.") ". $dbconnect->error);
+		$result = dbquery($query) or die(_FATALERROR."Query: ".$query."<br />Error: ".dberror());
 		$output .= "<table class=\"tblborder\" cellspacing=\"0\" cellpadding=\"3\" align=\"center\"><tr class=\"tblborder\"><th>"._TITLE."</th><th>"._AUTHOR."</th><th>"._CATEGORY."</th><th>"._OPTIONS."</th></tr>";
 		$array = explode(",", $admincats);
 		while ($story = dbassoc($result))

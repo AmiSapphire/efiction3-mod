@@ -35,6 +35,12 @@ function dbconnect($dbhost, $dbuser, $dbpass, $dbname ) {
 	return $mysqli_access;
 }
 
+// Error text of the last statement, for diagnostics in die() strings: "(errno) message".
+function dberror() {
+	global $dbconnect;
+	if(!($dbconnect instanceof mysqli)) return "";
+	return "(".$dbconnect->errno.") ".$dbconnect->error;
+}
 
 function dbquery($query) {
 	global $debug, $headerSent, $dbconnect;
@@ -47,32 +53,40 @@ function dbquery($query) {
 	catch (mysqli_sql_exception $e)
 	{
 		if(function_exists('accessDenied')) {
-			accessDenied(_FATALERROR . (isADMIN ? "Query: " . $query . "<br />Error: (" . $dbconnect->errno . ") " . $dbconnect->error : ""));
+			accessDenied(_FATALERROR . (isADMIN ? "Query: " . $query . "<br />Error: " . dberror() : ""));
 		}
-		else {		
+		else {
 			// this is very rare case. Uncomment this if you really lost what is doing. This is before pagesetup.php, so Admin is not set
-			//	echo "Query: " . $query . "<br />Error: (" . $dbconnect->errno . ") " . $dbconnect->error  <br /> ;
-			die(" <b>A fatal MySQL error was encountered.</b><br /> Check tableprefix. ");	
+			//	echo "Query: " . $query . "<br />Error: " . dberror() "<br />" ;
+			die(" <b>A fatal MySQL error was encountered.</b><br /> Check tableprefix. ");
 		}
-			
-	} 
+
+	}
 	return $result;
 }
 
 function dbnumrows($query) {
 	global $debug, $dbconnect;
 	if ($query === false && $debug) {
-		echo "<!-- dbnumrows ".$dbconnect->error." -->\n";
+		echo "<!-- dbnumrows ".($dbconnect ? $dbconnect->error : "")." -->\n";
 	}
-	return $query->num_rows;
+	return $query === false ? 0 : $query->num_rows;
+}
+
+function dbfetcharray($query) {
+	global $debug, $dbconnect;
+	if ($query === false && $debug) {
+		echo "<!-- dbfetcharray ".($dbconnect ? $dbconnect->error : "")." -->\n";
+	}
+	return $query === false ? null : $query->fetch_array();
 }
 
 function dbassoc($query) {
 	global $debug, $dbconnect;
 	if ($query === false && $debug) {
-		echo "<!-- dbassoc ".$dbconnect->errno." -->\n";
+		echo "<!-- dbassoc ".($dbconnect ? $dbconnect->error : "")." -->\n";
 	}
-	return $query->fetch_assoc();
+	return $query === false ? null : $query->fetch_assoc();
 }
 
 function dbinsertid($tablename = 0) {
@@ -83,14 +97,14 @@ function dbinsertid($tablename = 0) {
 function dbrow($query) {
 	global $debug, $dbconnect;
 	if ($query === false && $debug) {
-		if($dbconnect->error) echo "<!-- dbrow ".$dbconnect->errno." -->\n";
+		if($dbconnect->error) echo "<!-- dbrow ".($dbconnect ? $dbconnect->error : "")." -->\n";
 	}
-	return $query->fetch_row();
+	return $query === false ? null : $query->fetch_row();
 }
 
 function dbclose() {
 	global $dbconnect;
-	$dbconnect->close();
+	if($dbconnect instanceof mysqli) $dbconnect->close();
 }
 
 // Used to escape text being put into the database.
