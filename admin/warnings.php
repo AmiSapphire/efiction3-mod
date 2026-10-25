@@ -68,14 +68,14 @@ function warnings( ) {
 		}
 	}
 	if ($_POST['submit']) {
-		if($_GET['warning'] == "new") dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_warnings (warning) VALUES ('".addslashes(stripinput(strip_tags($_POST['warning'])))."')") or die(_FATALERROR."Query: INSERT INTO ".TABLEPREFIX."fanfiction_warnings (warning) VALUES ('".addslashes(strip_tags($_POST['warning']))."')<br />Error: (". $dbconnect->errno.") ".$dbconnect->error);
+		if($_GET['warning'] == "new") dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_warnings (warning) VALUES ('".addslashes(stripinput(strip_tags($_POST['warning'])))."')") or die(_FATALERROR."Query: INSERT INTO ".TABLEPREFIX."fanfiction_warnings (warning) VALUES ('".addslashes(strip_tags($_POST['warning']))."')<br />Error: ".dberror());
 		else dbquery("UPDATE ".TABLEPREFIX."fanfiction_warnings set warning = '".addslashes(stripinput(strip_tags($_POST['warning'])))."' WHERE wid = '".$_GET['warning']."'") or die(_FATALERROR."Query: UPDATE ".TABLEPREFIX."fanfiction_warnings set warning = '".addslashes(strip_tags($_POST['warnings']))."' WHERE wid = '".$_GET['warning']."'<br />Error: (". $dbconnect->errno.") ". $dbconnect->error);
 			$output .= "<center>"._ACTIONSUCCESSFUL."</center>";
 	}
 	else {
 		if(isset($_GET['warning'])) {
 			if($_GET['warning'] != "new") {
-				$warnquery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_warnings WHERE wid = '".$_GET['warning']."' LIMIT 1") or die(_FATALERROR."Query: SELECT * FROM ".TABLEPREFIX."fanfiction_warnings WHERE wid = '".$_GET['warning']."' LIMIT 1<br />Error: (". $dbconnect->errno.") ". $dbconnect->error);
+				$warnquery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_warnings WHERE wid = '".$_GET['warning']."' LIMIT 1") or die(_FATALERROR."Query: SELECT * FROM ".TABLEPREFIX."fanfiction_warnings WHERE wid = '".$_GET['warning']."' LIMIT 1<br />Error: ".dberror());
 				$warning = dbassoc($warnquery);
 			}
 			$output .=  "<form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=warnings&warning=".$_GET['warning']."\">
