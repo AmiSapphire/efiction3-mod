@@ -48,14 +48,14 @@ if(!defined("_CHARSET")) exit( );
 	if($stories['classes'] > 0) {
 		foreach(explode(",", $stories['classes']) as $c) {
 		   if(array_key_exists($c, $classlist)) {
-			if(isset($action) && $action == "printable") { 
-				 $storyclasses[$classlist["$c"]['type']][] = $classlist[$c]['name'];
+			if(isset($action) && $action == "printable") {
+				$storyclasses[$classlist["$c"]['type']][] = $classlist[$c]['name'];
 			}
 			else {
-				$storyclasses[$classlist["$c"]['type']][] = 
+				$storyclasses[$classlist["$c"]['type']][] =
 				"<a href='browse.php?type=class&amp;type_id=".$classlist["$c"]['type']."&amp;classid=$c'>".$classlist[$c]['name']."</a>";
-			}	
-		}
+				}
+			}
 		}
 	}
 	foreach($classtypelist as $num => $c) {
