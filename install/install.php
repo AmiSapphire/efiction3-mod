@@ -1027,19 +1027,17 @@ switch ($_GET['step'])
 				if (empty($sitekey)) $sitekey = random_string($randomcharset, 10);
 				$language = $_POST['language'];
 				$settingsprefix = descript($_POST['settingsprefix']);
-				$text = "<?php 
-\$dbhost = \"$dbhost\";
-\$dbname = \"$dbname\";
-\$dbuser= \"$dbuser\";
-\$dbpass = \"$dbpass\";
-\$sitekey = \"$sitekey\";
-\$settingsprefix = \"$settingsprefix\";
-
-include(\"includes/dbfunctions.php\");
-?>";
+				$text = "<?php \n".
+					"\$dbhost = \"$dbhost\";\n".
+					"\$dbname = \"$dbname\";\n".
+					"\$dbuser= \"$dbuser\";\n".
+					"\$dbpass = \"$dbpass\";\n".
+					"\$sitekey = \"$sitekey\";\n".
+					"\$settingsprefix = \"$settingsprefix\";\n\n".
+					"include(\"includes/dbfunctions.php\");\n".
+					"?>";
 
 /* removed in 3.5.8 and moved to file: 
-include(\"includes/dbfunctions.php\");
 if(!empty(\$sitekey)) \$dbconnect = dbconnect(\$dbhost, \$dbuser,\$dbpass, \$dbname);
 */
 
