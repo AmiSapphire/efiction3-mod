@@ -63,9 +63,7 @@ function datadump ($table) {
 		echo "INSERT INTO ".$table." ";
 		$row = array( );
 		foreach($t AS $field => $value) {
-			//$value = utf8_encode (escapestring($value) );
-			$value = escapestring($value);
-			$value = mb_convert_encoding($value, 'UTF-8');
+			$value = utf8_encode (escapestring($value) );
 			$value = str_replace("\n","\\n",$value);
 			if (isset($value)) $row[$field] = "\"$value\"";
 			else $row[$field] = "\"\"";
