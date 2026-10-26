@@ -65,7 +65,7 @@
 			dbclose( );
 			exit( );
 		}
-		if(password_verify($_POST['password'], $encryptedpasswordb) == $encryptedpasswordb) {
+		if(password_verify($_POST['password'], $encryptedpasswordb)) {
 			if(isset($_POST['cookiecheck'])) {
 				setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
 				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordb),  time()+60*60*24*30, "/");
