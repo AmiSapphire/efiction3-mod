@@ -41,7 +41,7 @@ if($type) {
 	$countquery = array();
 	$scountquery = array();
 	$searchtype = (isset($_REQUEST['searchtype']) ? $_REQUEST['searchtype'] : "simple");
-	$searchterm =  (isset($_REQUEST['searchterm']) ? descript($_REQUEST['searchterm']) : false);
+	$searchterm =  (isset($_REQUEST['searchterm']) ? escapestring(descript($_REQUEST['searchterm'])) : false);
 	$disablesorts = array( );
 	if($searchterm) {
 		if($searchtype == "title") {
@@ -112,6 +112,7 @@ if($type) {
 	}
 	if(!empty($_REQUEST['charlist1']) && !in_array($_REQUEST['charlist1'], $charid)) $charid[] = $_REQUEST['charlist1'];
 	if(!empty($_REQUEST['charlist2']) && !in_array($_REQUEST['charlist2'], $charid)) $charid[] = $_REQUEST['charlist2'];
+	$charid = array_filter($charid, "isNumber");
 	if($charid) {
 		foreach($charid as $c) {
 			if(!empty($c)) {
@@ -126,9 +127,9 @@ if($type) {
 		if(count($charseries) > 0) $scountquery[] = "(".implode(" AND ", $charseries).")";
 	}
 	$rid = array( ); $rating = array( );
-	if(!empty($_REQUEST['rid'])) $rid = is_array($_REQUEST['rid']) ? implode(",", $_REQUEST['rid']) : array($_REQUEST['rid']);
-	if(!empty($_REQUEST['rating'])) $rating = is_array($_REQUEST['rating']) ? implode(",", $_REQUEST['rating']) : array($_REQUEST['rating']);
-	$rid = array_merge($rid, $rating);
+	if(!empty($_REQUEST['rid'])) $rid = is_array($_REQUEST['rid']) ? $_REQUEST['rid'] : explode(",", $_REQUEST['rid']);
+	if(!empty($_REQUEST['rating'])) $rating = is_array($_REQUEST['rating']) ? $_REQUEST['rating'] : explode(",", $_REQUEST['rating']);
+	$rid = array_filter(array_merge($rid, $rating), "isNumber");
 	if(!empty($rid)) {
 		$query[] = "FIND_IN_SET(stories.rid, '".(implode(",", $rid))."') > 0";
 		$countquery[]  = "FIND_IN_SET(stories.rid, '".(implode(",", $rid))."') > 0";
@@ -185,8 +186,8 @@ if($type) {
 	}
 	// Begin story length
 	unset($wordcount);
-	$wordlow = isset($_REQUEST['wordlow']) ? $_REQUEST['wordlow'] : "-500";
-	$wordhigh = isset($_REQUEST['wordhigh']) ? $_REQUEST['wordhigh'] : "1000000";
+	$wordlow = isset($_REQUEST['wordlow']) && isNumber($_REQUEST['wordlow']) ? $_REQUEST['wordlow'] : "-500";
+	$wordhigh = isset($_REQUEST['wordhigh']) && isNumber($_REQUEST['wordhigh']) ? $_REQUEST['wordhigh'] : "1000000";
 	if($wordlow != "-500") $wordcount = "stories.wordcount > ".$wordlow;
 	if($wordhigh != "1000000") 
 	{
@@ -210,11 +211,11 @@ if($type) {
 	$termsList = array();
 	foreach($termArray as $term => $value) {
 		if($term == "submit" || $term == "go" || $term == "offset" || $term == "type" || ($term != "complete" && empty($value))) continue;
-		$termsList[$term] = "$term=".(is_array($value) ? implode(",", $value) : $value);
+		$termsList[$term] = "$term=".(is_array($value) ? implode(",", array_map('htmlspecialchars', $value)) : htmlspecialchars($value, ENT_QUOTES));
 	}
 	$terms = "type=$type".(count($termsList) ? "&amp;" : "").implode("&amp;", $termsList);
 // End query strings
-	$panelquery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_name = '$type' AND panel_type = 'B' LIMIT 1");
+	$panelquery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_name = '".escapestring($type)."' AND panel_type = 'B' LIMIT 1");
 	if(dbnumrows($panelquery)) {
 		$numrows = 0;
 		$panel = dbassoc($panelquery);

@@ -26,6 +26,8 @@ if(isset($_GET['action']) && ($_GET['action'] == "categories" || $_GET['action']
 
 $disableTiny = true;
 
+ob_start();
+
 include ("header.php");
 
 
@@ -56,7 +58,7 @@ else include_once("languages/en_admin.php");
 	}
 	$output .= "</div>\n";
 	if($action) {
-		$panelquery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_name = '$action' AND panel_type = 'A' LIMIT 1");
+		$panelquery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_name = '".escapestring($action)."' AND panel_type = 'A' LIMIT 1");
 		if(dbnumrows($panelquery)) {
 			$panel = dbassoc($panelquery);
 			if((isset($panel['panel_level']) ? $panel['panel_level'] : 0) >= uLEVEL) {
