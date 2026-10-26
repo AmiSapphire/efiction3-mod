@@ -55,7 +55,7 @@ function submitted()
 		{
 			unset($catstring);
 			$result3 = dbquery("SELECT catid, category FROM ".TABLEPREFIX."fanfiction_categories WHERE FIND_IN_SET(catid, '".$story['catid']."')");
-			while($cats = dbassoc($result3)) {
+			while($cats = dbfetcharray($result3)) {
 				$catstring[] = "<a href=\"categories.php?catid=".$cats['catid']."\">".$cats['category']."</a>";
 			}
 			if(!$admincats || sizeof(array_intersect(explode(",", $story['catid']), explode(",", $admincats)))) {
@@ -79,7 +79,7 @@ function validate( ) {
 	$output  = "<center><h4>"._VIEWSUBMITTED."</h4></center>";
 	if($_GET['validate'] == "yes") {
 		$storyquery = dbquery("SELECT story.validated, story.catid, story.sid, story.title, story.summary, story.uid, author.penname, chapter.inorder FROM ".TABLEPREFIX."fanfiction_stories as story, ".TABLEPREFIX."fanfiction_chapters  as chapter, ".TABLEPREFIX."fanfiction_authors as author WHERE author.uid = story.uid AND chapter.sid = story.sid AND chapter.chapid ='".$_GET['chapid']."' LIMIT 1");
-		list($validated, $catid, $sid, $title, $summary, $authoruid, $author, $inorder) = dbassoc($storyquery);
+		list($validated, $catid, $sid, $title, $summary, $authoruid, $author, $inorder) = dbfetcharray($storyquery);
 		if($admincats == "0" || sizeof(array_intersect(explode(",", $catid), explode(",", $admincats)))) {
 			include("includes/emailer.php");
 			if($validated != "1") {
@@ -93,7 +93,7 @@ function validate( ) {
 					$subject = _NEWSTORYAT;
 					$mailtext = sprintf(_AUTHORALERTNOTE, $title, $author, $summary, $sid);
 					$favorites = dbquery("SELECT author.uid, email, penname FROM ".TABLEPREFIX."fanfiction_favauth as fav, ".TABLEPREFIX."fanfiction_authors as author WHERE fav.favuid = $authoruid AND fav.uid = author.uid");
-					while($favuser = dbassoc($favorites)) { 
+					while($favuser = dbfetcharray($favorites)) {
 						sendemail($favuser['penname'], $favuser['email'], $sitename, $siteemail, $subject, $mailtext, "html");
 					}				
 				}
@@ -102,7 +102,7 @@ function validate( ) {
 				$subject = _STORYALERT;
 				$mailtext = sprintf(_STORYALERTNOTE, $title, $author, $sid, $inorder);
 				$favorites = dbquery("SELECT author.uid, penname, email FROM ".TABLEPREFIX."fanfiction_favstor as fav, ".TABLEPREFIX."fanfiction_authors as author WHERE sid = '$sid' AND fav.uid = author.uid");
-				while($favuser = dbassoc($favorites)) { 
+				while($favuser = dbfetcharray($favorites)) {
 					sendemail($favuser['penname'], $favuser['email'], $sitename, $siteemail, $subject, $mailtext, "html");
 				}
 			}
@@ -115,14 +115,14 @@ function validate( ) {
 	}
 	else {
 			$result = dbquery("SELECT story.title as storytitle, story.sid, story.catid, story.rid, story.gid, story.charid, story.wid, story.summary as storysummary, chapter.chapid, chapter.title, chapter.storytext, author.penname, chapter.uid as uid FROM ".TABLEPREFIX."fanfiction_authors as author, ".TABLEPREFIX."fanfiction_stories as story, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.chapid = '".$_GET['chapid']."' AND chapter.sid = story.sid AND chapter.uid = author.uid");
-			$story = dbassoc($result);
+			$story = dbfetcharray($result);
 			$output .= "<b>"._AUTHOR.":</b> ".$story['penname']."<br />";
 			$output .= "<b>"._TITLE.":</b> ".$story['storytitle'].": ".$story['title'];
 			$output .= "<br />";
 			$result3 = dbquery("SELECT catid, category FROM ".TABLEPREFIX."fanfiction_categories WHERE FIND_IN_SET(catid, '".$story['catid']."')");
 			$catstring = "";
 			$count = 0;
-			while($cats = dbassoc($result3)) {
+			while($cats = dbfetcharray($result3)) {
 				if($count > 0) $catstring .= ", ";
 				$catstring .= "<a href=\"categories.php?catid=".$cats['catid']."\">".$cats['category']."</a>";
 				$categories[] = $cats['catid'];
@@ -184,9 +184,9 @@ function yesletter( ) {
 	}
 	else {
 			$authorquery = dbquery("SELECT email,penname FROM ".TABLEPREFIX."fanfiction_authors WHERE uid = '".$_GET['uid']."' LIMIT 1");
-			$author = dbassoc($authorquery);
+			$author = dbfetcharray($authorquery);
 			$storyquery = dbquery("SELECT story.title, chapter.title as chapter FROM ".TABLEPREFIX."fanfiction_stories as story, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.chapid = '".$_GET['chapid']."' AND chapter.sid = story.sid LIMIT 1");
-			$story = dbassoc($storyquery);
+			$story = dbfetcharray($storyquery);
 			$letter = file_get_contents("messages/thankyou.txt");
 			echo "<body>";
 			echo "<table><tr><td>Story:</td><td>".$story['title'].": ".$story['chapter']."</td></tr>";
@@ -221,9 +221,9 @@ function noletter( ) {
 	else
 	{
 		$authorquery = dbquery("SELECT email,penname FROM ".TABLEPREFIX."fanfiction_authors WHERE uid = '".$_GET['uid']."' LIMIT 1");
-		$author = dbassoc($authorquery);
+		$author = dbfetcharray($authorquery);
 		$storyquery = dbquery("SELECT story.title, chapter.title as chapter FROM ".TABLEPREFIX."fanfiction_stories as story, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.chapid = '".$_GET['chapid']."' AND chapter.sid = story.sid LIMIT 1");
-		$story = dbassoc($storyquery);
+		$story = dbfetcharray($storyquery);
 		$letter = file_get_contents("messages/nothankyou.txt");
 		echo "<body>";
 		echo "<table><tr><td>Story:</td><td>".$story['title'].": ".$story['chapter']."</td></tr>";
