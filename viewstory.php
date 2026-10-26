@@ -346,7 +346,7 @@ else {
 		$printicon = "<img src='".(isset($printer) ? $printer : "images/print.gif")."' border='0' alt='"._PRINTER."'> <a href=\"viewstory.php?action=printable&amp;sid=$sid&amp;textsize=$textsize&amp;chapter=1\" target=\"_blank\">"._STORY."</a>";
 	}
 	// if the *CHAPTER* hasn't been validated and the viewer isn't an admin or the author throw them a warning.  
-	if(!isset($valid) && !isADMIN && USERUID != isset($chapterauthor) && !in_array(isset($chapterauthor), isset($storyinfo['coauthors']))) {
+	if(!(isset($valid)) && !isADMIN && USERUID != isset($chapterauthor) && !in_array($chapterauthor, $storyinfo['coauthors'])) {
 		$warning = accessDenied( );
 	}
 	$stories = $storyinfo;
@@ -366,8 +366,8 @@ else {
 		}
 		else $reviewslink = write_message(sprintf(_LOGINTOREVIEW, strtolower($pagelinks['login']['link']), strtolower($pagelinks['register']['link'])));
 	}
-	$tpl->assign("reportthis", "[<a href=\""._BASEDIR."contact.php?action=report&amp;url=viewstory.php?chapid=$chapid\">"._REPORTTHIS."</a>]");
-	$jumpmenu2 .= "<option value=\"contact.php?action=report&amp;url=viewstory.php?chapid=$chapid\">"._REPORTTHIS."</option>";
+	$tpl->assign("reportthis", "[<a href=\""._BASEDIR."contact.php?action=report&amp;url=viewstory.php?chapid=".isset($chapid)."\">"._REPORTTHIS."</a>]");
+	$jumpmenu2 .= "<option value=\"contact.php?action=report&amp;url=viewstory.php?chapid=".isset($chapid)."\">"._REPORTTHIS."</option>";
 	if($stories['rr']) {
 		$rr = "[<a href=\"stories.php?action=newchapter&amp;sid=".$sid."\">"._CONTRIBUTE2RR."</a>]";
 		$jumpmenu2 .= "<option value=\"stories.php?action=newchapter&amp;sid=".$sid."\">"._CONTRIBUTE2RR."</option>";
@@ -381,19 +381,19 @@ else {
 		}
 		else $form = write_message(sprintf(_LOGINTOREVIEW, strtolower($pagelinks['login']['link']), strtolower($pagelinks['register']['link'])));
 	}
-	$textsizer = "<a href=\"viewstory.php?sid=$sid".($inorder ? "&amp;chapter=$inorder" : "")."&amp;textsize=".($textsize - 1)."\">-</a> <strong>". _TEXTSIZE. "</strong> <a href=\"viewstory.php?sid=$sid".($inorder ? "&amp;chapter=$inorder" : "")."&amp;textsize=".($textsize + 1)."\">+</a> ";
+	$textsizer = "<a href=\"viewstory.php?sid=$sid".(isset($inorder) ? "&amp;chapter=$inorder" : "")."&amp;textsize=".($textsize - 1)."\">-</a> <strong>". _TEXTSIZE. "</strong> <a href=\"viewstory.php?sid=$sid".(isset($inorder) ? "&amp;chapter=$inorder" : "")."&amp;textsize=".($textsize + 1)."\">+</a> ";
 	// okay now that we know they can see the story and the chapter add 1 to the story and chapter counts;
 	if(empty($viewed) || (is_array($viewed) && !in_array($sid, $viewed))) {
 		dbquery("UPDATE ".TABLEPREFIX."fanfiction_stories SET count = count + 1 WHERE sid = '$sid'  LIMIT 1");
 		$viewed[] = $sid;
 		$_SESSION[SITEKEY."_viewed"] = $viewed;
 	}
-	dbquery("UPDATE ".TABLEPREFIX."fanfiction_chapters SET count = count + 1 WHERE chapid = '$chapid' LIMIT 1");
+	dbquery("UPDATE ".TABLEPREFIX."fanfiction_chapters SET count = count + 1 WHERE chapid = '".isset($chapid)."' LIMIT 1");
 	// end counters
 	// if the text of the chapters is being stored in files we need to get that text here
 	if($store == "files") {
 		//shouldn't happen, but somehow has on occasion. :(
-		if(!$chapterauthor) {
+		if(!(isset($chapterauthor))) {
 			errorExit(_ERROR);
 		}
 		$file = STORIESPATH."/$chapterauthor/$chapid.txt";
