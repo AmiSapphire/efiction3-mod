@@ -345,6 +345,10 @@ else {
 		}
 		$printicon = "<img src='".(isset($printer) ? $printer : "images/print.gif")."' border='0' alt='"._PRINTER."'> <a href=\"viewstory.php?action=printable&amp;sid=$sid&amp;textsize=$textsize&amp;chapter=1\" target=\"_blank\">"._STORY."</a>";
 	}
+	$chapterauthor = '';
+	$chapid = '';
+	$inorder = '';
+	$valid = '';
 	// if the *CHAPTER* hasn't been validated and the viewer isn't an admin or the author throw them a warning.  
 	if(!$valid && !isADMIN && USERUID != $chapterauthor && !in_array($chapterauthor, $storyinfo['coauthors'])) {
 		$warning = accessDenied( );
