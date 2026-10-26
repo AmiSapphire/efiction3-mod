@@ -71,6 +71,7 @@
 				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordb),  time()+60*60*24*30, "/");
 			}
 			if(!isset($_SESSION)) session_start( );
+			session_regenerate_id(true);
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
 			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordb);
 			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");
@@ -85,6 +86,7 @@
 				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordm),  time()+60*60*24*30, "/");
 			}
 			if(!isset($_SESSION)) session_start( );
+			session_regenerate_id(true);
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
 			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordm);
 			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");

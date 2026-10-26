@@ -46,7 +46,7 @@ if(isset($userinfo['bio'])) {
 	$tpl->assign("bio", stripslashes($bio));
 }
 if(isset($userinfo['image']))
-	$tpl->assign("image", "<img src=\"".$userinfo['image']."\">");
+	$tpl->assign("image", "<img src=\"".htmlspecialchars($userinfo['image'], ENT_QUOTES)."\">");
 
 $tpl->assign("userlevel", isset($userinfo['level']) && $userinfo['level'] > 0 && $userinfo['level'] < 4 ? _ADMINISTRATOR.(isADMIN ? " - ".$userinfo['level'] : "") : _MEMBER);
 
