@@ -2,7 +2,7 @@
 {seriesheader}
 <!-- START BLOCK : seriesblock -->
 <div class="listbox {oddeven}">
-<div class="title">{title} by {author}{score} [{reviews} - {numreviews}]</div>
+<div class="title">{title} by {author} {score} [{reviews} - {numreviews}]</div>
 <div class="content listing"><span class="label">Summary: </span>{summary}<br />
 <span class="label">Parent Series:</span> {parentseries}<br />
 <span class="label">Categories:</span> {category}<br />
