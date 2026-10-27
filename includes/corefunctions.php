@@ -97,7 +97,7 @@ function descript($text) {
 
 	// remove any attribute starting with "on" or xmlns
 
-	$text = preg_replace('#(<[^>]+[\\"\'\s])(onmouseover|onmousedown|onmouseup|onmouseout|onmousemove|onclick|ondblclick|onload|xmlns)[^>]*>#iU', ">", $text);
+	$text = preg_replace('#(<[^>]+[\\"\'\s])(on[a-z]+|xmlns)[^>]*>#iU', ">", $text);
 
 	// remove javascript: and vbscript: protocol
 	
