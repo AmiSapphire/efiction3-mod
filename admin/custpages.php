@@ -24,12 +24,29 @@
 
 if(!defined("_CHARSET")) exit( );
 
+$csrfKey = SITEKEY . '_custpages_csrf';
+if(empty($_SESSION[$csrfKey])) $_SESSION[$csrfKey] = bin2hex(random_bytes(32));
+$isWrite = isset($_POST['submit']) || isset($_POST['preview']);
+if($isWrite && (!isset($_POST['csrf']) || !hash_equals($_SESSION[$csrfKey], (string) $_POST['csrf']))) {
+	http_response_code(403);
+	exit('Forbidden');
+}
+$efCsrfField = "<input type='hidden' name='csrf' value='".htmlspecialchars($_SESSION[$csrfKey], ENT_QUOTES, 'UTF-8')."'>";
+$confirm = isset($_GET['confirm']) ? $_GET['confirm'] : false;
 
 	$output .= "<div id=\"pagetitle\">"._CUSTPAGES."</div>";
 if(isset($_GET['delete']) && isNumber($_GET['delete'])) {
-	$result = dbquery("DELETE FROM ".TABLEPREFIX."fanfiction_messages WHERE message_id = ".$_GET['delete']." LIMIT 1");
-	if($result) $output .= write_message(_ACTIONSUCCESSFUL);
-	else $output .= write_error(_ERROR);
+	if($confirm == "yes") {
+		$result = dbquery("DELETE FROM ".TABLEPREFIX."fanfiction_messages WHERE message_id = ".$_GET['delete']." LIMIT 1");
+		if($result) $output .= write_message(_ACTIONSUCCESSFUL);
+		else $output .= write_error(_ERROR);
+	}
+	else if($confirm == "no") {
+	$output .= write_message(_ACTIONCANCELLED);
+	}
+	else {
+		$output .= write_message("Are you sure you want to remove this custom page? <a href='admin.php?action=custpages&amp;delete=".$_GET['delete']."&amp;confirm=yes'>"._YES."</a> "._OR." <a href='admin.php?action=custpages&amp;delete=".$_GET['delete']."&amp;confirm=no'>"._NO."</a>");
+	}
 }
 if(isset($_POST['submit'])) {
 	if(!preg_match("!^[a-z0-9_]{3,30}$!i", $_POST['name'])) $output .= write_error(_BADVARNAME);
@@ -54,12 +71,8 @@ if((isset($_GET['edit']) && isNumber($_GET['edit'])) || isset($_GET["new"]) || i
 		$title = descript($_POST['title']);
 		$thistext = descript($_POST['text']);
 		$edit = isset($_GET['edit']) ? $_GET['edit'] : "";
-		if(strpos($thistext, "?>") === false) $output .= "<div id='pagetitle'>$title</div>\n\n$thistext";
-		else {
-			$text = "";
-			eval("?>".$thistext."<?php ");
-			$output .= "<div id='pagetitle'>$title</div>\n\n$text";
-		}
+		if(preg_match('/<\?(?:php|=)|\?>/i', (string) $thistext)) $output .= "<div id='pagetitle'>$title</div>".write_error("This draft contains embedded PHP. This eFiction fork does not execute stored PHP; convert the page to static HTML.");
+		else $output .= "<div id='pagetitle'>$title</div>\n\n$thistext";
 		$text = $thistext;
 	}
 	else if(isset($_GET['edit'])) {
@@ -77,6 +90,7 @@ if((isset($_GET['edit']) && isNumber($_GET['edit'])) || isset($_GET["new"]) || i
 		$text = "";
 	}
 	$output .= "<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=custpages".(isset($edit) ? "&amp;edit=$edit" : "")."\">
+		$efCsrfField
 		<div><label for=\"name\">"._NAME.":</label> <input type=\"text\" class=\"textbox\" name=\"name\" value=\"$name\"></div>
 		<div><label for=\"title\">"._TITLE.":</label> <input type=\"text\" class=\"textbox\" name=\"title\" value=\"$title\" size=\"30\"></div>
 		<div><label for=\"text\">"._TEXT.":</label><br />
@@ -94,7 +108,7 @@ else {
 		if($msg['message_name'] == "welcome" ||  $msg['message_name'] == "nothankyou" || $msg['message_name'] == "thankyou" ||
 		$msg['message_name'] == "copyright" || $msg['message_name'] == "printercopyright") continue;
 		$output .= "<tr><td class=\"tblborder\">$msg[message_id]</td><td class=\"tblborder\">$msg[message_name]</td><td class=\"tblborder\"><a href='viewpage.php?page=$msg[message_name]'>$msg[message_title]</a></td>
-		<td class=\"tblborder\"><a href=\"admin.php?action=custpages&amp;edit=$msg[message_id]\">"._EDIT."</a> | 
+		<td class=\"tblborder\"><a href=\"admin.php?action=custpages&amp;edit=$msg[message_id]\">"._EDIT."</a> |
 		<a href=\"admin.php?action=custpages&amp;delete=$msg[message_id]\">"._DELETE."</a></td></tr>";
 	}
 	if(!dbnumrows($listquery)) $output .= "<tr><td class=\"tblborder\" colspan=\"3\" align=\"center\">"._NORESULTS."</td></tr>";

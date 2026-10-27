@@ -34,10 +34,11 @@ include("includes/pagesetup.php");
 
 $page = dbquery("SELECT message_title, message_text FROM ".TABLEPREFIX."fanfiction_messages WHERE ".($current ? "message_name = '".escapestring($current)."'" : "message_id = '".(isNumber($_GET['id']) ? $_GET[id] : "0")."'")." LIMIT 1");
 if(dbnumrows($page)) list($title, $text) = dbrow($page);
-else $text = write_message(_ERROR);
-if(strpos($text, "?>") === false) $tpl->assign("output", "<div id='pagetitle'>$title</div>\n\n$text");
-else {
-	eval("?>".$text."<?php ");
+else { $title = ""; $text = write_message(_ERROR); }
+if(preg_match('/<\?(?:php|=)|\?>/i', (string) $text)) {
+	http_response_code(503);
+	$tpl->assign("output", "This custom page needs administrator review.");
+} else {
 	$tpl->assign("output", "<div id='pagetitle'>$title</div>\n\n$text");
 }
 $tpl->printToScreen();
