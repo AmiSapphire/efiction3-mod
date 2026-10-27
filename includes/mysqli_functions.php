@@ -21,7 +21,8 @@ function dbconnect($dbhost, $dbuser, $dbpass, $dbname ) {
 	//mysqli_query($mysql_access, "SET SESSION sql_mode = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION'");
 	//mysqli_query($mysqli_access, "SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
 	// MariaDB seems to disable ONLY_FULL_GROUP_BY strict mode by default - needed for MySQL 8.0 and above...
-	mysqli_query($mysqli_access, "SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'");
+	// HIGH_NOT_PRECEDENCE was part of MYSQL40 compat mode
+	mysqli_query($mysqli_access, "SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,HIGH_NOT_PRECEDENCE'");
 
 	// comment UTF8 and uncomment UTF8MB4 if needed - especially when converted to Mod
     //mysqli_set_charset($mysqli_access, "utf8mb4");
