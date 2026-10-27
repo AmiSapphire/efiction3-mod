@@ -65,12 +65,17 @@
 			dbclose( );
 			exit( );
 		}
-		if(password_verify($_POST['password'], $encryptedpasswordb) == $encryptedpasswordb) {
+		if(password_verify($_POST['password'], $encryptedpasswordb)) {
 			if(isset($_POST['cookiecheck'])) {
-				setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
-				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordb),  time()+60*60*24*30, "/");
+				setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+				setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
 			}
-			if(!isset($_SESSION)) session_start( );
+			if(!isset($_SESSION)) {
+				ini_set('session.cookie_httponly', '1');
+				ini_set('session.cookie_samesite', 'Lax');
+				session_start( );
+			}
+			session_regenerate_id(true);
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
 			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordb);
 			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");
@@ -81,10 +86,15 @@
 
 		else if($passwd['password'] == $encryptedpasswordm) {
 			if(isset($_POST['cookiecheck'])) {
-				setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
-				setcookie($sitekey."_salt", md5($passwd['email'] . $encryptedpasswordm),  time()+60*60*24*30, "/");
+				setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+				setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordm), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
 			}
-			if(!isset($_SESSION)) session_start( );
+			if(!isset($_SESSION)) {
+				ini_set('session.cookie_httponly', '1');
+				ini_set('session.cookie_samesite', 'Lax');
+				session_start( );
+			}
+			session_regenerate_id(true);
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
 			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordm);
 			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");

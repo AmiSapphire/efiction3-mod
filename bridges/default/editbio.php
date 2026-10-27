@@ -46,9 +46,20 @@ function random_string ($charset_string, $length)
 	$uid = isset($_REQUEST['uid']) ? $_REQUEST['uid'] : false;
 	if(!$uid) $uid = USERUID;
 
-	if((!isADMIN || uLEVEL > 2) && $uid != USERUID && $action == "editbio") $output .= write_error(_NOTAUTHORIZED);
+	if($uid && !isNumber($uid)) accessDenied( );
+	if((!isADMIN || uLEVEL > 2) && $uid != USERUID && $action == "editbio") accessDenied( );
 	if(isMEMBER) $output .= "<div id=\"pagetitle\">"._EDITPERSONAL."</div>";
 	else $output .= "<div id=\"pagetitle\">"._NEWACCOUNT."</div>";
+
+	// check for MD5 password hashes after a user logs in to edit their bio and warn them if their password is insecure
+	// all MD5 hashes are 32 exact characters long, hexadecimal, 0-9 and a-f random
+	// this set is a bit cursed... but it works
+	$pwdcharlengthquery = dbquery("SELECT CHAR_LENGTH(password) FROM ".TABLEPREFIX."fanfiction_authors WHERE uid = ".USERUID.";");
+	$pwdlengthfetch = dbrow($pwdcharlengthquery);
+	$pwdlengthstring = end($pwdlengthfetch);
+	$pwdcheck = (int) $pwdlengthstring;
+	if ($pwdcheck == 32) $output .= "<center>"._INSECUREPWD."</center><br>";
+
 	if(!empty($_POST['submit'])) {
 		$penname = isset($_POST['newpenname']) ? escapestring($_POST['newpenname']) : false;
 		$email = escapestring($_POST['email']);
@@ -164,7 +175,7 @@ function random_string ($charset_string, $length)
 					$output .= write_message(_PENNAMEINUSE."  "._TRYAGAIN);
 				}
 				else {
-					dbquery("UPDATE "._AUTHORTABLE." SET penname = '".escapestring($penname)."' WHERE uid = '$_POST[uid]'");
+					dbquery("UPDATE "._AUTHORTABLE." SET penname = '".escapestring($penname)."' WHERE uid = '$uid'");
 					if($logging) dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_log (`log_action`, `log_uid`, `log_ip`, `log_type`, `log_timestamp`) VALUES('".escapestring(sprintf(_NEWPEN, USERPENNAME, USERUID, $_POST['oldpenname'], $uid, $penname))."', '".USERUID."', INET6_ATON('".$_SERVER['REMOTE_ADDR']."'), 'EB', " . time() . ")");
 				}
 			}
@@ -183,7 +194,7 @@ function random_string ($charset_string, $length)
 			}
 /* End dynamic fields */
 			dbquery("UPDATE "._AUTHORTABLE." SET realname='".descript(strip_tags(escapestring($_POST['realname'])), $allowed_tags)."', email='$email', bio='".descript(strip_tags(escapestring($_POST['bio']), $allowed_tags))."', image='".($imageupload && !empty($_POST['image']) ? escapestring($_POST['image']) : "")."' WHERE uid = '$uid'");
-			$output .= write_message(_ACTIONSUCCESSFUL."  ".(isset($_GET['uid']) ? _BACK2ADMIN : _BACK2ACCT." "._LOGINAGAIN));
+			$output .= write_message(_ACTIONSUCCESSFUL."  ".(isset($_GET['uid']) ? _BACK2ADMIN : _BACK2ACCT."<br>"._LOGINAGAIN));
 		}
 	}
 	else {
@@ -207,8 +218,8 @@ function random_string ($charset_string, $length)
 		else if(isset($user)) $output .= " ".$user['penname'];
 		
 		$output .= "</div>
-	 	<div><label for='realname'>"._REALNAME.": </label><INPUT type=\"text\" class=\"textbox=\" name=\"realname\" maxlength=\"200\" value=\"".(isset($user) ? $user['realname'] : "")."\"></div>
-	 	<div><label for='email'>"._EMAIL.":</label><INPUT  type=\"text\" class=\"textbox=\" name=\"email\" value=\"".(isset($user) ? $user['email'] : "")."\" maxlength=\"200\" size=\"35\"><font color=\"red\">*</font></div>
+	 	<div><label for='realname'>"._REALNAME.": </label><INPUT type=\"text\" class=\"textbox=\" name=\"realname\" maxlength=\"200\" value=\"".(isset($user) ? htmlspecialchars($user['realname'], ENT_QUOTES) : "")."\"></div>
+	 	<div><label for='email'>"._EMAIL.":</label><INPUT  type=\"text\" class=\"textbox=\" name=\"email\" value=\"".(isset($user) ? htmlspecialchars($user['email'], ENT_QUOTES) : "")."\" maxlength=\"200\" size=\"35\"><font color=\"red\">*</font></div>
 	 	<div><label for='bio'>"._BIO.":</label></div>
 		<div style='width: 450px; margin: 0 auto;'>
 		  <textarea class=\"textbox\" name=\"bio\" cols=\"50\" rows=\"6\">".(isset($user['bio']) ? stripslashes($user['bio']) : "")."</TEXTAREA></div>";
