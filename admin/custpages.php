@@ -108,7 +108,7 @@ else {
 		if($msg['message_name'] == "welcome" ||  $msg['message_name'] == "nothankyou" || $msg['message_name'] == "thankyou" ||
 		$msg['message_name'] == "copyright" || $msg['message_name'] == "printercopyright") continue;
 		$output .= "<tr><td class=\"tblborder\">$msg[message_id]</td><td class=\"tblborder\">$msg[message_name]</td><td class=\"tblborder\"><a href='viewpage.php?page=$msg[message_name]'>$msg[message_title]</a></td>
-		<td class=\"tblborder\"><a href=\"admin.php?action=custpages&amp;edit=$msg[message_id]\">"._EDIT."</a> |
+		<td class=\"tblborder\"><a href=\"admin.php?action=custpages&amp;edit=$msg[message_id]\">"._EDIT."</a> | 
 		<a href=\"admin.php?action=custpages&amp;delete=$msg[message_id]\">"._DELETE."</a></td></tr>";
 	}
 	if(!dbnumrows($listquery)) $output .= "<tr><td class=\"tblborder\" colspan=\"3\" align=\"center\">"._NORESULTS."</td></tr>";
