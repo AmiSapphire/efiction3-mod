@@ -50,7 +50,11 @@ foreach ($_GET as $v) {
 }
 unset($v);
 
-if(!isset($_SESSION)) session_start();
+if(!isset($_SESSION)) {
+	ini_set('session.cookie_httponly', '1');
+	ini_set('session.cookie_samesite', 'Lax');
+	session_start();
+}
 // clear the global variables if register globals is on.
 if(ini_get('register_globals')) {
 	$arrayList = array_merge($_SESSION, $_GET, $_POST, $_COOKIE);

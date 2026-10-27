@@ -28,6 +28,8 @@ else $current = "login";
 	}
 	
 	if(!empty($_POST['submit']) && $current == "login") {
+	ini_set('session.cookie_httponly', '1');
+	ini_set('session.cookie_samesite', 'Lax');
 	session_start();
 	define("_LOGINCHECK", true);		
 		include("user/login.php");
