@@ -1,6 +1,6 @@
 <!-- INCLUDE BLOCK : header -->
 <div id="pagetitle">{title} by {author}</div>
-<div id="sort"> [{reviews} - {numreviews}] {score}{printicon}</div>
+<div id="sort"> [{reviews} - {numreviews}] {score} {printicon} {printword} {printepub}</div>
 <div id="output">
 <div class="jumpmenu">{jumpmenu}</div>
 <div class="listbox">
