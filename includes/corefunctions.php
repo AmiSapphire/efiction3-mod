@@ -574,8 +574,8 @@ function search($storyquery, $countquery, $pagelink = "search.php?", $pagetitle 
 		$termArray = array_merge($_GET, $_POST);
 		$terms = array();
 		foreach($termArray as $term => $value) {
-			if($term == "submit" || $term == "go" || $term == "offset" || ($term != "complete" &&empty($value))) continue;
-			$terms[] = "$term=".(is_array($value) ? implode(",", $value) : $value);
+			if($term == "submit" || $term == "go" || $term == "offset" || ($term != "complete" && empty($value))) continue;
+			$terms[] = "$term=".(is_array($value) ? implode(",", array_map('htmlspecialchars', $value)) : htmlspecialchars($value, ENT_QUOTES));
 		}
 		$terms = implode("&amp;", $terms);
 		$terms .= "&amp;";

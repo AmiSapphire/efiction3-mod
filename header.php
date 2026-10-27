@@ -145,7 +145,7 @@ $ageconsent = false; $viewed = array();
 require_once("includes/get_session_vars.php");
 
 if(isset($_GET['skin'])) {
-	$siteskin = $_GET['skin'];
+	$siteskin = basename($_GET['skin']);
 	$_SESSION[SITEKEY."_skin"] = $siteskin;
 }
 
@@ -200,7 +200,7 @@ if(isset($_SESSION[SITEKEY."_viewed"])) $viewed = $_SESSION[SITEKEY."_viewed"];
 if(isset($_GET['ageconsent'])) $_SESSION[SITEKEY."_ageconsent"] = 1;
 if(isset($_GET['warning'])) $_SESSION[SITEKEY."_warned"][$_GET['warning']] = 1;
 
-
+$siteskin = basename((string)$siteskin);
 if(is_dir(_BASEDIR."skins/$siteskin")) $skindir = _BASEDIR."skins/$siteskin";
 else if(is_dir(_BASEDIR."skins/".$settings['skin'])) $skindir = _BASEDIR."skins/".$defaultskin;
 else $skindir = _BASEDIR."default_tpls";

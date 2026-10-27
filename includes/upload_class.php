@@ -57,7 +57,7 @@ class file_upload {
 			sleep(3);
 			$name = $name.$this->get_extension($this->the_file);
 		} else {
-			$name = str_replace(" ", "_", $this->the_file); // space will result in problems on linux systems
+			$name = basename(str_replace("\\", "/", str_replace(" ", "_", $this->the_file))); // space will result in problems on linux systems
 		}
 		return $name;
 	}
