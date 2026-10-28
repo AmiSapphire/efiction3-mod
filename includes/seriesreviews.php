@@ -55,7 +55,12 @@ $newcount = dbquery("SELECT count(reviewid) as totalcount FROM ".TABLEPREFIX."fa
 	(count($serieslist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $serieslist))."') > 0 AND type = 'SE')" : "").
 	") AND review != 'No Review'");
 list($totalcount) = dbrow($newcount);
-if($totalcount) $update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_series SET rating = '".round($totalreviews ?? 0)."', reviews = '$totalcount' WHERE seriesid = '$thisseries'");
+// issue #11: gate on the rating aggregate, not the text-review count.
+// With Allow Ratings Only, every review is the 'No Review' sentinel, so
+// $totalcount is 0 and the recomputed rating never landed. AVG returns
+// NULL when nothing was rated, so the update still stays silent then;
+// dropping ?? 0 is safe inside the guard (and PHP 5 friendly, issue #10).
+if($totalreviews !== null) $update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_series SET rating = '".round($totalreviews)."', reviews = '$totalcount' WHERE seriesid = '$thisseries'");
 $parentq = dbquery("SELECT seriesid FROM ".TABLEPREFIX."fanfiction_inseries WHERE subseriesid = '$thisseries' AND seriesid != '$thisseries'");
 if(dbnumrows($parentq) > 0) list($parent) = dbrow($parentq);
 else $parent = false;
@@ -87,7 +92,8 @@ while($parent) {
 		") AND review != 'No Review'");
 	list($total) = dbrow($pnewrating);
 	list($totalcount) = dbrow($pnewcount);
-	if($total) $update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_series SET rating = '".round($total ?? 0)."', reviews = '$totalcount' WHERE seriesid = '$parent' AND rating != '-1'");
+	// same issue #11 gate for the parent-series walk
+	if($total !== null) $update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_series SET rating = '".round($total)."', reviews = '$totalcount' WHERE seriesid = '$parent' AND rating != '-1'");
 	$parentq = dbquery("SELECT seriesid FROM ".TABLEPREFIX."fanfiction_inseries WHERE subseriesid = '$parent'");
 	if(dbnumrows($parentq)) list($parent) = dbrow($parentq);
 	else $parent = false;
