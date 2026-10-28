@@ -48,7 +48,7 @@ if(!empty($_GET['edit'])) {
 			$oldinfo = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_id = '".$_GET['edit']."'");
 			$panelinfo = dbassoc($oldinfo);
 			$nextorder = 0;
-			if($panelinfo['panel_hidden'] || $_GET['edit'] == "new") {
+			if(($panelinfo['panel_hidden'] ?? null) || $_GET['edit'] == "new") {
 				$order = dbquery("SELECT COUNT(panel_id) FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_type = '$panel_type' AND panel_hidden = 0".($panel_type == "A" ? " AND panel_level = '$panel_level'" : ""));
 				list($nextorder) = dbrow($order);
 				$nextorder++;
@@ -72,7 +72,7 @@ if(!empty($_GET['edit'])) {
 			<label for='panel_title'>"._TITLE.":</label> <input type='text' class='textbox' name='panel_title' id='panel_title' value='".(isset($panelinfo['panel_title']) ? $panelinfo['panel_title'] : null)."'><br />
 			<label for='panel_url'>"._PANELURL.":</label> <input type='text' class='textbox' name='panel_url' id='panel_url' value='".(isset($panelinfo['panel_url']) ? $panelinfo['panel_url'] : null)."'><br />
 			<label for='panel_level'>"._LEVEL.":</label> <select name='panel_level' id='panel_level'>";
-		for($x = 0; $x < 5; $x++) { $output .= "<option".(($panelinfo['panel_level'] ?? null) == $x ? " selected" : "").">$x</option>"; }
+		for($x = 0; $x < 5; $x++) { $output .= "<option".((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == $x ? " selected" : "").">$x</option>"; }
 		$output .= "</select><br />
 			<label for='panel_hidden'>"._HIDDEN.":</label> <input type='checkbox' class='checkbox' name='panel_hidden' id='panel_hidden' ".(($panelinfo['panel_hidden'] ?? null) ? " checked" : "")."><br />
 			<label for='panel_type'>"._TYPE.":</label> <input type='text' class='textbox' name='panel_type' id='panel_type' value='".(isset($panelinfo['panel_type']) ? $panelinfo['panel_type'] : null)."' size='2'><br />
@@ -100,7 +100,7 @@ else {
 	$output .= "<option value=\"admin.php?action=panels\">"._ALL."</option>";
 	$paneltypelist = dbquery("SELECT DISTINCT panel_type FROM ".TABLEPREFIX."fanfiction_panels ORDER BY panel_type");
 	while($t = dbrow($paneltypelist)) {
-		$output .= "<option value='admin.php?action=panels&amp;type=$t[0]'".($type == $t[0] ? " selected" : "").">$t[0] - ".$paneltypes[$t[0]]."</option>";
+		$output .= "<option value='admin.php?action=panels&amp;type=$t[0]'".($type == $t[0] ? " selected" : "").">$t[0] - ".isset($paneltypes[$t[0]])."</option>";
 	}
 	$output .= "</select>";
 	if($type == "A") {
@@ -120,7 +120,7 @@ else {
 		if(!$panel['panel_hidden']) $count++;
 		else $num--;
 		$output .= "<tr><td class='tblborder'>".$panel['panel_title']."</td><td class='tblborder'>";
-		if(!$type) $output .= $panel['panel_type']." - ".$paneltypes[$panel['panel_type']];
+		if(!$type) $output .= ($panel['panel_type'] ?? null)." - ".($paneltypes[$panel['panel_type']] ?? null);
 		else if($type == "A" && empty($_GET['level'])) $output .= $panel['panel_hidden'] ? _HIDDEN :  _LEVEL." ".$panel['panel_level'];
 		else {
 			if($panel['panel_hidden']) $output .= _HIDDEN;
