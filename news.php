@@ -72,7 +72,7 @@ if($nid) {
 	if(file_exists("./$skindir/newsbox.tpl"))
 		$news = new TemplatePower( "./$skindir/newsbox.tpl" );
 	else $news = new TemplatePower( "./default_tpls/newsbox.tpl" );
-	if(empty($stories)) {
+	if(!$stories) {
 		$current = "newserror";
 		// load our template files to set up the page.
 		if (file_exists("$skindir/default.tpl")) $tpl = new TemplatePower("$skindir/default.tpl");
