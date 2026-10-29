@@ -90,17 +90,17 @@ if($nid) {
 	$news->newBlock("newsbox");
 
 	//assign values
-	$news->assign("newstitle"   , stripslashes(isset($stories['title']) ? $stories['title'] : null) );
-	$news->assign("newsstory"   , format_story(isset($stories['story']) ? $stories['story'] : null) );
-	$news->assign("newsauthor", stripslashes(isset($stories['author']) ? $stories['author'] : null) );
-	$news->assign("newsid", (isset($stories['nid']) ? $stories['nid'] : null) );
+	$news->assign("newstitle"   , stripslashes($stories['title']) );
+	$news->assign("newsstory"   , format_story($stories['story']) );
+	$news->assign("newsauthor", stripslashes($stories['author']) );
+	$news->assign("newsid", $stories['nid']);
 	$news->assign("oddeven", "odd");
 	$news->assign("skindir", $skindir);
-	$news->assign("newsdate", date("$dateformat $timeformat", (isset($stories['date']) ? $stories['date'] : null) ) );
+	$news->assign("newsdate", date("$dateformat $timeformat", $stories['date']) );
 	if($newscomments)
-		$news->assign("newscomments", "<a href=\"news.php?action=newsstory&amp;nid=".(isset($stories['nid']) ? $stories['nid'] : null)."\">".(isset($stories['comments']) ? $stories['comments'] : null)." "._COMMENTS."</a>");
+		$news->assign("newscomments", "<a href=\"news.php?action=newsstory&amp;nid=".$stories['nid']."\">".(isset($stories['comments']) ? $stories['comments'] : null)." "._COMMENTS."</a>");
 	if(isADMIN && uLEVEL < 4) 
-		$news->assign("adminoptions", "<a href=\"admin.php?action=news&amp;form=".(isset($stories['nid']) ? $stories['nid'] : null)."\">"._EDIT."</a> | <a href=\"admin.php?action=news&amp;delete=".(isset($stories['nid']) ? $stories['nid'] : null)."\">"._DELETE."</a>");
+		$news->assign("adminoptions", "<a href=\"admin.php?action=news&amp;form=".$stories['nid']."\">"._EDIT."</a> | <a href=\"admin.php?action=news&amp;delete=".$stories['nid']."\">"._DELETE."</a>");
 	$output .= $news->getOutputContent( );
 
 	$cquery = dbquery("SELECT COUNT(cid) FROM ".TABLEPREFIX."fanfiction_comments WHERE nid = '$nid'");

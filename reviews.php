@@ -289,7 +289,7 @@ else {
 		list($type, $item) = dbrow(dbquery("SELECT type, item FROM ".TABLEPREFIX."fanfiction_reviews WHERE reviewid = '$reviewid' LIMIT 1"));
 	}
 	if($type == "ST") {
-		$storyquery = dbquery("SELECT s.title, s.uid, s.rid, s.sid, s.coauthors FROM ".TABLEPREFIX."fanfiction_stories as s WHERE s.sid = '$item' LIMIT 1");
+		$storyquery = dbquery("SELECT s.title, s.uid, s.rid, s.sid, s.coauthors FROM ".TABLEPREFIX."fanfiction_stories as s WHERE s.sid = '".(isset($item) ? $item : null)."' LIMIT 1");
 		$story = dbassoc($storyquery);
 		$title = title_link($story);
 		$authoruid = (isset($story['uid']) ? $story['uid'] : null);
@@ -302,10 +302,10 @@ else {
 		}
 	}
 	else if($type == "SE") {
-		$storyquery = dbquery("SELECT title, uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '$item' LIMIT 1");
+		$storyquery = dbquery("SELECT title, uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '".(isset($item) ? $item : null)."' LIMIT 1");
 		list($title, $authoruid) = dbrow($storyquery);
 		$titletext = $title;
-		$title = "<a href=\"series.php?seriesid=$item\">".stripslashes($title)."</a>";
+		$title = "<a href=\"series.php?seriesid=".(isset($item) ? $item : null)."\">".stripslashes($title)."</a>";
 		if(empty($title && $authoruid)) accessDenied();
 	}
 	else { 
@@ -375,11 +375,11 @@ else {
 		}
 		$jumpmenu = "<form name=\"jump\" action=\"\">";
 		$jumpmenu .= "<select name=\"sid\" onChange=\"window.location=this.options[this.selectedIndex].value\">";
-		$jumpmenu .= "<option value=\"reviews.php?type=ST&amp;item=".(isset($story['sid']) ? $story['sid'] : null).(isset($_GET['unresponded']) ? "&amp;unresponded=1" : "")."\"";
+		$jumpmenu .= "<option value=\"reviews.php?type=ST&amp;item=".$story['sid'].(isset($_GET['unresponded']) ? "&amp;unresponded=1" : "")."\"";
 		if(!isset($chapid))
 			$jumpmenu .= " selected";
 		$jumpmenu .= ">"._VIEWALLREVIEWS."</option>";
-		$chapquery = dbquery("SELECT inorder, title, chapid, sid FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '".(isset($story['sid']) ? $story['sid'] : null)."' ORDER BY inorder ASC");
+		$chapquery = dbquery("SELECT inorder, title, chapid, sid FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '".$story['sid']."' ORDER BY inorder ASC");
 		while($chapters = dbassoc($chapquery)) {
 			$jumpmenu .= "<option value=\"reviews.php?chapid=".$chapters['chapid'].(isset($_GET['unresponded']) ? "&amp;unresponded=1" : "")."&amp;type=ST&amp;item=$item\"";
 	
