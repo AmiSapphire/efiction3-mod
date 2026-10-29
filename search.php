@@ -236,7 +236,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	$termsList = array();
 	foreach($termArray as $term => $value) {
 		if($term == "submit" || $term == "wordhigh" || $term == "wordlow" || empty($value) || $term == "formname" || $term == "searchtype") continue;
-		$termsList[$term] = "$term=".(is_array($value) ? implode(",", array_map('htmlspecialchars', $value)) : htmlspecialchars($value, ENT_QUOTES));
+		$termsList[$term] = "$term=".(is_array($value) ? implode(",", array_map(function($v) { return htmlspecialchars($v, ENT_QUOTES); }, $value)) : htmlspecialchars($value, ENT_QUOTES));
 	}
 	$terms = implode("&amp;", $termsList);
 	if(!empty($scountquery)) {
