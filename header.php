@@ -216,7 +216,8 @@ if($current == "viewstory"){
 		$squery = dbquery("SELECT sid, inorder FROM ".TABLEPREFIX."fanfiction_chapters WHERE chapid = ".$chapid." LIMIT 1");
 		list($sid, $chapter) = dbrow($squery);
 	}
-	$titlequery = dbquery("SELECT story.title, story.coauthors, "._PENNAMEFIELD." as penname, story.summary FROM ".TABLEPREFIX."fanfiction_stories as story, "._AUTHORTABLE." WHERE sid = '".(($sid) ?? null)."' AND "._UIDFIELD." = story.uid LIMIT 1");
+	if(empty($sid)) $sid = isset($_GET['sid']) && isNumber($_GET['sid']) ? $_GET['sid'] : false;
+	$titlequery = dbquery("SELECT story.title, story.coauthors, "._PENNAMEFIELD." as penname, story.summary FROM ".TABLEPREFIX."fanfiction_stories as story, "._AUTHORTABLE." WHERE sid = '".$sid."' AND "._UIDFIELD." = story.uid LIMIT 1");
 	if($story = dbassoc($titlequery)) { 
 			$authlink[] = $story['penname'];
 		if($story['coauthors']) {
@@ -233,7 +234,7 @@ if($current == "viewstory"){
 		//header("Content-Disposition: inline; filename=\"".$titleinfo."\"");
  	}
 }
-if($current == "viewuser" && (isNumber($uid ?? null))) {
+if($current == "viewuser" && (isNumber(isset($uid) ? $uid : null))) {
 	$author = dbquery("SELECT "._PENNAMEFIELD." as penname FROM "._AUTHORTABLE." WHERE "._UIDFIELD." = '".$uid."'");
 	list($penname) = dbrow($author);
 	$titleinfo = "$sitename :: $penname";

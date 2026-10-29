@@ -47,7 +47,7 @@ if(empty($uid)) {
 		if (file_exists("$skindir/default.tpl")) $tpl = new TemplatePower("$skindir/default.tpl");
 		else $tpl = new TemplatePower("default_tpls/default.tpl");
 		$title = "User was not found";
-		$text  = "User with ID " . (($uid) ?? null) . " is not in database";
+		$text  = "User with ID " . $uid . " is not in database";
 		include("includes/pagesetup.php");
 		$tpl->assign("output", "<div id='pagetitle'>" . $title . "</div>" . write_error($text));
 		$tpl->printToScreen();
@@ -75,7 +75,7 @@ if(!$penname) {
 	if (file_exists("$skindir/default.tpl")) $tpl = new TemplatePower("$skindir/default.tpl");
 	else $tpl = new TemplatePower("default_tpls/default.tpl");
 	$title = "User was not found";
-	$text  = "User with ID " . (($uid) ?? null) . " is not in database";
+	$text  = "User with ID " . $uid . " is not in database";
 	include("includes/pagesetup.php");
 	$tpl->assign("output", "<div id='pagetitle'>" . $title . "</div>" . write_error($text));
 	$tpl->printToScreen();

@@ -292,7 +292,7 @@ else {
 		$storyquery = dbquery("SELECT s.title, s.uid, s.rid, s.sid, s.coauthors FROM ".TABLEPREFIX."fanfiction_stories as s WHERE s.sid = '$item' LIMIT 1");
 		$story = dbassoc($storyquery);
 		$title = title_link($story);
-		$authoruid = ($story['uid']) ?? null;
+		$authoruid = (isset($story['uid']) ? $story['uid'] : null);
 		if(empty($story)) accessDenied();
 		if(!empty($story['coauthors'])) {
 			$colist = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '$item'");
@@ -375,11 +375,11 @@ else {
 		}
 		$jumpmenu = "<form name=\"jump\" action=\"\">";
 		$jumpmenu .= "<select name=\"sid\" onChange=\"window.location=this.options[this.selectedIndex].value\">";
-		$jumpmenu .= "<option value=\"reviews.php?type=ST&amp;item=".(($story['sid']) ?? null).(isset($_GET['unresponded']) ? "&amp;unresponded=1" : "")."\"";
+		$jumpmenu .= "<option value=\"reviews.php?type=ST&amp;item=".(isset($story['sid']) ? $story['sid'] : null).(isset($_GET['unresponded']) ? "&amp;unresponded=1" : "")."\"";
 		if(!isset($chapid))
 			$jumpmenu .= " selected";
 		$jumpmenu .= ">"._VIEWALLREVIEWS."</option>";
-		$chapquery = dbquery("SELECT inorder, title, chapid, sid FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '".(($story['sid']) ?? null)."' ORDER BY inorder ASC");
+		$chapquery = dbquery("SELECT inorder, title, chapid, sid FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '".(isset($story['sid']) ? $story['sid'] : null)."' ORDER BY inorder ASC");
 		while($chapters = dbassoc($chapquery)) {
 			$jumpmenu .= "<option value=\"reviews.php?chapid=".$chapters['chapid'].(isset($_GET['unresponded']) ? "&amp;unresponded=1" : "")."&amp;type=ST&amp;item=$item\"";
 	

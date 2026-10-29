@@ -34,7 +34,7 @@ if($rating) {
 }
 else {
 	$output .= "<div id='pagetitle'>"._RATINGS."</div>";
-	$total = is_countable($ratingslist ?? null);
+	$total = is_countable(isset($ratingslist) ? $ratingslist : null);
 	$count = 0;
 	$column = 1;
 	$list = floor($total / $displaycolumns);
