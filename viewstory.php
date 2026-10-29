@@ -356,14 +356,14 @@ else {
 	include("includes/storyblock.php");
 	unset($adminlinks);
 	if(isADMIN && uLEVEL < 3) 
-		$adminlinks = "<div class=\"adminoptions\"><span class='label'>"._ADMINOPTIONS.":</span> "._EDIT." - <a href=\"stories.php?action=editstory&amp;sid=$sid&amp;admin=1\">"._STORY."</a> "._OR." <a href=\"stories.php?action=editchapter&amp;chapid=$chapid&amp;admin=1\">"._CHAPTER."</a> | "._DELETE." - <a href=\"stories.php?action=delete&amp;sid=$sid&amp;admin=1\">"._STORY."</a> "._OR." <a href=\"stories.php?action=delete&amp;chapid=$chapid&amp;sid=$sid&amp;admin=1\">"._CHAPTER."</a></div>";
+		$adminlinks = "<div class=\"adminoptions\"><span class='label'>"._ADMINOPTIONS.":</span> "._EDIT." - <a href=\"stories.php?action=editstory&amp;sid=$sid&amp;admin=1\">"._STORY."</a> "._OR." <a href=\"stories.php?action=editchapter&amp;chapid=".(isset($chapid) ? $chapid : null)."&amp;admin=1\">"._CHAPTER."</a> | "._DELETE." - <a href=\"stories.php?action=delete&amp;sid=$sid&amp;admin=1\">"._STORY."</a> "._OR." <a href=\"stories.php?action=delete&amp;chapid=".(isset($chapid) ? $chapid : null)."&amp;sid=$sid&amp;admin=1\">"._CHAPTER."</a></div>";
 	if(isMEMBER && $favorites) {
 		$jumpmenu2 .= "<option value=\"user.php?action=favst&amp;add=1&amp;sid=$sid\">"._ADDSTORY2FAVES."</option><option value=\"user.php?action=favau&amp;add=1&amp;author=".$stories['uid'].(count($storyinfo['coauthors']) ? ",".implode(",", array_keys($storyinfo['coauthors'])) : "")."\">"._ADDAUTHOR2FAVES."</option>";
 	}
 	if($reviewsallowed ) {
 		if(isMEMBER || $anonreviews) {
-			$reviewslink = "<a href=\"reviews.php?action=add&amp;type=ST&amp;item=$sid&amp;chapid=$chapid&amp;next=$nextchapter\">"._SUBMITREVIEW."</a>";
-			$jumpmenu2 .= "<option value=\"reviews.php?action=add&amp;type=ST&amp;item=$sid&amp;chapid=$chapid&amp;next=$nextchapter\">"._SUBMITREVIEW."</option>";
+			$reviewslink = "<a href=\"reviews.php?action=add&amp;type=ST&amp;item=$sid&amp;chapid=".(isset($chapid) ? $chapid : null)."&amp;next=$nextchapter\">"._SUBMITREVIEW."</a>";
+			$jumpmenu2 .= "<option value=\"reviews.php?action=add&amp;type=ST&amp;item=$sid&amp;chapid=".(isset($chapid) ? $chapid : null)."&amp;next=$nextchapter\">"._SUBMITREVIEW."</option>";
 		}
 		else $reviewslink = write_message(sprintf(_LOGINTOREVIEW, strtolower($pagelinks['login']['link']), strtolower($pagelinks['register']['link'])));
 	}
