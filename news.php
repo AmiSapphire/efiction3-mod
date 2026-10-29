@@ -98,7 +98,7 @@ if($nid) {
 	$news->assign("skindir", $skindir);
 	$news->assign("newsdate", date("$dateformat $timeformat", $stories['date']) );
 	if($newscomments)
-		$news->assign("newscomments", "<a href=\"news.php?action=newsstory&amp;nid=".$stories['nid']."\">".(isset($stories['comments']) ? $stories['comments'] : null)." "._COMMENTS."</a>");
+		$news->assign("newscomments", "<a href=\"news.php?action=newsstory&amp;nid=".$stories['nid']."\">".$stories['comments']." "._COMMENTS."</a>");
 	if(isADMIN && uLEVEL < 4) 
 		$news->assign("adminoptions", "<a href=\"admin.php?action=news&amp;form=".$stories['nid']."\">"._EDIT."</a> | <a href=\"admin.php?action=news&amp;delete=".$stories['nid']."\">"._DELETE."</a>");
 	$output .= $news->getOutputContent( );
