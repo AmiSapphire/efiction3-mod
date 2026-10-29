@@ -24,14 +24,6 @@
 
 if(!defined("_CHARSET")) exit( );
 
-$csrfKey = SITEKEY . '_custpages_csrf';
-if(empty($_SESSION[$csrfKey])) $_SESSION[$csrfKey] = bin2hex(random_bytes(32));
-$isWrite = isset($_POST['submit']) || isset($_POST['preview']);
-if($isWrite && (!isset($_POST['csrf']) || !hash_equals($_SESSION[$csrfKey], (string) $_POST['csrf']))) {
-	http_response_code(403);
-	exit('Forbidden');
-}
-$efCsrfField = "<input type='hidden' name='csrf' value='".htmlspecialchars($_SESSION[$csrfKey], ENT_QUOTES, 'UTF-8')."'>";
 $confirm = isset($_GET['confirm']) ? $_GET['confirm'] : false;
 
 	$output .= "<div id=\"pagetitle\">"._CUSTPAGES."</div>";
@@ -90,7 +82,6 @@ if((isset($_GET['edit']) && isNumber($_GET['edit'])) || isset($_GET["new"]) || i
 		$text = "";
 	}
 	$output .= "<div id='settingsform'><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=custpages".(isset($edit) ? "&amp;edit=$edit" : "")."\">
-		$efCsrfField
 		<div><label for=\"name\">"._NAME.":</label> <input type=\"text\" class=\"textbox\" name=\"name\" value=\"$name\"></div>
 		<div><label for=\"title\">"._TITLE.":</label> <input type=\"text\" class=\"textbox\" name=\"title\" value=\"$title\" size=\"30\"></div>
 		<div><label for=\"text\">"._TEXT.":</label><br />

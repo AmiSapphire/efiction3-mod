@@ -26,8 +26,6 @@ if(isset($_GET['action']) && ($_GET['action'] == "categories" || $_GET['action']
 
 $disableTiny = true;
 
-ob_start();
-
 include ("header.php");
 
 
