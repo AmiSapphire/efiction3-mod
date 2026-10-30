@@ -60,7 +60,7 @@ function dbquery($query) {
 		}
 		else {
 			// this is very rare case. Uncomment this if you really lost what is doing. This is before pagesetup.php, so Admin is not set
-			//	echo "Query: " . $query . "<br />Error: " . dberror() "<br />" ;
+			//	echo "Query: " . $query . "<br />Error: " . dberror() . "<br />" ;
 			die(" <b>A fatal MySQL error was encountered.</b><br /> Check tableprefix. ");
 		}
 
