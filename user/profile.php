@@ -36,8 +36,8 @@ if(!empty($favorites) && isMEMBER && isset($userinfo['uid']) != USERUID) {
 	if(dbnumrows($fav) == 0) $nameinfo .= " [<a href=\"user.php?action=favau&amp;uid=".USERUID."&amp;add=".(isset($userinfo['uid']))."\">"._ADDAUTHOR2FAVES."</a>]";
 }
  
-$tpl->assign("userpenname", ($userinfo['penname'] ?? null)." ".$nameinfo);
-$tpl->assign("membersince", date("$dateformat", ($userinfo['date'] ?? null)));
+$tpl->assign("userpenname", (isset($userinfo['penname']) ? $userinfo['penname'] : null)." ".$nameinfo);
+$tpl->assign("membersince", date("$dateformat", (isset($userinfo['date']) ? $userinfo['date'] : null)));
 
 if(isset($userinfo['realname']))
 	$tpl->assign("realname", $userinfo['realname']);
@@ -86,7 +86,7 @@ $tpl->assign("reportthis", "[<a href=\""._BASEDIR."contact.php?action=report&amp
 $adminopts = "";
 if(isADMIN && uLEVEL < 3) {
 	$adminopts .= "<div class=\"adminoptions\"><span class='label'>"._ADMINOPTIONS.":</span> ".(isset($userinfo['validated']) && $userinfo['validated'] ? "[<a href=\"admin.php?action=members&amp;revoke=$uid\" class=\"vuadmin\">"._REVOKEVAL."</a>] " : "[<a href=\"admin.php?action=members&amp;validate=$uid\" class=\"vuadmin\">"._VALIDATE."</a>] ")."[<a href=\"user.php?action=editbio&amp;uid=$uid\" class=\"vuadmin\">"._EDIT."</a>] [<a href=\"admin.php?action=members&amp;delete=$uid\" class=\"vuadmin\">"._DELETE."</a>]";
-	$adminopts .= " [<a href=\"admin.php?action=members&amp;".(isset($userinfo['level']) < 0 ? "unlock=".($userinfo['uid'] ?? null)."\" class=\"vuadmin\">"._UNLOCKMEM : "lock=".($userinfo['uid'] ?? null)."\" class=\"vuadmin\">"._LOCKMEM)."</a>]";
+	$adminopts .= " [<a href=\"admin.php?action=members&amp;".(isset($userinfo['level']) < 0 ? "unlock=".(isset ($userinfo['uid']) ? $userinfo['uid'] : null)."\" class=\"vuadmin\">"._UNLOCKMEM : "lock=".(isset($userinfo['uid']) ? $userinfo['uid'] : null)."\" class=\"vuadmin\">"._LOCKMEM)."</a>]";
 	$adminopts .= " [<a href=\"admin.php?action=admins&amp;".(isset($userinfo['level']) && $userinfo['level'] > 0 ? "revoke=$uid\" class=\"vuadmin\">"._REVOKEADMIN."</a>] [<a href=\"admin.php?action=admins&amp;do=edit&amp;uid=$uid\" class=\"vuadmin\">"._EDITADMIN : "do=new&amp;uid=$uid\" class=\"vuadmin\">"._MAKEADMIN)."</a>]</div>";
 	$tpl->assign("adminoptions", $adminopts);
 }
