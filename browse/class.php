@@ -39,12 +39,15 @@ if(!empty($classid)) {
 }
 else if(isset($type_id)) {
 	if(empty($type_id)) $classtypelist[$type_id]['title'] = '';
+	if(empty($classtypelist[$type_id]['title'])) $classtypelist[$type_id]['title'] = '';
 	$output .= "<div id='pagetitle'>".($classtypelist[$type_id]['title'])."</div>";
 	foreach($classlist as $c => $i) {
 		if($i['type'] == $type_id) $clist[] = "<a href='browse.php?type=class&amp;type_id=$type_id&amp;classid=$c'>".$i['name']."</a><br />";
 		else $clist[] = '';
 	}
-	$total = is_countable($clist);
+	if(empty($clist)) $clist = array();
+	if(empty($total)) $total = null;
+	if ($clist) $total = count($clist);
 	$count = 0;
 	$column = 1;
 	$list = floor($total / $displaycolumns);
