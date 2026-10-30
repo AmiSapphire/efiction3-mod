@@ -994,13 +994,13 @@ switch ($_GET['step'])
 
 		if (isset($_POST['submit']))
 		{
-			$dbhost = descript($_POST['dbhost']);
-			$dbname = descript($_POST['dbname']);
-			$dbuser = descript($_POST['dbuser']);
-			$dbpass = descript($_POST['dbpass']);
+			$dbhost = descript(trim($_POST['dbhost']));
+			$dbname = descript(trim($_POST['dbname']));
+			$dbuser = descript(trim($_POST['dbuser']));
+			$dbpass = $_POST['dbpass'];
 			$language = $_POST['language'];
-			$sitekey = descript($_POST['sitekey']);
-			$settingsprefix = descript($_POST['settingsprefix']);
+			$sitekey = descript(trim($_POST['sitekey']));
+			$settingsprefix = descript(trim($_POST['settingsprefix']));
 			$mysqli_access = @mysqli_connect($dbhost, $dbuser,$dbpass, $dbname);
 			 
 			if (!$mysqli_access)
@@ -1019,21 +1019,14 @@ switch ($_GET['step'])
 			}
 			if ($handle)
 			{
-				$dbhost = descript($_POST['dbhost']);
-				$dbname = descript($_POST['dbname']);
-				$dbuser = descript($_POST['dbuser']);
-				$dbpass = descript($_POST['dbpass']);
-				$sitekey = descript($_POST['sitekey']);
+				$dbhost = htmlspecialchars($_POST['dbhost'], ENT_QUOTES);
+				$dbname = htmlspecialchars($_POST['dbname'], ENT_QUOTES);
+				$dbuser = htmlspecialchars($_POST['dbuser'], ENT_QUOTES);
+				$dbpass = $_POST['dbpass'];
+				$sitekey = htmlspecialchars($_POST['sitekey'], ENT_QUOTES);
 				if (empty($sitekey)) $sitekey = random_string($randomcharset, 10);
 				$language = $_POST['language'];
-				$settingsprefix = descript($_POST['settingsprefix']);
-				$text = "<?php \n".
-					"\$dbhost = ".var_export(($dbhost), true).";\n".
-					"\$dbname = ".var_export(($dbname), true).";\n".
-					"\$dbuser= ".var_export(($dbuser), true).";\n".
-					"\$dbpass = ".var_export(($dbpass), true).";\n".
-					"\$sitekey = ".var_export(($sitekey), true).";\n".
-					"\$settingsprefix = ".var_export(($settingsprefix), true).";\n\n".
+				$settingsprefix = htmlspecialchars(descript($_POST['settingsprefix'], ENT_QUOTES));
 					"include(\"includes/dbfunctions.php\");\n".
 					"?>";
 
