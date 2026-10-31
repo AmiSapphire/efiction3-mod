@@ -25,7 +25,7 @@ Just place the script over your current install like any upgrade. This script ca
 
 ### PHP
 
-This script is being tested for issues with future PHP 8.6.0, and anything actually unique to 8.6 was likely fixed. The other stuff would be related to older PHP 8 versions. Since some patches over time (starting in 2016) use PHP 7+ only behavior, this means that you can no longer use eFiction with PHP 5.6 and earlier. PHP should also use the UTF-8 character set to use this script. The entry in the ini file should say UTF-8 for default_charset.
+This script is being tested for issues with future PHP 8.6.0, and anything actually unique to 8.6 was likely fixed. The other stuff would be related to older PHP 8 versions. Since some patches over time (starting in 2016) use PHP 7+ only behavior, this meant that you can no longer use eFiction with PHP 5.6 and earlier. However, since 2026/10/29, such coalescing patches were removed and PHP 5.6 could be used again. PHP should also use the UTF-8 character set to use this script. The entry in the ini file should say UTF-8 for default_charset.
 
 default_charset = "UTF-8"
 
@@ -85,7 +85,7 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - includes/plain.button.php: Undefined variable PHP warning fix
 - includes/corefunctions.php: occasional foreach array|object, string given PHP warning fix
 - includes/userlist.php: Uncaught TypeError for Co-Authors field in PHP 8.x when searching for a user with the first character yields no results - discovered this one entirely by accident due to a typo... slipped my hand on the keyboard!
-- install/install.php: SMTP settings table column creation oversight fix, consistency changes, and cleanup
+- install/install.php: SMTP settings table column creation oversight fix, security fix in Step 1 (eventually reimplemented from eFiction 3.5.72 install), consistency changes, and cleanup
 - user/manageimages.php: Add support for WebP images
 - search.php: failed penname search causes PHP warning fix for PHP 8.x users - MySQL error message overwriting the Search Results header due to an assumption of an array count of author data
 - series.php: category settings causing Fatal Error bug for PHP 8.x users and Undefined array key PHP warning fixes
@@ -94,13 +94,15 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - header.php: leftover array typo oversight fix with age consent feature
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
 - blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix
-- admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fix
-- reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix
+- admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fixes and Undefined array key PHP warning when viewing the list that contains a panel with null entries fix
+- reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix (these also had PHP warnings, but the checks made most of them nil)
+- viewstory.php: Undefined variable warnings when trying to access a nonexistent or formerly existing chapter for PHP 8 users dirty fix
 - viewseries.php: Add a check for anyone trying to access a nonexistent or no longer existing series - null series page/various PHP warnings fix
-- viewuser.php: Add a check for anyone trying to access any nonexistent or formerly existing users - this also applies to UID 0, which should never exist
+- viewuser.php: Add a check for anyone trying to access any nonexistent or formerly existing users - this also applies to UID 0, which should never exist (these also had PHP warnings, but the checks made most of them nil)
+- news.php: Add a check for anyone trying to access a nonexistent or no longer existing news entry - this also applies to NID 0, which should never exist (these also had PHP warnings - namely Trying to access offset array on null, but the checks made them nil)
 - browse/ratings.php: Uncaught TypeError in PHP 8 with visiting the Browse Ratings page with no ratings listed and Undefined variable PHP warning fixes
-- browse/class.php: Uncaught TypeError in PHP 8 with visiting a classification type that has no classifications listed fixes - also Undefined array key, Trying to access array offset on null, and second Uncaught TypeError fixes
-- install/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
+- browse/class.php: Uncaught TypeError in PHP 8 with visiting a classification type that has no classifications listed fixes - also Undefined array key, Trying to access array offset on null, and second Uncaught TypeError fixes - also Undefined variable warning fixes (tricky file...)
+- includes/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
 - reviews.php, stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
 - header.php, user/profile.php: Trying to access array on null and Undefined variable PHP warnings dirty fix for trying to access nonexistent or formerly existing user profiles
 - docs/config.php, includes/browsecategories.php, includes/categorylist.php, includes/characterlist.php, includes/userlist.php, install/install.php, user/login.php: redundant dbfunctions.php entries including cleanup
@@ -110,6 +112,9 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - admin/settings.php, install/install.php: Do not parse the mailer directory in the Admin Panel's or installer's language setting's drop-down menus
 - admin/viewlog.php, languages/en_admin.php: some hardcoded English entries have been relocated to the Admin Panel language file
 - includes/reviewform.php, includes/seriesreviews.php, reviews.php: Number of Likes - unfinished calculation fixes and updates, implement its entry in the review form as well
+- includes/mysqli_functions.php: Updated MySQL query behavior - this comes from the eFiction 3.5.72 release
+- user/editprefs: the ~20-year-old skin selection bug is finally fixed!
+- Some security patches from https://github.com/Hyperion360/efiction fork
 - Bridges return! Their removal got rid of the example work, which is now updated as well
 - Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages, installer
 - TinyMCE versions added; now you have a choice of TinyMCE versions 2.1.2, 3.4.8, 4.5.12, 5.3.2, and 6.8.6 - replaces eFiction 3.5.x's original 3.0.9
