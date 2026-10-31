@@ -28,9 +28,9 @@ if(!defined("_CHARSET")) exit( );
 
 
 function sendemail($to_name,$to_email,$from_name,$from_email,$subject,$message,$type="plain",$cc="",$bcc="") {
-                 
+
 	global $language, $smtp_host, $smtp_username, $smtp_password, $smtp_port, $smtp_secure, $smtp_debug, $siteemail;
-   
+	
 	// Check for hackers and spammers and bad input
 	if(!isset($_SERVER['HTTP_USER_AGENT'])) return false;
 	$badStrings = array("Content-Type:", "MIME-Version:", "Content-Transfer-Encoding:", "bcc:", "cc:");
@@ -50,22 +50,21 @@ function sendemail($to_name,$to_email,$from_name,$from_email,$subject,$message,$
 	$subject = descript(strip_tags($subject));
 	$message = descript($message);
 	// End paranoia
- 
+
 	// Try to determine the right $type setting
  	if(strpos($message, "<br>") || strpos($message, "</p>") || strpos($message, "<br />") || strpos($message, "<br>") || strpos($message, "<a href")) $type = "html";
 	
-	require_once(_BASEDIR."includes/PHPMailerAutoload.php");
-	$mail = new PHPMailer;
-	if(file_exists(_BASEDIR."languages/mailer/phpmailer.lang-".$language.".php"))
-		$mail->SetLanguage($language, _BASEDIR."languages/mailer/");
-	else 
-		$mail->SetLanguage("en", _BASEDIR."languages/mailer/");
+	require_once(_BASEDIR."includes/phpmailer/phpmailer/src/PHPMailer.php");
+	require_once(_BASEDIR."includes/phpmailer/phpmailer/src/SMTP.php");
+	require_once(_BASEDIR."includes/phpmailer/phpmailer/src/Exception.php");
+	$mail = new \PHPMailer\PHPMailer\PHPMailer(false); // exceptions off — keeps v5-style boolean Send() results
+	$mail->setLanguage($language, _BASEDIR."includes/phpmailer/phpmailer/language/"); // falls back to English when a
 
 	if(!$smtp_host) {
-		$mail->IsMail( );
+		$mail->isMail( );
 	}
 	else {
-		$mail->IsSMTP( );
+		$mail->isSMTP( );
 		$mail->Host = $smtp_host;
 		$mail->SMTPAuth = true;
 		$mail->Username = $smtp_username;
@@ -82,26 +81,26 @@ function sendemail($to_name,$to_email,$from_name,$from_email,$subject,$message,$
 		}
 	}
 	$mail->CharSet = _CHARSET;
-	$mail->From = $siteemail;
+	$mail->From = $from_email;
 	$mail->FromName = $from_name;
-	$mail->AddAddress($to_email, $to_name);
-	$mail->AddReplyTo($from_email, $from_name);
+	$mail->addAddress($to_email, $to_name);
+	$mail->addReplyTo($from_email, $from_name);
 	if($cc) {
 		$cc = explode(", ", $cc);
 		foreach ($cc as $ccaddress) {
-			$mail->AddCC($ccaddress);
+			$mail->addCC($ccaddress);
 		}
 	}
 	if ($bcc) {
 		$bcc = explode(", ", $bcc);
 		foreach ($bcc as $bccaddress) {
-			$mail->AddBCC($bccaddress);
+			$mail->addBCC($bccaddress);
 		}
 	}
 	if ($type == "plain") {
-		$mail->IsHTML(false);
+		$mail->isHTML(false);
 	} else {
-		$mail->IsHTML(true);
+		$mail->isHTML(true);
 	}
 	
 	$mail->Subject = $subject;
@@ -109,12 +108,12 @@ function sendemail($to_name,$to_email,$from_name,$from_email,$subject,$message,$
 	if(!$mail->Send()) {
 		$errorinfo = $mail->ErrorInfo;
 		error_log("eFiction sendemail failed for ".$to_email.": ".$errorinfo);
-		$mail->ClearAllRecipients();
-		$mail->ClearReplyTos();
+		$mail->clearAllRecipients();
+		$mail->clearReplyTos();
 		return false;
 	} else {
-		$mail->ClearAllRecipients(); 
-		$mail->ClearReplyTos();
+		$mail->clearAllRecipients(); 
+		$mail->clearReplyTos();
 		return true;
 	}
 

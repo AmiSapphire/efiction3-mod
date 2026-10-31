@@ -102,14 +102,12 @@ if(isset($_POST['testsmtp']) && $sect == "email") {
 		if(empty($smtp_port) && $secure === 'tls') $output .= write_message(_TESTSMTP_TLSPORTWARN);
 
 		// Load the SMTP class the same way emailer.php loads PHPMailer, via the
-		// autoloader -- NOT by requiring class.smtp.php directly. After the planned
-		// PHPMailer 6.x upgrade the autoload file becomes a shim and this must keep
-		// working (that upgrade must alias the SMTP class name; see issue #2).
+		// autoloader -- NOT by requiring class.smtp.php directly.
 		require_once(_BASEDIR."includes/PHPMailerAutoload.php");
 
 		$steps = "";
 		ob_start();
-		$smtp = new SMTP;
+		$smtp = new \PHPMailer\PHPMailer\SMTP;
 		$smtp->do_debug = 2;
 		try {
 			if(!$smtp->connect($host, $port, 10)) {
@@ -347,7 +345,7 @@ else if(isset($_POST['submit'])) {
 				<td><label for='newlanguage'>"._LANGUAGE.":</label></td><td><select name='newlanguage'>";
 		$directory = opendir(_BASEDIR."languages");
 			while($filename = readdir($directory)) {
-				if($filename=="." || $filename==".." || $filename=="mailer" || substr($filename, 2) == "_admin.php") continue;
+				if($filename=="." || $filename==".." || substr($filename, 2) == "_admin.php") continue;
 				$output .= "<option value='".substr($filename, 0, 2)."'".
 					($language == substr($filename, 0, strpos($filename, ".php")) ? " selected" : "").">
 				".substr($filename, 0, strpos($filename, ".php"))."</option>";
