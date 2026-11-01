@@ -224,10 +224,11 @@ else if($action == "edit" || $action == "add") {
 
 				$uidquery = dbquery("SELECT uid,title, coauthors FROM ".TABLEPREFIX."fanfiction_stories WHERE sid = '$item'");
 				list($author, $title, $coauthors) = dbrow($uidquery);
+				$coauthors = array();
 				if($coauthors) {
 					$coQuery = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '$item'");
 					while($c = dbassoc($coQuery)) {
-						$coauthors = $c['uid']; // was $coauthors[], crashes PHP 8.x. Check this later...
+						$coauthors[] = $c['uid'];
 					}
 				}
 			}
