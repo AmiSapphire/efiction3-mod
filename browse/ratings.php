@@ -34,7 +34,8 @@ if($rating) {
 }
 else {
 	$output .= "<div id='pagetitle'>"._RATINGS."</div>";
-	if ($ratingslist) $total = count(isset($ratingslist) ? $ratingslist : null);
+	if(empty($ratingslist) || !is_array($ratingslist)) $ratingslist = array( );
+	$total = count($ratingslist);
 	$count = 0;
 	$column = 1;
 	$list = floor($total / $displaycolumns);

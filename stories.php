@@ -57,8 +57,18 @@ include("includes/storyform.php");
 					$coauthors[] = $c['uid'];
 				}
 			}
-			if($story['uid'] != USERUID && (is_array($coauthors) && !in_array(USERUID, $coauthors)) && !$story['rr']) accessDenied( );
+			if(!$story) accessDenied( );
+			$ef_own = $story['uid'] == USERUID || in_array(USERUID, $coauthors);
+			if(!$ef_own) {
+				// A round robin lets other members add chapters, and edit or delete the
+				// chapters they wrote. The story itself stays with its authors.
+				// (Before 3.5.74 any member could edit or delete a round robin story.)
+				if(!$story['rr']) accessDenied( );
+				$ef_rr_ok = $action == "newchapter" || (isset($chapid) && isset($author) && $author == USERUID && in_array($action, array("editchapter", "delete")));
+				if(!$ef_rr_ok) accessDenied( );
+			}
 		}
+		else if(isset($chapid)) accessDenied( );
 	}
 	else if(isADMIN && uLEVEL < 4 && isset($_GET['admin'])) {
 		$admin = 1;

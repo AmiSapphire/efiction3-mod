@@ -28,8 +28,25 @@ if(!defined("_CHARSET")) exit( );
 	if(isset($_POST['submit'])) {
 		$reviewid = isset($_POST['rid']) && isNumber($_POST['rid']) ? $_POST['rid'] : false;
 		if(!$reviewid) accessDenied( );
-		$result = dbquery("SELECT review, reviewid, item, type, chapid, uid FROM ".TABLEPREFIX."fanfiction_reviews WHERE reviewid = '$reviewid' LIMIT 1");
+		$result = dbquery("SELECT review, reviewid, item, type, chapid, uid FROM ".TABLEPREFIX."fanfiction_reviews WHERE reviewid = '".(isset($_POST['rid']) && isNumber($_POST['rid']) ? $_POST['rid'] : 0)."' LIMIT 1");
 		list($review, $reviewid, $item, $type, $chapid, $uid) = dbrow($result);
+		$ef_owner = false;
+		if($reviewid && $type == "ST") {
+			$ef_o = dbassoc(dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_stories WHERE sid = '".(int)$item."' LIMIT 1"));
+			$ef_owner = ($ef_o && $ef_o['uid'] == USERUID) || dbnumrows(dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '".(int)$item."' AND uid = '".(int)USERUID."'"));
+		}
+		else if($reviewid && $type == "SE") {
+			$ef_o = dbassoc(dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '".(int)$item."' LIMIT 1"));
+			$ef_owner = $ef_o && $ef_o['uid'] == USERUID;
+		}
+		else if($reviewid) $ef_owner = isADMIN;   // reviews of module items: admins only
+		if(!$ef_owner) accessDenied( );
+		if(dbnumrows(dbquery("SELECT reviewid FROM ".TABLEPREFIX."fanfiction_reviews WHERE reviewid = '".(int)$reviewid."' AND respond = '1'"))) {
+			$tpl->assign("output", write_message(_ALREADYRESPONDED));
+			$tpl->printToScreen( );
+			dbclose( );
+			exit( );
+		}
 		$updated = escapestring($review . "<br><br><i>"._AUTHORSRESPONSE.": " .replace_naughty(descript(strip_tags($_POST['response'], $allowed_tags)))."</i>");
 		$success = dbquery("UPDATE ".TABLEPREFIX."fanfiction_reviews SET review = '$updated', respond = '1' WHERE reviewid = '$reviewid'");
 		if($uid) {

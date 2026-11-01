@@ -61,6 +61,18 @@ if(isADMIN && uLEVEL == 3) {
 	}
 }
 if(!$allowseries && !$admin) accessDenied( );
+$ef_sid_post = isset($_POST['seriesid']) ? $_POST['seriesid'] : null;
+if($ef_sid_post !== null && !isNumber($ef_sid_post)) accessDenied( );
+$ef_target = $seriesid ? $seriesid : ($ef_sid_post !== null ? (int)$ef_sid_post : false);
+$ef_changes = $action == "edit" || $action == "validate" || ($action == "delete" && isset($_GET['confirmed']) && $_GET['confirmed'] == "yes") || !empty($_GET['go']);
+if($ef_changes && $ef_target && !$admin) {
+	$ef_owner = dbq_value("SELECT uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = ? LIMIT 1", (int)$ef_target);
+	$ef_story_owner = false;
+	// a story's author may take their own story out of someone else's series
+	if($action == "delete" && !empty($inorder))
+		$ef_story_owner = (int)dbq_value("SELECT s.uid FROM ".TABLEPREFIX."fanfiction_inseries AS i JOIN ".TABLEPREFIX."fanfiction_stories AS s ON s.sid = i.sid WHERE i.seriesid = ? AND i.inorder = ? LIMIT 1", (int)$ef_target, (int)$inorder) === (int)USERUID;
+	if($ef_owner === null || ((int)$ef_owner !== (int)USERUID && !$ef_story_owner)) accessDenied( );
+}
 if($allowseries == 1 && !$admin) {
 	list($count) = dbrow(dbquery("SELECT COUNT(sid) FROM ".TABLEPREFIX."fanfiction_stories WHERE uid = '".USERUID."'"));
 	if($count == 0) accessDenied( );
@@ -218,6 +230,8 @@ if($add == "stories") {
 			if($item['sid']) $items[] = $item['sid'];
 			if($item['subseriesid']) $subs[] = $item['subseriesid'];
 		}
+		if(!$owner || (!$admin && USERUID != $owner && !$isopen)) accessDenied( );
+		$ef_mine = !$admin && USERUID != $owner;
 		if($admin || USERUID == $owner || $isopen == 2 ) $confirmed = 1;
 		else {
 			$confirmed = 0;
@@ -230,6 +244,7 @@ if($add == "stories") {
 		if(!empty($_POST["sid"])) {
 			foreach($_POST["sid"] as $story) {
 				if(!isNumber($story)) continue;
+				if($ef_mine && !dbnumrows(dbquery("SELECT s.sid FROM ".TABLEPREFIX."fanfiction_stories AS s LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors AS c ON c.sid = s.sid AND c.uid = '".(int)USERUID."' WHERE s.sid = '".(int)$story."' AND (s.uid = '".(int)USERUID."' OR c.uid IS NOT NULL) LIMIT 1"))) continue;
 				if(!isset($items) || !is_array($items) || !in_array($story, $items)) {
 					$count++;
 					$validate = dbquery("SELECT validated FROM ".TABLEPREFIX."fanfiction_stories WHERE sid = '$story' LIMIT 1");

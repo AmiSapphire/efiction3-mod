@@ -162,12 +162,12 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 
 	if(isset($_REQUEST['rid'])) $rid = is_array($_REQUEST['rid']) ? $_REQUEST['rid'] : explode(",", $_REQUEST['rid']);
 	else $rid = array();
+	$rid = array_filter((array)$rid, function($r) { return is_string($r) && isNumber($r); });
 	if(count($rid) > 0) {
-		$rid = array_filter($rid, "isNumber");
 		$query[] = findclause('rid', $rid);
 		$countquery[] = findclause('rid', $rid);
 	}
-	if(isset($_REQUEST['complete'])) {
+	if(isset($_REQUEST['complete']) || isset($_REQUEST['completed'])) {
 		$query[] = "stories.completed = '1'";
 		$countquery[] = "stories.completed = '1'";
 	}

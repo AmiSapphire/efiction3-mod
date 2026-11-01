@@ -42,6 +42,7 @@ if($type) {
 	$scountquery = array();
 	$searchtype = (isset($_REQUEST['searchtype']) ? $_REQUEST['searchtype'] : "simple");
 	$searchterm =  (isset($_REQUEST['searchterm']) ? escapestring(descript($_REQUEST['searchterm'])) : false);
+	if($searchterm !== false) $searchterm = str_replace(array('%', '_'), array('\\%', '\\_'), escapestring($searchterm));
 	$disablesorts = array( );
 	if($searchterm) {
 		if($searchtype == "title") {
@@ -65,6 +66,9 @@ if($type) {
 				$countquery[] = "FIND_IN_SET(stories.uid, '".implode(",",$authorlist)."') > 0";
 				$scountquery[] = "FIND_IN_SET(series.uid, '".implode(",",$authorlist)."') > 0";
 			}
+			else {
+				$query[] = "1 = 0"; $countquery[] = "1 = 0"; $scountquery[] = "1 = 0";
+			}
 		}
 		if($searchtype == "advanced" || !$searchtype) {
 			$query[] = "(stories.summary LIKE '%$searchterm%' OR stories.title LIKE '%$searchterm%') ";
@@ -72,10 +76,12 @@ if($type) {
 			$scountquery[] = "(summary LIKE '%$searchterm%' OR title LIKE '%$searchterm%') ";
 		}
 	}
-	if(isset($_REQUEST['authors'])) {
-		$query[] = "FIND_IN_SET(stories.uid, '".implode(",",$searchVars['authors'])."') > 0";
-		$countquery[] = "FIND_IN_SET(stories.uid, '".implode(",",$searchVars['authors'])."') > 0";
-		$scountquery[] = "FIND_IN_SET(series.uid, '".implode(",",$searchVars['authors'])."') > 0";
+	$ef_authors = isset($_REQUEST['authors']) ? array_filter(array_map('trim', is_array($_REQUEST['authors']) ? $_REQUEST['authors'] : explode(",", (string)$_REQUEST['authors'])), "isNumber") : array( );
+	if($ef_authors) {
+		$ef_authors = implode(",", array_map('intval', $ef_authors));
+		$query[] = "FIND_IN_SET(stories.uid, '".$ef_authors."') > 0";
+		$countquery[] = "FIND_IN_SET(stories.uid, '".$ef_authors."') > 0";
+		$scountquery[] = "FIND_IN_SET(series.uid, '".$ef_authors."') > 0";
 	}
 	if(isset($_REQUEST['catid'])) {
 		$catid = is_array($_REQUEST['catid']) ? $_REQUEST['catid'] : explode(",", $_REQUEST['catid']);
