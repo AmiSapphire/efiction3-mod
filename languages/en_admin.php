@@ -207,6 +207,7 @@ define ("_PURGELOG", "Purge the log");
 define ("_PWDSETTING", "Password at Registration");
 define ("_QUEUECOUNT", "There are %d chapters waiting to be validated."); // Added for 3.0
 define ("_RANDOM", "randomly generated");
+define ("_RATEGUARD", "Ratings Abuse Guard");
 define ("_RECALCREVIEWS", "Recalculate Reviews");
 define ("_RECALCSTORIES", "Recalculate Stories");
 define ("_RECENTDAYS", "Number of days to limit "._MOSTRECENT);
@@ -358,6 +359,7 @@ define ("_HELP_ANONREVIEWS", "If you have elected to turn on reviews, this deter
 define ("_HELP_REVDELETE", "If reviews are turned on, this defines which reviews (if any) authors are allowed to delete themselves.");
 define ("_HELP_RATINGS", "Defines the rating system in place in your archive.  Your choices are no ratings, like/dislike, or 5 star ratings.  You are <strong>strongly</strong> encouraged to not change this after installation or your ratings as changing from one system to the other will mess up existing ratings.");
 define ("_HELP_RATEONLY", "Defines whether or not reviewers may post a rating for the story (if ratings are on) without posting a review.");
+define ("_HELP_RATEGUARD", "Defines whether or not a review's ratings guard should be present on the site. If you want users to post multiple reviews in a chapter or series, disable this setting. You are recommended to disable ratings if you do not want review ratings abuse as well if you disable this setting.");
 define ("_HELP_ALERTSON", "This defines whether or not the author/story update alerts system is turned on.  If it is turned on, members will have an option in their preferences to receive e-mail alerts when their favorite authors and stories are updated.");
 define ("_HELP_AGECONSENT", "This setting determines if an age consent statement will appear in the member preference form.  If a member has confirmed their age in the preferences, it will allow them to by-pass the warning pop-ups for stories with age consent ratings.");
 define ("_HELP_POPUPS", "This setting lets you allow visitors to receive the warning pop-ups only once.  Logged in members who have confirmed the age consent statement in their profile by-pass the warnings altogether");

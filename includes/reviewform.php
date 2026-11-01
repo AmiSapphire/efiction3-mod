@@ -23,8 +23,15 @@
 if(!defined("_CHARSET")) exit( );
 if(!isset($item)) $item = "";
 if(!isset($action)) $action == "add";
+if ($rateguard == 1) {
+$form = "<center>Warning: This archive has a review ratings guard.<br>Instead of creating a new review for a reviewer that <br>already created one prior, it updates them without confirmation.<br>So you must edit your review instead.</center>
+<br><form method=\"POST\" id=\"reviewform\" enctype=\"multipart/form-data\" action=\"reviews.php?action=".($action == "edit" ? "edit&amp;reviewid=".$review['reviewid'] : "add&amp;type=$type&amp;item=$item").(!empty($nextchapter) ? "&amp;next=$nextchapter" : "")."\">
+<div style=\"width: 350px; margin: 0 auto; text-align: left;\"><label for=\"reviewer\">"._NAME.":</label> ";
+}
+else {
 $form = "<form method=\"POST\" id=\"reviewform\" enctype=\"multipart/form-data\" action=\"reviews.php?action=".($action == "edit" ? "edit&amp;reviewid=".$review['reviewid'] : "add&amp;type=$type&amp;item=$item").(!empty($nextchapter) ? "&amp;next=$nextchapter" : "")."\">
 <div style=\"width: 350px; margin: 0 auto; text-align: left;\"><label for=\"reviewer\">"._NAME.":</label> ";
+}
 if($action != "edit") {
 	$review = array('reviewid' => '', 'reviewer' => '', 'review' => '', 'rating' => '-1');
 	if(isMEMBER)

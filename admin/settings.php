@@ -261,9 +261,10 @@ else if(isset($_POST['submit'])) {
 		$reviewsallowed = $_POST['newreviewsallowed'] == 1 ? 1 : 0;
 		$anonreviews = $_POST['newanonreviews'] == 1 ? 1 : 0;
 		$rateonly = $_POST['newrateonly'] == 1 ? 1 : 0;
+		$rateguard = $_POST['newrateguard'] == 1 ? 1 : 0;
 		$ratings = isset($_POST['newratings']) && isNumber($_POST['newratings']) ? $_POST['newratings'] : 0;
 		$revdelete = isset($_POST['newrevdelete']) && isNumber($_POST['newrevdelete']) ? $_POST['newrevdelete'] : 0;
-		$result = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET reviewsallowed = '$reviewsallowed', anonreviews = '$anonreviews', rateonly = '$rateonly', ratings = '$ratings', revdelete = '$revdelete' WHERE sitekey ='".SITEKEY."'");
+		$result = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET reviewsallowed = '$reviewsallowed', anonreviews = '$anonreviews', rateonly = '$rateonly', rateguard = '$rateguard', ratings = '$ratings', revdelete = '$revdelete' WHERE sitekey ='".SITEKEY."'");
 	}
 	else if($sect == "useropts") {
 		$alertson = $_POST['newalertson'] == 1 ? 1 : 0;
@@ -576,7 +577,13 @@ else if(isset($_POST['submit'])) {
 				<td><label for='newrateonly'>"._ALLOWRATEONLY.":</label></td><td><select name='newrateonly'>
 				<option value='1'".($rateonly == "1" ? " selected" : "").">"._YES."</option>
 				<option value='0'".($rateonly == "0" ? " selected" : "").">"._NO."</option>
-				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_RATEONLY."</span></a></td></tr>";
+				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_RATEONLY."</span></a></td>
+		</tr>
+		<tr>
+				<td><label for='newrateguard'>"._RATEGUARD.":</label></td><td><select name='newrateguard'>
+				<option value='1'".($rateguard == "1" ? " selected" : "").">"._YES."</option>
+				<option value='0'".($rateguard == "0" ? " selected" : "").">"._NO."</option>
+				</select> <a href='#' class='pophelp'>[?]<span>"._HELP_RATEGUARD."</span></a></td></tr>";
 	}
 	else if($sect == "useropts") {
 		$output .= "<div class='sectionheader'>"._USERSETTINGS."</div>

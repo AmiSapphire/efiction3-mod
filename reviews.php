@@ -179,6 +179,7 @@ else if($action == "edit" || $action == "add") {
 			else if($type == "ST") {
 				if(isset($_POST['chapid']) && isNumber($_POST['chapid'])) $chapid = $_POST['chapid'];
 				if(!isset($chapid)) $chapid = 0;
+				if ($rateguard == 1) {
 				// Ratings-abuse guard (issue #8): a logged-in member gets one
 				// rating per story chapter. A repeat submission revises their
 				// existing review row instead of inserting a fresh one and
@@ -193,6 +194,10 @@ else if($action == "edit" || $action == "add") {
 					dbquery("UPDATE ".TABLEPREFIX."fanfiction_reviews SET review = '$review', rating = '$rating', date = '".time()."' WHERE reviewid = '$alreadyrated' LIMIT 1");
 				}
 				else {
+					dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_reviews (item, type, reviewer, review, rating, date, uid, chapid) VALUES ('$item', 'ST', '$reviewer', '$review', '$rating', '" . time() . "', '".(USERUID && isNumber(USERUID) ? USERUID : 0)."', '$chapid')");
+				}
+				}
+				else if ($rateguard == 0) {
 					dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_reviews (item, type, reviewer, review, rating, date, uid, chapid) VALUES ('$item', 'ST', '$reviewer', '$review', '$rating', '" . time() . "', '".(USERUID && isNumber(USERUID) ? USERUID : 0)."', '$chapid')");
 				}
 				if($ratings == 3) {
@@ -233,6 +238,7 @@ else if($action == "edit" || $action == "add") {
 				}
 			}
 			else if($type == "SE"){
+				if ($rateguard == 1) {
 				// Same ratings-abuse guard for series reviews (issue #8).
 				$alreadyrated = 0;
 				if(USERUID && isNumber(USERUID)) {
@@ -244,6 +250,10 @@ else if($action == "edit" || $action == "add") {
 				}
 				else {
 					dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_reviews (item, type, reviewer, review, rating, date, uid) VALUES ('$item', 'SE', '$reviewer', '$review', '$rating', '" . time() . "', '".(USERUID && isNumber(USERUID) ? USERUID : 0)."')");
+				}
+				}
+				else if ($rateguard == 0) {
+					dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_reviews (item, type, reviewer, review, rating, date, uid, chapid) VALUES ('$item', 'ST', '$reviewer', '$review', '$rating', '" . time() . "', '".(USERUID && isNumber(USERUID) ? USERUID : 0)."', '$chapid')");
 				}
 				$thisseries = $item;
 				seriesreview($item);
