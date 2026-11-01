@@ -28,7 +28,7 @@ $tpl->assignInclude( "header", "$skindir/header.tpl" );
 $tpl->assignInclude( "footer", "$skindir/footer.tpl" );
 include(_BASEDIR."includes/pagesetup.php");
 include_once(_BASEDIR."languages/".$language."_admin.php");
-if(!isADMIN) accessDenied( );       
+if(!isADMIN || uLEVEL > 1) accessDenied( );     
 $confirm = isset($_GET['confirm']) ? $_GET['confirm'] : false;
 if($confirm == "yes") {
 	list($installed) = dbrow(dbquery("SELECT COUNT(name) FROM ".TABLEPREFIX. "fanfiction_modules WHERE name = 'notifications'"));

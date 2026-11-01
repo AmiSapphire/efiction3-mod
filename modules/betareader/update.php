@@ -34,7 +34,7 @@ if(file_exists(_BASEDIR."languages/".$language."_admin.php")) include_once(_BASE
 else include_once(_BASEDIR."languages/en_admin.php");
 if(file_exists(_BASEDIR."languages/".$language.".php")) include_once(_BASEDIR."languages/".$language.".php");
 else include_once(_BASEDIR."languages/en.php");
-if(!isADMIN) accessDenied( );
+if(!isADMIN || uLEVEL > 1) accessDenied( );
 $confirm = isset($_GET['confirm']) ? $_GET['confirm'] : false;
 include("version.php");
 list($currentVersion) = dbrow(dbquery("SELECT version FROM ".TABLEPREFIX."fanfiction_modules WHERE name = '$moduleName' LIMIT 1"));

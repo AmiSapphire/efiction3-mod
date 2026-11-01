@@ -51,16 +51,18 @@ if ($nid < 1) {
 if($nid) {
 
 	$output .= "<div id=\"pagetitle\">"._NEWS."</div>";
-	if(isset($_POST['submit']))
+	if(isset($_POST['submit']) && isset($_POST['comment']) && is_string($_POST['comment']))
 	{
 		$comment = escapestring(format_story(replace_naughty(strip_tags($_POST['comment'], $allowed_tags))));
-		if(!$cid && USERUID) {
-			$insert = dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_comments (nid, uid, comment, time) VALUES ('$nid', '".(USERUID ? USERUID : 0)."', '$comment', '" . time() . "')");
+		$ef_news_ok = (bool)dbrow(dbquery("SELECT nid FROM ".TABLEPREFIX."fanfiction_news WHERE nid = '$nid' LIMIT 1"));
+		if(!$cid && USERUID && $newscomments && $ef_news_ok && trim($comment) !== "") {
+			$insert = dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_comments (nid, uid, comment, time) VALUES ('$nid', '".(int)USERUID."', '$comment', now())");
 			if($insert) dbquery("UPDATE ".TABLEPREFIX."fanfiction_news SET comments = comments + 1 WHERE nid = '$nid' LIMIT 1");
 		}
-		else if($cid) {
-			dbquery("UPDATE ".TABLEPREFIX."fanfiction_comments SET comment = '$comment' WHERE cid = '$cid'");
+		else if($cid && isADMIN && uLEVEL < 4) {
+			dbquery("UPDATE ".TABLEPREFIX."fanfiction_comments SET comment = '$comment' WHERE cid = '$cid' AND nid = '$nid'");
 		}
+		else accessDenied( );
 		unset($comment);
 	}
 	if(isset($_GET['del']) && isADMIN && uLEVEL < 4 && !empty($cid)) {

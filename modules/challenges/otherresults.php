@@ -51,8 +51,9 @@ if(is_array($catid) && count($catid) > 0) {
 	if(!empty($cats)) $chalquery[] = "(".implode(" OR ", $cats).")";
 }
 if($searchterm) {
-	if($searchtype == "title") $chalquery[] = "title LIKE '%$searchterm%'";
-	if($searchtype == "summary") $chalquery[] = "summary LIKE '%$searchterm%'";
+	$ef_st = escapestring(str_replace(array('\\', '%', '_'), array('\\\\', '\\%', '\\_'), stripslashes($searchterm)));
+	if($searchtype == "title") $chalquery[] = "title LIKE '%$ef_st%'";
+	if($searchtype == "summary") $chalquery[] = "summary LIKE '%$ef_st%'";
 }
 if(count($chalquery) > 0) {
 	$chalquery = "WHERE ".implode(" AND ", $chalquery);

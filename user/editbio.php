@@ -46,8 +46,13 @@ function random_string ($charset_string, $length)
 	$uid = isset($_REQUEST['uid']) ? $_REQUEST['uid'] : false;
 	if(!$uid) $uid = USERUID;
 
-	if($uid && !isNumber($uid)) accessDenied( );
-	if((!isADMIN || uLEVEL > 2) && $uid != USERUID && $action == "editbio") accessDenied( );
+	if($action == "editbio" && $uid != USERUID && (!isADMIN || uLEVEL > 2)) {
+		$output .= write_error(_NOTAUTHORIZED);
+		$tpl->assign("output", $output);
+		$tpl->printToScreen( );
+		dbclose( );
+		exit( );
+	}
 	if(isMEMBER) $output .= "<div id=\"pagetitle\">"._EDITPERSONAL."</div>";
 	else $output .= "<div id=\"pagetitle\">"._NEWACCOUNT."</div>";
 

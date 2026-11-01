@@ -38,6 +38,15 @@ $tpl->prepare();
 
 include("includes/pagesetup.php");
 
+function ef_review_story_ok($sid) {
+	$st = dbassoc(dbquery("SELECT uid, validated FROM ".TABLEPREFIX."fanfiction_stories WHERE sid = '".(int)$sid."' LIMIT 1"));
+	if(!$st) return false;
+	if($st['validated'] > 0 || isADMIN) return true;
+	if(!USERUID) return false;
+	if((int)$st['uid'] === (int)USERUID) return true;
+	return (bool)dbrow(dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '".(int)$sid."' AND uid = '".(int)USERUID."' LIMIT 1"));
+}
+
 $reviewid = isset($_REQUEST['reviewid']) ? $_REQUEST['reviewid'] : false;
 if(!isNumber($reviewid)) unset($reviewid);
 $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : false;
@@ -59,6 +68,7 @@ if($action == "delete") {
 	}
 	$authorquery = dbquery($query2);
 	list($author) = dbrow($authorquery);
+	if(empty($reviewid) || $reviewuid === null) accessDenied( );
 	if($author != USERUID && !$notauthor && ($revdelete < 2 || ($revdelete == 1 && $reviewuid))) accessDenied( );
 	$delete = isset($_GET['delete']) ? $_GET['delete'] : false;
 	$output .= "<div id=\"pagetitle\">"._DELETEREVIEW."</div>";
@@ -124,9 +134,24 @@ if($action == "delete") {
 else if($action == "edit" || $action == "add") {
 	if(isset($_GET['next']) && isNumber($_GET['next'])) $nextchapter = $_GET['next'];
 	if(!isMEMBER && !$anonreviews) accessDenied( );
-	if(!isset($chapid) && $type == "ST") { 
-		$chapquery = dbquery("SELECT chapid FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '$item' AND inorder = '1' LIMIT 1");
-		list($chapid) = dbrow($chapquery);
+	if($action == "edit") {
+		if(empty($reviewid)) accessDenied( );
+		$ef_r = dbassoc(dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_reviews WHERE reviewid = '".(int)$reviewid."' LIMIT 1"));
+		if(!$ef_r || !((isADMIN && uLEVEL < 4) || (USERUID && (int)$ef_r['uid'] === (int)USERUID))) accessDenied( );
+	}
+	if($action == "add") {
+		if(!$reviewsallowed) accessDenied( );
+		if($type == "ST") {
+			if(empty($item) || !ef_review_story_ok($item)) accessDenied( );
+			$ef_ch = isset($_POST['chapid']) && is_string($_POST['chapid']) && isNumber($_POST['chapid']) ? (int)$_POST['chapid'] : (isset($chapid) ? (int)$chapid : 0);
+			$chapid = 0;
+			if($ef_ch) list($chapid) = array_pad((array)dbrow(dbquery("SELECT chapid FROM ".TABLEPREFIX."fanfiction_chapters WHERE chapid = '$ef_ch' AND sid = '".(int)$item."' AND validated > 0 LIMIT 1")), 1, 0);
+			if(!$chapid) list($chapid) = array_pad((array)dbrow(dbquery("SELECT chapid FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '".(int)$item."' AND validated > 0 ORDER BY inorder LIMIT 1")), 1, 0);
+			$chapid = (int)$chapid;
+		}
+		else if($type == "SE") {
+			if(empty($item) || !dbrow(dbquery("SELECT seriesid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '".(int)$item."' LIMIT 1"))) accessDenied( );
+		}
 	}
 	$tpl->assign("pagetitle", "<div id =\"pagetitle\">"._REVIEW."</div>");
 	if(isset($_POST['submit'])) {
@@ -289,11 +314,11 @@ else {
 		list($type, $item) = dbrow(dbquery("SELECT type, item FROM ".TABLEPREFIX."fanfiction_reviews WHERE reviewid = '$reviewid' LIMIT 1"));
 	}
 	if($type == "ST") {
-		$storyquery = dbquery("SELECT s.title, s.uid, s.rid, s.sid, s.coauthors FROM ".TABLEPREFIX."fanfiction_stories as s WHERE s.sid = '".(isset($item) ? $item : null)."' LIMIT 1");
+		if(empty($item) || !ef_review_story_ok($item)) accessDenied( );
+		$storyquery = dbquery("SELECT s.title, s.uid, s.rid, s.sid, s.coauthors FROM ".TABLEPREFIX."fanfiction_stories as s WHERE s.sid = '$item' LIMIT 1");
 		$story = dbassoc($storyquery);
 		$title = title_link($story);
-		$authoruid = (isset($story['uid']) ? $story['uid'] : null);
-		if(empty($story)) accessDenied();
+		$authoruid = $story['uid'];
 		if(!empty($story['coauthors'])) {
 			$colist = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '$item'");
 			while($c = dbassoc($colist)) {
@@ -302,17 +327,18 @@ else {
 		}
 	}
 	else if($type == "SE") {
-		$storyquery = dbquery("SELECT title, uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '".(isset($item) ? $item : null)."' LIMIT 1");
+		$if(empty($item)) accessDenied( );
+		$storyquery = dbquery("SELECT title, uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '$item' LIMIT 1");
 		list($title, $authoruid) = dbrow($storyquery);
 		$titletext = $title;
-		$title = "<a href=\"series.php?seriesid=".(isset($item) ? $item : null)."\">".stripslashes($title)."</a>";
-		if(empty($title && $authoruid)) accessDenied();
+		$title = "<a href=\"series.php?seriesid='$item'\">".stripslashes($title)."</a>";
 	}
 	else { 
 		$titlequery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'revtitle'");
 		while($code = dbassoc($titlequery)) {
 			eval($code['code_text']);
 		}
+		if(!isset($title)) accessDenied( );
 	}
 	$tpl->assign("pagetitle", "<div id=\"pagetitle\">"._REVIEWSFOR." $title</div>");
 	if($type == "SE") {

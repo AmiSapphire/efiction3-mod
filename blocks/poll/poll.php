@@ -32,6 +32,8 @@ if(isset($_POST['cast_vote'])) {
 	$poll = isset($_POST['poll_id']) && isNumber($_POST['poll_id']) ? $_POST['poll_id'] : false;
 	$opt = isset($_POST['opt']) && isNumber($_POST['opt']) ? $_POST['opt'] : false;
 	if(!$poll || !$opt) accessDenied( ); // could only be a hack attempt.
+	if(!isMEMBER || !$currentpoll || (int)$poll !== (int)$currentpoll['poll_id'] || (int)$opt < 1 || (int)$opt > count(explode("|#|", $currentpoll['poll_opts']))) accessDenied( );
+	$poll = (int)$poll; $opt = (int)$opt;
 	$voted = dbquery("SELECT vote_id FROM ".TABLEPREFIX."fanfiction_poll_votes WHERE vote_poll = '".$currentpoll['poll_id']."' AND vote_user = '".USERUID."'");
 	list($voter) = dbrow($voted);
         if(!$voter) $cast = dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_poll_votes(`vote_user`, `vote_opt`, `vote_poll`) VALUES('".USERUID."', '$opt', '$poll')");

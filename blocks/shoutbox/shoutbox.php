@@ -8,11 +8,12 @@ if(isset($_POST['shouthidden']) && (isMEMBER || !empty($blocks['shoutbox']['gues
 	http_response_code(202);
 	if(isMEMBER) $shout_name = USERUID;
 	else {
-		$shout_name = trim(descript($_POST['shoutname']));
-		if(isNumber($shout_name)) $shout_name = _GUEST;
+		$shout_name = isset($_POST['shoutname']) && is_string($_POST['shoutname']) ? trim(strip_tags($_POST['shoutname'])) : "";
+		$shout_name = function_exists('mb_substr') ? mb_substr($shout_name, 0, 30) : substr($shout_name, 0, 30);
+		if($shout_name === "" || isNumber($shout_name)) $shout_name = _GUEST;
 		if($captcha && !captcha_confirm()) $shout_name = false;
 	}
-	$shout_message = trim($_POST['shout_message']);
+	$shout_message = isset($_POST['shout_message']) && is_string($_POST['shout_message']) ? trim($_POST['shout_message']) : "";
 	$shout_message = preg_replace("/^(.{200}).*$/", "$1", $shout_message);
 	$shout_message = preg_replace("/[^\s]{25}/", "$1\n", $shout_message);
 	$search = array("\"", "'", "\\", '\"', "\'", "<", ">", "&nbsp;", "\n");
@@ -20,7 +21,7 @@ if(isset($_POST['shouthidden']) && (isMEMBER || !empty($blocks['shoutbox']['gues
 	$shout_message = str_replace($search, $replace, replace_naughty(trim($shout_message)));
 	$shout_message = str_replace("\n", "<br />", $shout_message);
 	if(!empty($shout_name) && !empty($shout_message)) {
-		dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_shoutbox(`shout_name`, `shout_message`, `shout_datestamp`) VALUES('$shout_name', '$shout_message', '".time()."')");
+		dbquery("INSERT INTO ".TABLEPREFIX."fanfiction_shoutbox(`shout_name`, `shout_message`, `shout_datestamp`) VALUES('".escapestring($shout_name)."', '".escapestring($shout_message)."', '".time()."')");
 	}
 
 }
