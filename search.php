@@ -81,7 +81,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 			while($auth = dbassoc($authorquery)) {
 				$authorlist[] = $auth['uid'];
 			}
-			if(is_countable($authorlist) > 0) {
+			if(count(array($authorlist)) > 0) {
 				$authors = implode(",",$authorlist);
 				$query = "SELECT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM ("._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories) LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE "._UIDFIELD." = stories.uid AND stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0) ";
 				$countquery = "SELECT COUNT(stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0)";
