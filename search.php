@@ -243,7 +243,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	if(!empty($scountquery)) {
 		$seriesresults = dbquery(_SERIESCOUNT.$scountquery);
 		list($scount) = dbrow($seriesresults);
-		if($scount > 0) $otherresults[] = "<a href='browse.php?type=series$terms'>$scount "._SERIES."</a>";
+		if($scount > 0) $otherresults[] = "<a href='browse.php?type=series&amp;$terms'>$scount "._SERIES."</a>";
 	}
 	$codeblocks = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'otherresults'");
 	while($code = dbassoc($codeblocks)) {
