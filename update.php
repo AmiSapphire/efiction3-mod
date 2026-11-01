@@ -288,7 +288,7 @@ elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 9)  // 3.
 	{
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'setreg'")))
 			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `setreg` tinyint(1) NOT NULL DEFAULT '1' AFTER `multiplecats`");
-		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'setreg'")))
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'rateguard'")))
 			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `rateguard` tinyint(1) NOT NULL DEFAULT '0' AFTER `rateonly`");
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'smtp_port'")))
 			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `smtp_port` varchar(5) NOT NULL DEFAULT ''");
@@ -430,7 +430,7 @@ function do_version_check_359()
 {
 	$check_359 = false;
 
-	$required = array('setreg', 'smtp_port', 'smtp_secure');
+	$required = array('rateguard', 'setreg', 'smtp_port', 'smtp_secure');
 	foreach ($required as $f)
 	{
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM " . TABLEPREFIX . "fanfiction_settings LIKE '{$f}'")))
