@@ -227,7 +227,7 @@ else if($action == "edit" || $action == "add") {
 				if($coauthors) {
 					$coQuery = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '$item'");
 					while($c = dbassoc($coQuery)) {
-						$coauthors[] = $c['uid'];
+						$coauthors = $c['uid']; // was $coauthors[], crashes PHP 8.x. Check this later...
 					}
 				}
 			}
@@ -327,7 +327,7 @@ else {
 		}
 	}
 	else if($type == "SE") {
-		$if(empty($item)) accessDenied( );
+		if(empty($item)) accessDenied( );
 		$storyquery = dbquery("SELECT title, uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '$item' LIMIT 1");
 		list($title, $authoruid) = dbrow($storyquery);
 		$titletext = $title;
