@@ -16,13 +16,11 @@ echo "var element = '".$_GET['element']."';\n";
 while($u = dbassoc($users)) {
 	$userlist[$u['uid']] = $u['username'];
 }
-if($userlist) {
-	if(count($userlist) > 0) {
-		$x = 0;
-		foreach($userlist as $k => $v) {
-			echo "userList[$x] =  new Array('$k','$v');\n";
-			$x++;
-		}
+if(count($userlist) > 0) {
+	$x = 0;
+	foreach($userlist as $k => $v) {
+		echo "userList[$x] =  new Array('$k','$v');\n";
+		$x++;
 	}
 }
 ?>
