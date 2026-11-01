@@ -63,6 +63,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	if($searchterm && strlen($searchterm) < 3) {
 		errorExit(_SEARCHTERMTOOSHORT);
 	}
+	if($searchterm !== false) $searchterm = str_replace(array('%', '_'), array('\\%', '\\_'), escapestring($searchterm));
 	if($searchterm) {
 		if($searchtype == "title") {
 			$query[] = "stories.title LIKE '%$searchterm%'";
