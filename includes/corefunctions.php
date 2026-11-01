@@ -169,6 +169,7 @@ function seriesreview($thisseries) {
 
 	global $ratings;
 
+	if(is_int($thisseries)) $thisseries = (string)$thisseries;
 	if(!isNumber($thisseries)) return;
 	$storylist = storiesInSeries($thisseries);
 	$serieslist = subseriesList($thisseries);
@@ -194,7 +195,7 @@ $newcount = dbquery("SELECT count(reviewid) as totalcount FROM ".TABLEPREFIX."fa
 	(count($serieslist) > 0 ? " OR (FIND_IN_SET(item, '".(implode(",", $serieslist))."') > 0 AND type = 'SE')" : "").
 	") AND review != 'No Review'");
 list($totalcount) = dbrow($newcount);
-if($totalcount) $update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_series SET rating = '".round($totalreviews)."', reviews = '$totalcount' WHERE seriesid = '$thisseries'");
+if($totalcount) $update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_series SET rating = '".($totalcount ? round((float)$totalreviews) : 0)."', reviews = '".(int)$totalcount."', numstories = '".count($storylist)."' WHERE seriesid = '$thisseries'");
 $parentq = dbquery("SELECT seriesid FROM ".TABLEPREFIX."fanfiction_inseries WHERE subseriesid = '$thisseries' AND seriesid != '$thisseries'");
 while($parent2 = dbassoc($parentq)) { seriesreview($parent2['seriesid']); }
 
