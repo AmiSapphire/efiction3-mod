@@ -73,7 +73,7 @@ if(!defined("_CHARSET")) exit( );
 			exit( );
 
 		}
-		$type = $reviews['type'];
+		$type = (isset($reviews['type']) ? $reviews['type'] : null);
 		if($type == "SE") $query2 = "SELECT uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '".$reviews['item']."'";
 		else if($type == "ST") {
 			$query2 = "SELECT uid, coauthors FROM ".TABLEPREFIX."fanfiction_stories WHERE sid = '".$reviews['item']."' LIMIT 1";
@@ -84,7 +84,7 @@ if(!defined("_CHARSET")) exit( );
 				eval($code['code_text']);
 			}
 		}
-		$user = dbassoc(dbquery($query2));
+		$user = dbassoc(dbquery(isset($query2) ? $query2 : accessDenied()));
 		if(!empty($user['coauthors'])) {
 			$coQuery = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '".$reviews['item']."'");
 			while($c = dbassoc($coQuery)) {
