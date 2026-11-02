@@ -59,7 +59,7 @@ define ("_EDIT", "Edit");
 define ("_EDITFAVORITES", "Edit Favorites");
 define ("_EMAIL", "E-mail");
 define ("_EMAILFAILED", "The email could not be sent.  Please <a href='"._BASEDIR."contact.php'>contact the administrator</a> to report this problem.");
-define ("_ERROR", "<strong>Error!</strong>We encountered an error.  Please go back and try again.");
+define ("_ERROR", "<strong>Error!</strong> We encountered an error.  Please go back and try again.");
 define ("_FATALERROR", "<b>A fatal MySQL error was encountered.</b><br />");
 define ("_FSTORY", "Feature");
 define ("_GO", "Go");
