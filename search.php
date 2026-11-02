@@ -43,50 +43,49 @@ include("includes/pagesetup.php");
 
 
 $searchtype = (isset($_REQUEST['searchtype']) ? $_REQUEST['searchtype'] : "simple");
-$rawterm = (isset($_REQUEST['searchterm']) ? $_REQUEST['searchterm'] : "");
-$searchterm = $rawterm !== "" ? escapestring("%".strtr($rawterm, array("!" => "!!", "%" => "!%", "_" => "!_"))."%") : false;
+$searchterm =  (isset($_REQUEST['searchterm']) ? escapestring($_REQUEST['searchterm']) : false);
 
 if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	$output .= "<div id=\"pagetitle\">"._RESULTS."</div>";
 	$query = array();
 	$countquery = array();
 	$scountquery = array();	
-	if(!in_array($searchtype, array("title", "summary", "penname", "advanced", "fulltext"), true)) errorExit(_ERROR);
-	if($searchtype == "fulltext" && $store != "mysql") errorExit(_ERROR);
-	if(($searchtype != "advanced" && trim($rawterm) === "") || ($searchterm !== false && strlen($rawterm) < 3)) {
+	if($searchtype == "fulltext") {
+		$query = "SELECT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM "._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext LIKE '%$searchterm%' AND chapter.sid = stories.sid AND stories.uid = "._UIDFIELD;
+		$countquery = "SELECT count(stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext LIKE '%$searchterm%' AND chapter.sid = stories.sid GROUP BY stories.sid";
+		$query .= " "._ORDERBY;
+		search($query, $countquery);
+		$tpl->assign("output", $output);
+		$tpl->printToScreen();
+		dbclose( );			
+		exit( );
+	}
+	if($searchterm && strlen($searchterm) < 3) {
 		errorExit(_SEARCHTERMTOOSHORT);
 	}
-	if($searchtype == "fulltext") {
-		// EXISTS keeps both rows and counts distinct, and all common filters apply.
-		$fulltext = "EXISTS (SELECT 1 FROM ".TABLEPREFIX."fanfiction_chapters AS chapter WHERE chapter.sid = stories.sid AND chapter.validated > 0 AND chapter.storytext LIKE '$searchterm' ESCAPE '!')";
-		$query[] = $fulltext;
-		$countquery[] = $fulltext;
-		$scountquery[] = "1 = 0"; // Series have no chapter text.
-	}
+	if($searchterm !== false) $searchterm = str_replace(array('%', '_'), array('\\%', '\\_'), escapestring($searchterm));
 	if($searchterm) {
 		if($searchtype == "title") {
-			$query[] = "stories.title LIKE '$searchterm' ESCAPE '!'";
-			$countquery[] = "stories.title LIKE '$searchterm' ESCAPE '!'";
-			$scountquery[] = "series.title LIKE '$searchterm' ESCAPE '!'";
+			$query[] = "stories.title LIKE '%$searchterm%'";
+			$countquery[] = "stories.title LIKE '%$searchterm%'";
+			$scountquery[] = "series.title LIKE '%$searchterm%'";
 		}
 		if($searchtype == "summary") {
-			$query[] = "stories.summary LIKE '$searchterm' ESCAPE '!'";
-			$countquery[] = "stories.summary LIKE '$searchterm' ESCAPE '!'";
-			$scountquery[] = "series.summary LIKE '$searchterm' ESCAPE '!'";
+			$query[] = "stories.summary LIKE '%$searchterm%'";
+			$countquery[] = "stories.summary LIKE '%$searchterm%'";
+			$scountquery[] = "series.summary LIKE '%$searchterm%'";
 		}
 		if($searchtype == "penname") {
-			$authorquery = dbquery(_MEMBERLIST." WHERE "._PENNAMEFIELD." LIKE '$searchterm' ESCAPE '!' GROUP BY "._UIDFIELD);
+			$authorquery = dbquery(_MEMBERLIST." WHERE "._PENNAMEFIELD." LIKE '%$searchterm%' GROUP BY "._UIDFIELD);
 			$authorlist = array();
 			while($auth = dbassoc($authorquery)) {
 				$authorlist[] = $auth['uid'];
 			}
-			// old behavior stays as new upstream behavior breaks MySQL strict error reporting mode - tweaked
 			if(count(array($authorlist)) > 0) {
 				$authors = implode(",",$authorlist);
-				$query = "SELECT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM ("._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories) LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE "._UIDFIELD." = stories.uid AND stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR EXISTS (SELECT 1 FROM ".TABLEPREFIX."fanfiction_coauthors AS coauth WHERE coauth.sid = stories.sid AND FIND_IN_SET(coauth.uid, '$authors') > 0))";
-				$countquery = "SELECT COUNT(stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR EXISTS (SELECT 1 FROM ".TABLEPREFIX."fanfiction_coauthors AS coauth WHERE coauth.sid = stories.sid AND FIND_IN_SET(coauth.uid, '$authors') > 0))";
-				$scountquery = "SELECT COUNT(series.sid) FROM ".TABLEPREFIX."fanfiction_series as series AND (FIND_IN_SET(series.uid, '$authors') > 0)";
-				search($query, $countquery, $scountquery);
+				$query = "SELECT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM ("._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories) LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE "._UIDFIELD." = stories.uid AND stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0) ";
+				$countquery = "SELECT COUNT(stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0)";
+				search($query, $countquery);
 				$tpl->assign("output", $output);
 				$tpl->printToScreen();
 				dbclose( );			
@@ -99,9 +98,9 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 			}
 		}
 		if($searchtype == "advanced") {
-			$query[] = "(stories.summary LIKE '$searchterm' ESCAPE '!' OR stories.title LIKE '$searchterm' ESCAPE '!') ";
-			$countquery[] = "(stories.summary LIKE '$searchterm' ESCAPE '!' OR stories.title LIKE '$searchterm' ESCAPE '!') ";
-			$scountquery[] = "(summary LIKE '$searchterm' ESCAPE '!' OR title LIKE '$searchterm' ESCAPE '!') ";
+			$query[] = "(stories.summary LIKE '%$searchterm%' OR stories.title LIKE '%$searchterm%') ";
+			$countquery[] = "(stories.summary LIKE '%$searchterm%' OR stories.title LIKE '%$searchterm%') ";
+			$scountquery[] = "(summary LIKE '%$searchterm%' OR title LIKE '%$searchterm%') ";
 		}
 	}
 	if(isset($_REQUEST['authors'])) {
@@ -178,10 +177,18 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	foreach($classtypelist as $id => $vars) {
 		$opts = array( );
 		$exopts = array( );
-		if(isset($_REQUEST["class_".$id])) $opts = ef_search_ids($_REQUEST["class_".$id]);
-		else if(isset($_REQUEST[$vars["name"]])) $opts = ef_search_ids($_REQUEST[$vars["name"]]);
+		if(isset($_POST["class_".$id])) $opts = array_filter($_POST["class_".$id], "isNumber");
+		else if(isset($_GET["class_".$id])) {
+			$opts = array_merge($opts, explode(",", $_GET["class_".$id]));
+			$opts = array_filter($opts, "isNumber");
+		}
+		else if(isset($_REQUEST[$vars["name"]])) $opts[] = array($_REQUEST[$vars["name"]]);
 		$classin = array_merge($classin, $opts);
-		if(isset($_REQUEST["exclass_".$id])) $exopts = ef_search_ids($_REQUEST["exclass_".$id]);
+		if(isset($_POST["exclass_".$id])) $exopts = array_filter($_POST["exclass_".$id], "isNumber");
+		else if(isset($_GET["exclass_".$id])) {
+			$exopts = array_merge($exopts, explode(",", $_GET["exclass_".$id]));
+			$exopts = array_filter($exopts, "isNumber");
+		}
 		$classex = array_merge($classex, $exopts);
 		unset($opts, $exopts);
 	}
@@ -224,7 +231,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	$query = (count($query) > 0 ? " AND ".implode(" AND ", $query) : "")." "._ORDERBY;
 	$countquery = count($countquery) > 0 ? " AND ".implode(" AND ", $countquery) : "";
 	if(count($scountquery) > 0) $scountquery = " WHERE ".implode(" AND ", $scountquery);
-	search(preg_replace('/^SELECT /i', 'SELECT DISTINCT ', _STORYQUERY).$query, str_ireplace('count(sid)', 'COUNT(DISTINCT stories.sid)', _STORYCOUNT).$countquery);
+	search(_STORYQUERY.$query, _STORYCOUNT.$countquery);
 	$otherresults = array( );
 	$termArray = array_merge($_GET, $_POST);
 	$termsList = array();
@@ -236,7 +243,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	if(!empty($scountquery)) {
 		$seriesresults = dbquery(_SERIESCOUNT.$scountquery);
 		list($scount) = dbrow($seriesresults);
-		if($scount > 0) $otherresults[] = "<a href='browse.php?type=series".($terms !== "" ? "&amp;".$terms : "")."'>$scount "._SERIES."</a>";
+		if($scount > 0) $otherresults[] = "<a href='browse.php?type=series&amp;$terms'>$scount "._SERIES."</a>";
 	}
 	$codeblocks = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'otherresults'");
 	while($code = dbassoc($codeblocks)) {
@@ -329,14 +336,4 @@ $output .= "<div id='submitdiv'><input name=\"submit\" id=\"submit\" value=\""._
 $tpl->assign("output", $output);
 $tpl->printToScreen();
 dbclose( );
-
-// Accept form lists and comma-separated continuation values, but never silently
-// discard an invalid/nested classification and broaden the search.
-function ef_search_ids($value) {
-	$values = is_array($value) ? $value : explode(",", $value);
-	foreach($values as $v) {
-		if(!is_string($v) || ($v !== "" && !isNumber($v))) errorExit(_ERROR);
-	}
-	return array_values(array_filter($values, "isNumber"));
-}
 ?>
