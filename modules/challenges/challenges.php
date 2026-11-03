@@ -24,6 +24,8 @@
 $current = "challenges";
 if(isset($_GET['action']) && ($_GET['action'] == "add" || $_GET['action'] == "edit")) $displayform = 1;
 include ("../../header.php");
+if(file_exists(_BASEDIR."modules/challenges/languages/{$language}.php")) require_once (_BASEDIR."modules/challenges/languages/{$language}.php");
+else require_once (_BASEDIR."languages/en.php");
 
 //make a new TemplatePower object
 if(file_exists( "$skindir/default.tpl")) $tpl = new TemplatePower("$skindir/default.tpl" );
