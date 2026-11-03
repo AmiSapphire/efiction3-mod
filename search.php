@@ -52,7 +52,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	$scountquery = array();	
 	if($searchtype == "fulltext") {
 		$query = "SELECT DISTINCT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM "._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext AND chapter.validated > 0 LIKE '%$searchterm%' AND chapter.sid = stories.sid AND stories.uid = "._UIDFIELD;
-		$countquery = "SELECT DISTINCT count(stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext AND chapter.validated > 0 LIKE '%$searchterm%' AND chapter.sid = stories.sid GROUP BY stories.sid";
+		$countquery = "SELECT count(DISTINCT stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext AND chapter.validated > 0 LIKE '%$searchterm%' AND chapter.sid = stories.sid GROUP BY stories.sid";
 		$query .= " "._ORDERBY;
 		search($query, $countquery);
 		$tpl->assign("output", $output);
@@ -84,7 +84,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 			if(count(array($authorlist)) > 0) {
 				$authors = implode(",",$authorlist);
 				$query = "SELECT DISTINCT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM ("._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories) LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE "._UIDFIELD." = stories.uid AND stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0) ";
-				$countquery = "SELECT DISTINCT COUNT(stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0)";
+				$countquery = "SELECT COUNT(DISTINCT stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories LEFT JOIN ".TABLEPREFIX."fanfiction_coauthors as coauth ON coauth.sid = stories.sid WHERE stories.validated > 0 AND (FIND_IN_SET(stories.uid, '$authors') > 0 OR FIND_IN_SET(coauth.uid, '$authors') > 0)";
 				search($query, $countquery);
 				$tpl->assign("output", $output);
 				$tpl->printToScreen();
