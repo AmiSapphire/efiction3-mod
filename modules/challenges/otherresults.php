@@ -50,10 +50,10 @@ if(is_array($catid) && count($catid) > 0) {
 	// Now implode the SQL list
 	if(!empty($cats)) $chalquery[] = "(".implode(" OR ", $cats).")";
 }
+if($searchterm !== false) $searchterm = str_replace(array('%', '_'), array('\\%', '\\_'), escapestring($searchterm));
 if($searchterm) {
-	$ef_st = escapestring(str_replace(array('\\', '%', '_'), array('\\\\', '\\%', '\\_'), stripslashes($searchterm)));
-	if($searchtype == "title") $chalquery[] = "title LIKE '%$ef_st%'";
-	if($searchtype == "summary") $chalquery[] = "summary LIKE '%$ef_st%'";
+	if($searchtype == "title") $chalquery[] = "title LIKE '%$searchterm%'";
+	if($searchtype == "summary") $chalquery[] = "summary LIKE '%$searchterm%'";
 }
 if(count($chalquery) > 0) {
 	$chalquery = "WHERE ".implode(" AND ", $chalquery);
