@@ -51,11 +51,11 @@ if($confirm == "yes") {
 	if(!$series) dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_series` ADD `challenges` varchar(200) NOT NULL default '0'");
 	dbquery("CREATE TABLE `".TABLEPREFIX."fanfiction_challenges` (
 	  `chalid` int(11) NOT NULL auto_increment,
-	  `challenger` varchar(200) NOT NULL default '',
+	  `challenger` varchar(200) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
 	  `uid` int(11) NOT NULL default '0',
-	  `title` varchar(250) NOT NULL default '',	
+	  `title` varchar(250) NOT NULL default '' COLLATE utf8mb4_unicode_ci,	
 	  `catid` varchar(200) NOT NULL default '',
-	  `characters` varchar(200) NOT NULL default '',
+	  `characters` varchar(200) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
 	  `summary` text NOT NULL,
 	  `responses` int(11) NOT NULL default '0',
 	  PRIMARY KEY  (`chalid`),
@@ -63,7 +63,7 @@ if($confirm == "yes") {
 	  KEY `uid` (`uid`),
 	  KEY `title_2` (`title`),
 	  KEY `characters` (`characters`)
-	) ENGINE=MyISAM;");
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;");
 	dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_modules`(`version`, `name`) VALUES('$moduleVersion', '$moduleName')");
 	$output = write_message(_ACTIONSUCCESSFUL);
 }
