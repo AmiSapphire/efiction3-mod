@@ -49,7 +49,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	$output .= "<div id=\"pagetitle\">"._RESULTS."</div>";
 	$query = array();
 	$countquery = array();
-	$scountquery = array();	
+	$scountquery = array();
 	if($searchtype == "fulltext") {
 		$query = "SELECT DISTINCT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM "._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext AND chapter.validated > 0 LIKE '%$searchterm%' AND chapter.sid = stories.sid AND stories.uid = "._UIDFIELD;
 		$countquery = "SELECT count(DISTINCT stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext AND chapter.validated > 0 LIKE '%$searchterm%' AND chapter.sid = stories.sid GROUP BY stories.sid";
@@ -252,6 +252,7 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	if(count($otherresults) > 0) $tpl->assign("otherresults", "<div id='otherresults'><span class='label'>"._OTHERRESULTS.":</span> ".implode(", ", $otherresults)."</div>");
 }
 else {
+	$disablesorts = array( );
 	if($searchtype == "simple") {
 		$output .= "<div id=\"pagetitle\">"._SIMPLE."</div><div style='text-align: center;'><form method=\"post\" enctype=\"multipart/form-data\" action=\"search.php\">
 		<div class=\"tblborder\" style=\"width: 320px; padding: 5px; margin: 0 auto;\">
@@ -324,8 +325,10 @@ else {
   <option>1000</option>
   <option value='-500'>&lt; 500</option>
   </select><br /><br /><label for=\"searchterm\">"._SEARCHTERM.": </label><INPUT type=\"text\" class=\"textbox\" name=\"searchterm\" id=\"searchterm\" size=\"20\">
+  ";
   
-  <label for=\"sortorder\">"._SORT.":</label> <select name=\"sortorder\" id=\"sortorder\"><option value=\"alpha\">"._ALPHA."</option><option value=\"update\">"._MOSTRECENT."</option></select>";
+  if(!in_array("sorts", $disablesorts)) $output .= "<label for=\"sortorder\">"._SORT.":</label> <select class=\"textbox\" name=\"sort\"><option value=\"alpha\"".(!$defaultsort ? " selected" : "").">"._ALPHA."</option><option value=\"update\"".($defaultsort == 1 ? " selected" : "").">"._MOSTRECENT."</option></select>";
+  
 	$codequery = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'searchform'");
 	while($code = dbassoc($codequery)) {
 		eval($code['code_text']);
