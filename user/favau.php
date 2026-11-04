@@ -36,8 +36,8 @@ if(empty($favorites)) accessDenied( );
 	$edit = isset($_GET['edit']) && isNumber($_GET['edit']) ? $_GET['edit'] : false;
 	$author = explode(",", $add);
 	$author = array_filter($author, "isNumber");
-	$array_pennames = array();
 	$pennames = '';
+	$pennameslist = array();
 	if(($add || $edit || $delete) && !isMEMBER) accessDenied( );
 
 	if(isMEMBER && $uid == USERUID) {
@@ -61,7 +61,7 @@ if(empty($favorites)) accessDenied( );
 		}
 		if(($add || $edit) && !isset($_POST['submit'])) {
 			if($add) {
-				$check = dbquery("SELECT item FROM ".TABLEPREFIX."fanfiction_favorites WHERE uid = '".USERUID."' AND ".findclause("item", $author)." AND type = 'AU'");
+				$check = dbquery("SELECT item FROM ".TABLEPREFIX."fanfiction_favorites WHERE uid = '".USERUID."' AND FIND_IN_SET('item', '".(is_array($author) ? implode(",", $author) : $author)."') > 0 AND type = 'AU'");
 				if(dbnumrows($check)) {
 					while($c = dbassoc($check)) {
 						$edit[] = $c['item'];
@@ -71,9 +71,9 @@ if(empty($favorites)) accessDenied( );
 				else {
 					$pQuery = dbquery("SELECT "._PENNAMEFIELD." as penname FROM "._AUTHORTABLE." WHERE ".findclause(_UIDFIELD, $author));
 					while($pRes = dbassoc($pQuery)) {
-						$array_pennames[] = $pRes['penname'];
+						$pennameslist[] = $pRes['penname'];
 					}
-					$pennames = implode(", ", $array_pennames);
+					$pennames = implode(", ", $pennameslist);
 				}
 				$output = "<div class='sectionheader'>"._ADDTOFAVORITES.": ".$pennames."</div>";
 			}
@@ -88,9 +88,9 @@ if(empty($favorites)) accessDenied( );
 					$author = array($edit);
 					$pQuery = dbquery("SELECT "._PENNAMEFIELD." as penname FROM "._AUTHORTABLE." WHERE ".findclause(_UIDFIELD, $author));
 					while($pRes = dbassoc($pQuery)) {
-						$array_pennames[] = $pRes['penname'];
+						$pennameslist[] = $pRes['penname'];
 					}
-					$pennames = implode(", ", $array_pennames);
+					$pennames = implode(", ", $pennameslist);
 					$output .= "<div class='sectionheader'>"._ADDTOFAVORITES.": ".$pennames."</div>";
 				}
 			}
