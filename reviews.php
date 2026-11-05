@@ -133,7 +133,7 @@ if($action == "delete") {
 }
 else if($action == "edit" || $action == "add") {
 	if(isset($_GET['next']) && isNumber($_GET['next'])) $nextchapter = $_GET['next'];
-	if(!isMEMBER && !$anonreviews) accessDenied( );
+	if((!isMEMBER && !$anonreviews) || (uLEVEL == -1)) accessDenied( );
 	if($action == "edit") {
 		if(empty($reviewid)) accessDenied( );
 		$ef_r = dbassoc(dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_reviews WHERE reviewid = '".(int)$reviewid."' LIMIT 1"));
