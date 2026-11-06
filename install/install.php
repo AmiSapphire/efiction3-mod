@@ -1028,7 +1028,6 @@ switch ($_GET['step'])
 				if (empty($sitekey)) $sitekey = random_string($randomcharset, 10);
 				$language = $_POST['language'];
 				$settingsprefix = htmlspecialchars(descript($_POST['settingsprefix'], ENT_QUOTES));
-				$settingsprefix = descript($_POST['settingsprefix']);
 				$text = "<?php \n".
 					"\$dbhost = ".var_export(($dbhost), true).";\n".
 					"\$dbname = ".var_export(($dbname), true).";\n".
