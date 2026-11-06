@@ -34,20 +34,6 @@ if(isset($_REQUEST['nid'])) $nid = $_REQUEST['nid'];
 if(!isset($nid) || !isNumber($nid)) $nid = false;
 $cid = isset($_REQUEST['cid']) && isNumber($_REQUEST['cid']) ? $_REQUEST['cid'] : false;
 
-if ($nid < 1) {
-	$current = "newserror";
-	// load our template files to set up the page.
-	if (file_exists("$skindir/default.tpl")) $tpl = new TemplatePower("$skindir/default.tpl");
-	else $tpl = new TemplatePower("default_tpls/default.tpl");
-	$title = "News entry was not found";
-	$text  = "News entry with ID " . $nid . " is not in database";
-	include("includes/pagesetup.php");
-	$tpl->assign("output", "<div id='pagetitle'>" . $title . "</div>" . write_error($text));
-	$tpl->printToScreen();
-	dbclose();
-	exit();
-}
-
 if($nid) {
 
 	$output .= "<div id=\"pagetitle\">"._NEWS."</div>";
