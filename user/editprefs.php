@@ -46,7 +46,7 @@ if(!defined("_CHARSET")) exit( );
 		}
 		$user = dbassoc($result);
 		$output .= "<form method=\"POST\" enctype=\"multipart/form-data\" style='width: 425px; margin: 0 auto;' action=\"user.php?action=editprefs\">
-		<label for='newreviews'>"._CONTACTREVIEWS.":</label> <INPUT name=\"newreviews\" type=\"checkbox\" class=\"checkbox\"".($user['newreviews'] ? " checked" : "")."> <A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_NEWREV."</span></A><br />
+		<label for='newreviews'>"._CONTACTREVIEWS.":</label> <INPUT name=\"newreviews\" type=\"checkbox\" class=\"checkbox\"".($user['newreviews'] ? " checked" : "")."><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_NEWREV."</span></A><br />
 		<label for='newrespond'>"._CONTACTRESPOND.":</label> <INPUT name=\"newrespond\" type=\"checkbox\" class=\"checkbox\"".($user['newrespond'] ? " checked" : "")."><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_NEWRESP."</span></A><br />";
 		if($alertson) 
 		$output .= "<label for='useralertson'>"._ALERTSON2."</label> <INPUT name=\"useralertson\" type=\"checkbox\" class=\"checkbox\"".($user['alertson'] ? " checked" : "")."><A HREF=\"#\" class=\"pophelp\">[?]<span>"._HELP_FAVALERT."</span></A><br />";
