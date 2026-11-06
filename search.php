@@ -263,7 +263,7 @@ else {
 		if($store == "mysql")
 			$output .= "<option value=\"fulltext\">"._FULLTEXT."</option>";
 		$output .= "</select> <INPUT type=\"text\" class=\"textbox\" name=\"searchterm\" size=\"20\"> ";
-		$output .= "<INPUT type=\"submit\" class=\"button\" name=\"submit\" value=\""._SUBMIT."\" size=\"20\">
+		$output .= "<INPUT style=\"margin-top: 0.5em;\" type=\"submit\" class=\"button\" name=\"submit\" value=\""._SUBMIT."\" size=\"20\">
 		<div style=\"font-size: 8pt; text-align: right;\"><a href=\"search.php?searchtype=advanced\">"._ADVANCED."</a></div></div></form></div>";
 	}
 	else {
