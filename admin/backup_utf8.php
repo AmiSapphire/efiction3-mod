@@ -30,8 +30,8 @@ include("../config.php");
 $settingsresults = dbquery("SELECT * FROM ".$settingsprefix."fanfiction_settings WHERE sitekey = '$sitekey'");
 $settings = dbassoc($settingsresults);
 foreach($settings as $var => $val) {
-	$$var = stripslashes($val);
-	$settings[$var] = htmlspecialchars($val);
+	$$var = stripslashes(isset($val) ? $val : '');
+	$settings[$var] = htmlspecialchars(isset($val) ? $val : '');
 }
 if(!defined("SITEKEY")) define("SITEKEY", $settings['sitekey']);
 unset($settings['sitekey']);
@@ -63,7 +63,8 @@ function datadump ($table) {
 		echo "INSERT INTO ".$table." ";
 		$row = array( );
 		foreach($t AS $field => $value) {
-			$value = utf8_encode (escapestring($value) );
+			$value = escapestring($value);
+			$value = mb_convert_encoding($value, 'UTF-8');
 			$value = str_replace("\n","\\n",$value);
 			if (isset($value)) $row[$field] = "\"$value\"";
 			else $row[$field] = "\"\"";
