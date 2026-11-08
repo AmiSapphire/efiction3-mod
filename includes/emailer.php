@@ -58,7 +58,7 @@ function sendemail($to_name,$to_email,$from_name,$from_email,$subject,$message,$
 	require_once(_BASEDIR."includes/phpmailer/phpmailer/src/SMTP.php");
 	require_once(_BASEDIR."includes/phpmailer/phpmailer/src/Exception.php");
 	$mail = new \PHPMailer\PHPMailer\PHPMailer(false); // exceptions off — keeps v5-style boolean Send() results
-	$mail->setLanguage($language, _BASEDIR."includes/phpmailer/phpmailer/language/"); // falls back to English when a
+	$mail->setLanguage($language, _BASEDIR."includes/phpmailer/phpmailer/language/"); // falls back to English when a translation is missing
 
 	if(!$smtp_host) {
 		$mail->isMail( );
