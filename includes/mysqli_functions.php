@@ -113,7 +113,7 @@ function dbclose() {
 // Used to escape text being put into the database.
 function escapestring($str) {
 	global $dbconnect;
-   if (!is_array($str)) return $dbconnect->real_escape_string(($str===null) ? '' : $str);
+   if (!is_array($str)) return $dbconnect->real_escape_string(($str===null) ? "NULL" : $str);
    return array_map('escapestring', $str);
 }
 
