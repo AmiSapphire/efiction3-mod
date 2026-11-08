@@ -50,11 +50,11 @@ function deleteStory($story) {
 	dbquery("DELETE FROM ".TABLEPREFIX."fanfiction_reviews WHERE item = '$sid' AND type = 'ST'");
 	dbquery("DELETE FROM ".TABLEPREFIX."fanfiction_favorites WHERE item = '$sid' AND type = 'ST'");
 	// get the coauthors list before we delete the coauthors info.
-	$array_coauthors = array();
+	$coauthors = array();
 	if($story['coauthors'] == 1) {
 		$coauth = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '$sid'");
 		while($c = dbassoc($coauth)) {
-			$array_coauthors[] = $c['uid'];
+			$coauthors[] = $c['uid'];
 			
 		}
 	}	
@@ -74,9 +74,9 @@ function deleteStory($story) {
 	}
 	if($story['validated'] > 0) {
 		dbquery("UPDATE ".TABLEPREFIX."fanfiction_stats SET stories = stories - 1");
-		if(!empty($array_coauthors)) {
-			$array_coauthors[] = $story['uid'];
-			dbquery("UPDATE ".TABLEPREFIX."fanfiction_authorprefs SET stories = stories - 1 WHERE FIND_IN_SET(uid, '".implode(",", $array_coauthors)."') > 0");
+		if(!empty($coauthors)) {
+			$coauthors[] = $story['uid'];
+			dbquery("UPDATE ".TABLEPREFIX."fanfiction_authorprefs SET stories = stories - 1 WHERE FIND_IN_SET(uid, '".implode(",", $coauthors)."') > 0");
 		}
 		else dbquery("UPDATE ".TABLEPREFIX."fanfiction_authorprefs SET stories = stories - 1 WHERE uid = '".$story['uid']."' LIMIT 1");
 		list($chapters, $words) = dbrow(dbquery("SELECT COUNT(chapid), SUM(wordcount) FROM ".TABLEPREFIX."fanfiction_chapters WHERE validated > 0"));
@@ -101,13 +101,13 @@ function deleteUser($uid) {
 				else { // Co-authors found...give the story a new author.
 					$cQuery = dbquery("SELECT uid FROM ".TABLEPREFIX."fanfiction_coauthors WHERE sid = '".$story['sid']."' LIMIT 1");
 					$newauthor = 0; $coauthors = 0;
-					$array_coauthors = array();
+					$coauthors = array();
 					while($cRes= dbassoc($cQuery)) {
 						if(!$newauthor) $newauthor = $cRes['uid'];
-						else $array_coauthors[] = $cRes['uid'];
+						else $coauthors[] = $cRes['uid'];
 					}			
 					if(!empty($newauthor)) {
-						$coauthors = count($array_coauthors) > 0 ? 1 : 0;
+						$coauthors = count($coauthors) > 0 ? 1 : 0;
 						dbquery("UPDATE ".TABLEPREFIX."fanfiction_stories SET uid = '$newauthor', coauthors = '$coauthors' WHERE sid = '".$story['sid']."' LIMIT 1");
 						$chapters = dbquery("SELECT chapid FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '".$story['sid']."' AND uid = '$uid'");
 						while($chap = dbassoc($chapters)) {
