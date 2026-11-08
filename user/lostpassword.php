@@ -51,7 +51,7 @@ if(isMEMBER) accessDenied( );
 			if(dbnumrows($result) == 0) $output .= write_message(_BADEMAIL);
 			else {
 				include("includes/emailer.php");
-				mt_srand((double)microtime() * 1000000);
+				mt_srand((float)microtime() * 1000000);
 				$charset = '23456789' . 'abcdefghijkmnpqrstuvwxyz' . 'ABCDEFGHJKLMNPQRSTUVWXYZ';		
 				$pass = random_string($charset, 10);
 				$encryppass = password_hash($_POST['password'], PASSWORD_BCRYPT, ['cost' => 12]);
