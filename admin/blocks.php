@@ -37,8 +37,10 @@ function save_blocks( $blocks ) {
 		dbquery("UPDATE ".TABLEPREFIX."fanfiction_blocks SET block_name = '$block', block_title = '". $tmp_title."', block_file = '". $tmp_file."', block_status = '".$value['status']."', block_variables =  '".(isset($blockvars) ? addslashes(serialize($blockvars)) : "")."' WHERE block_name = '$block'");
 	}
 }
-if(isset($_GET['admin'])) $admin = $_GET['admin'];
+// only the name of an existing block folder (it is put into SQL and into include paths)
+if(isset($_GET['admin']) && is_string($_GET['admin']) && preg_match('/^[A-Za-z0-9_]+$/', $_GET['admin']) && is_dir(_BASEDIR."blocks/".$_GET['admin'])) $admin = $_GET['admin'];
 else $admin = false;
+$init = isset($_GET['init']) && is_string($_GET['init']) && preg_match('/^[A-Za-z0-9_]+$/', $_GET['init']) && is_dir(_BASEDIR."blocks/".$_GET['init']) ? $_GET['init'] : false;
 
 	if($admin) {
 		$output .= "<div id='pagetitle'>"._ADMIN." - ".(isset($blocks[$_GET['admin']]['title']) ? $blocks[$_GET['admin']]['title'] : "")."</div>";
