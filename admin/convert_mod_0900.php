@@ -29,10 +29,10 @@ $confirm = isset($_GET['confirm']) ? $_GET['confirm'] : false;
 // silly converted update script... just to further convert collation in some tables
 
 // messy version check, starting with version 0.9.0
-if($expVer[0] == 0 && ($expVer[1] == 9 || $expVer[1] >=0 && (!isset($expVer[2]) || $expVer[2] == 0 || $expVer[2] > 0))) {
+if($expVer[0] >= 0 && ($expVer[1] == 9 || $expVer[1] >=0 && (!isset($expVer[2]) || $expVer[2] == 0 || $expVer[2] > 0))) {
 if($confirm == "yes") {
 	// For converting certain fields to a chosen collation, starting with versions 0.9.0
-    if($expVer[0] == 0 && ($expVer[1] == 9 || $expVer[1] >=0 && (!isset($expVer[2]) || $expVer[2] == 0 || $expVer[2] > 0))) {
+    if($expVer[0] >= 0 && ($expVer[1] == 9 || $expVer[1] >=0 && (!isset($expVer[2]) || $expVer[2] == 0 || $expVer[2] > 0))) {
 		// only if you installed the 'clean' future 3.5.9 version prior
 		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'setreg'")))
 			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `setreg` tinyint(1) NOT NULL DEFAULT '1' AFTER `multiplecats`");

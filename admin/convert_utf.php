@@ -29,10 +29,10 @@ $confirm = isset($_GET['confirm']) ? $_GET['confirm'] : false;
 // silly converted update script... just to further convert collation in some tables
 
 // messy version check, starting with version 0.9.0
-if($expVer[0] == 0 && ($expVer[1] == 9 || $expVer[1] >=0 && (!isset($expVer[2]) || $expVer[2] == 0 || $expVer[2] > 0))) {
+if($expVer[0] >= 0 && ($expVer[1] == 9 || $expVer[1] >=0 && (!isset($expVer[2]) || $expVer[2] == 0 || $expVer[2] > 0))) {
 if($confirm == "yes") {
 	// For converting certain fields to a chosen collation, starting with versions 0.9.0
-    if($expVer[0] == 0 && ($expVer[1] == 9 || $expVer[1] >=0 && (!isset($expVer[2]) || $expVer[2] == 0 || $expVer[2] > 0))) {
+    if($expVer[0] >= 0 && ($expVer[1] == 9 || $expVer[1] >=0 && (!isset($expVer[2]) || $expVer[2] == 0 || $expVer[2] > 0))) {
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authors CHANGE `penname` `penname` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '', CHANGE `realname` `realname` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_categories CHANGE `category` `category` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_characters CHANGE `charname` `charname` VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
