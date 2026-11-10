@@ -134,7 +134,7 @@ include("../version.php");
 
 //make a new TemplatePower object
 echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
-<html><head><title>eFiction {$version} Install</title>
+<html><head><title>eFiction 3 Mod {$version} Install</title>
 <style>
 a.pophelp{
     position: relative; /* this is the key*/
@@ -178,10 +178,10 @@ $tpl->assignInclude("header", "./../default_tpls/header.tpl");
 $tpl->assignInclude("footer", "./../default_tpls/footer.tpl");
 $tpl->prepare();
 $tpl->newBlock("header");
-$tpl->assign("sitename", "eFiction $version Install");
+$tpl->assign("sitename", "eFiction 3 Mod $version Install");
 $tpl->gotoBlock("_ROOT");
 $tpl->newBlock("footer");
-$tpl->assign("footer", "eFiction $version &copy; 2007. <a href='http://efiction.org/'>http://efiction.org/</a>");
+$tpl->assign("footer", "eFiction 3 Mod $version &copy; 2007. <a href='http://efiction.org/'>http://efiction.org/</a>");
 $tpl->gotoBlock("_ROOT");
 
 if (!isset($_GET['step']))  $_GET['step'] = 0;

@@ -316,6 +316,41 @@ elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 9)  // 3.
 	else $output .= write_message("Are you ready to update? <a href='update.php?confirm=yes'>"._YES."</a> "._OR." <a href='update.php?confirm=no'>"._NO."</a>");
 }
 
+elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 10)  // 3.5.9 -> Mod 0.9.0
+{
+	if ($confirm == "yes")
+	{
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'setreg'")))
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `setreg` tinyint(1) NOT NULL DEFAULT '1' AFTER `multiplecats`");
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'rateguard'")))
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `rateguard` tinyint(1) NOT NULL DEFAULT '0' AFTER `rateonly`");
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'smtp_port'")))
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `smtp_port` varchar(5) NOT NULL DEFAULT ''");
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_settings LIKE 'smtp_secure'")))
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_settings` ADD `smtp_secure` varchar(3) NOT NULL DEFAULT ''");
+		if (!dbassoc(dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_name = 'convert' AND panel_title = 'Archive Conversion';"))) {
+			dbquery("UPDATE `".TABLEPREFIX."fanfiction_panels` SET panel_order = '12' WHERE panel_name = 'modules'");
+			dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_panels`(`panel_name`, `panel_title`, `panel_url`, `panel_level`, `panel_hidden`, `panel_type`, `panel_order`) VALUES( 'convert', 'Archive Conversion', '', '1', '0', 'A', '11')");
+		}
+
+		dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_authors` CHANGE `password` `password` varchar(255) NOT NULL DEFAULT '0'");
+
+		$set_090 = do_version_check_090();
+		if ($set_090)
+		{
+			$output .= write_error(_ERROR);   // migration not confirmed -> DO NOT bump version
+		}
+		else
+		{
+			$update = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET version = '".$version."' WHERE sitekey = '".SITEKEY."'");
+			if ($update) $output .= write_message(_ACTIONSUCCESSFUL);
+		}
+	}
+	else if ($confirm == "no") $output .= write_message(_ACTIONCANCELLED);
+	else $output .= write_message("Are you ready to update? <a href='update.php?confirm=yes'>"._YES."</a> "._OR." <a href='update.php?confirm=no'>"._NO."</a>");
+}
+	
+
 else $output .= write_message(_ALREADYUPDATED);
 
 /* until database is fully fixed, not update efiction version */
@@ -441,6 +476,23 @@ function do_version_check_359()
 	}
 
 	return $check_359;
+}
+
+function do_version_check_090()
+{
+	$check_090 = false;
+
+	$required = array('rateguard', 'setreg', 'smtp_port', 'smtp_secure');
+	foreach ($required as $f)
+	{
+		if (!dbassoc(dbquery("SHOW COLUMNS FROM " . TABLEPREFIX . "fanfiction_settings LIKE '{$f}'")))
+		{
+			$check_090 = "fanfiction_settings - field: " . $f;
+			return $check_090;
+		}
+	}
+
+	return $check_090;
 }
 
 $tpl->assign("output", $output);

@@ -87,7 +87,7 @@ define ("_CONVERT_0900", "Convert back to Unicode 9.0");
 define ("_CONVERT_1400", "Convert to Unicode 14.0");
 define ("_COPYRIGHT", "Copyright Footer");
 define ("_COUNTCATS", "Fix Category Counts");
-define ("_CURRENTVERSION", "The current version of eFiction is ");
+define ("_CURRENTVERSION", "The current version of eFiction 3 Mod is ");
 define ("_CUSTPAGENOTE", 
 "The name you assign to your custom page will be the {NAME_link} variable for you to use in your skins. The script will append \"_link\" to the name to help prevent naming conflicts with other variables. The title will be the title of the page. 
 For the URL of your custom page, you may use either viewpage.php?id=ID or viewpage.php?page=NAME where ID is the ID number of the page or NAME is the name of the page. <p><strong>Note:</strong> The name for your page should contain letters, numbers, and the underscore character ONLY.</p>");
@@ -217,7 +217,7 @@ define ("_RELEASEMESSAGE", "Hello, the admins of $sitename have opened your acco
 define ("_REVDELETE", "Authors may delete reviews");
 define ("_REVIEWSETTINGS", "Review Settings"); 
 define ("_RULES", "Rules");
-define ("_RUNNINGVERSION", "You are currently running eFiction version ".$version.".");
+define ("_RUNNINGVERSION", "You are currently running eFiction 3 Mod version ".$version.".");
 define ("_SAMEWINDOW", "Same Window");
 define ("_SECURITYDELETE", "You have not deleted the install folder! Please do so immediately to prevent a security breach.");
 define ("_SELF", "member selected");

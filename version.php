@@ -1,3 +1,3 @@
 <?php
 if(!defined("_CHARSET")) exit( );
-$version = "3.5.9";
+$version = "0.9.0";

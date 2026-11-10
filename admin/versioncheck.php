@@ -26,7 +26,7 @@
 if(!defined("_CHARSET")) exit( );
 
 
-	$currentversion = "3.5.6";
+	$currentversion = "0.9.0";
 
 	$output .= "<div id=\"pagetitle\">"._VERSIONCHECK."</div>";
 
