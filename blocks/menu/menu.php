@@ -14,7 +14,7 @@ $content = '';
 	else {
 		$pages = array('home', 'recent', 'titles', 'catslink', 'series', 'members', 'authors', 'challenges', 'search', 'tens', 'featured', 'help', 'contactus', 'login', 'logout', 'adminarea');
 		foreach($pages as $page) {
-			if(!is_null($pagelinks[$page]) || empty($pagelinks[$page])) continue;
+			if(!is_null($page) || empty($pagelinks[$page])) continue;
 			if(empty($blocks[$block]['style'])) $content .= "<li ".($current == $page ? "id=\"menu_current\"" : "").">".$pagelinks[$page]['link']."</li>";
 			else $content .= $pagelinks[$page]['link'];
 		}
