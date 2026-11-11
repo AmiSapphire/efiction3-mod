@@ -7,6 +7,16 @@ include(_BASEDIR."languages/$lang.php");
 //header("Content-Type: text/html; charset=".CHARSET,true);
 include("../includes/queries.php");
 // Checks that the given $num is actually a number.  Used to help prevent XSS attacks.
+// Peculiar... Leaving both copies of the same exact function in this file prevents
+// breakage of the character list when using the category list for tinyMCE 4.x and newer...
+function isNumber($num) {
+	if(empty($num)) return false;
+	return (preg_match("/^[0-9]+$/", $num) || $num == "-1" ? true : false);
+}
+
+// Checks that the given $num is actually a number.  Used to help prevent XSS attacks.
+// Peculiar... Leaving both copies of the same exact function in this file prevents
+// breakage of the character list when using the category list for tinyMCE 4.x and newer...
 function isNumber($num) {
 	if(empty($num)) return false;
 	return (preg_match("/^[0-9]+$/", $num) || $num == "-1" ? true : false);
