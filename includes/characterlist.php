@@ -25,7 +25,8 @@ function isNumber($num) {
 $catid = isset($_GET['catid']) ? explode(",", $_GET['catid']) : array(-1);
 $catid = array_filter($catid, "isNumber");
 $characters = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_characters WHERE ".(count($catid) > 1 ? "FIND_IN_SET(catid, '".implode(",", $catid)."') > 0" : "catid = '".$catid[0]."'")." ORDER BY charname");
-echo "var element = '".$_GET['element']."';\n";
+if(!isset($_GET['element']) || !preg_match('/^[A-Za-z_][A-Za-z0-9_.-]*$/', $_GET['element'])) $_GET['element'] = '';
+echo "var element = '".addslashes($_GET['element'])."';\n";
 $x = 0;
 $find = array ('"', chr(150), chr(147), chr(148), chr(146));
 $replace = array ('\"', "-", "\"", "\"", "'");
