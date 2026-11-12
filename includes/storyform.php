@@ -93,7 +93,7 @@ function storyform($stories, $preview = 0){
 	$count = 0;
 	$result4 = dbquery("SELECT charname, catid, charid FROM ".TABLEPREFIX."fanfiction_characters ORDER BY charname");
 	if(dbnumrows($result4)) {
-		$output .= "<div style=\"float: left; width: 49%;\"><label for=\"charid\">"._CHARACTERS.":</label><br><select size=\"5\"  style=\"width: 99%;\" id=\"charid\" name=\"charid[]\" multiple><option value=\"\">"._NONE."</option>";
+		$output .= "<div style=\"float: left; width: 49%;\"><label for=\"charid\">"._CHARACTERS.":</label><br><select size=\"5\"  style=\"width: 99%;\" id=\"charid\" name=\"charid[]\" multiple>";
 		while ($charresults = dbassoc($result4)) {
 			if((is_array($catid) && in_array($charresults['catid'], $catid)) || $charresults['catid'] == -1) {
 				$output .= "<option value=\"".$charresults['charid']."\"".($charid != "" && in_array(stripslashes($charresults['charid']), $charid) ? " selected" : "").">".stripslashes($charresults['charname'])."</option>";
