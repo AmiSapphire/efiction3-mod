@@ -14,14 +14,6 @@ function isNumber($num) {
 	return (preg_match("/^[0-9]+$/", $num) || $num == "-1" ? true : false);
 }
 
-// Checks that the given $num is actually a number.  Used to help prevent XSS attacks.
-// Peculiar... Leaving both copies of the same exact function in this file prevents
-// breakage of the character list when using the category list for tinyMCE 4.x and newer...
-function isNumber($num) {
-	if(empty($num)) return false;
-	return (preg_match("/^[0-9]+$/", $num) || $num == "-1" ? true : false);
-}
-
 $catid = isset($_GET['catid']) ? explode(",", $_GET['catid']) : array(-1);
 $catid = array_filter($catid, "isNumber");
 $characters = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_characters WHERE ".(count($catid) > 1 ? "FIND_IN_SET(catid, '".implode(",", $catid)."') > 0" : "catid = '".$catid[0]."'")." ORDER BY charname");
