@@ -31,7 +31,7 @@ else include("blocks/login/en.php");
 		$output .= "<div style='text-align: center;'><span class='label'>"._CURRENT.":</span><br /><div class=\"tblborder\" style=\"width: 80%; text-align: left; margin: 1ex auto;\">$content</div></div><br /><center>";
 		$output .= _LOGINNOTE."</center><div id='settingsform' style=\"width: 50%; margin-right: -2%;\"><form method=\"POST\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=login\">
 			<div><label for=\"template\">"._TEMPLATE.":</label><span style='clear: left;'>&nbsp;</span></div>
-			<div class=\"shorttextarea\"><textarea name=\"template\" rows=\"5\" style=\"width: 100%;\" cols=\"40\">".stripslashes($template)."</textarea>";
+			<div class=\"shorttextarea\"><textarea name=\"template\" id=\"template\" rows=\"5\" style=\"width: 100%;\" cols=\"40\">".stripslashes($template)."</textarea>";
 		if($tinyMCE) 
 			$output .= "<div class='tinytoggle' style=\"margin-left: -24%;\"><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('template');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div>";
 		$output .= "</div>
