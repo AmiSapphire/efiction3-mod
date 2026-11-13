@@ -65,8 +65,10 @@ if(!defined("_CHARSET")) exit( );
 		}
 		$output .= "</select></td></tr>
 		<tr><td><label for=\"subject\">"._SUBJECT.":</label> </td><td><INPUT  type=\"text\" class=\"textbox=\" name=\"subject\"></td></tr>
-		<tr><td valign=\"top\"><label for=\"mailtext\">"._TEXT.":</label> </td><td><textarea class=\"textbox\" name=\"mailtext\" cols=\"40\" rows=\"6\"></TEXTAREA></td></tr>
-		<tr><td><INPUT type=\"submit\" class=\"button\" name=\"submit\" value=\""._SUBMIT."\"></td></tr></table></form>";
+		<tr><td valign=\"top\"><label for=\"mailtext\">"._TEXT.":</label> </td><td><textarea class=\"textbox\" name=\"mailtext\" id=\"mailtext\" cols=\"40\" rows=\"6\"></TEXTAREA></td></tr>";
+		if($tinyMCE) 
+		$output .= "<tr><td></td><td><div class='tinytoggle'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('mailtext');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div></td></tr>";
+		$output .= "<tr><td></td><td><INPUT type=\"submit\" class=\"button\" name=\"submit\" value=\""._SUBMIT."\"></td></tr></table></form>";
 		$output .= "<br /><br /><div style='text-align: center;'>"._EMAILWARNING."</div><br />";
 	}
 
