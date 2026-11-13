@@ -85,7 +85,7 @@ if((isset($_GET['edit']) && isNumber($_GET['edit'])) || isset($_GET["new"]) || i
 		<div><label for=\"name\">"._NAME.":</label> <input type=\"text\" class=\"textbox\" name=\"name\" value=\"$name\"></div>
 		<div><label for=\"title\">"._TITLE.":</label> <input type=\"text\" class=\"textbox\" name=\"title\" value=\"$title\" size=\"30\"></div>
 		<div><label for=\"text\">"._TEXT.":</label><br />
-		<textarea class=\"textbox\" rows=\"10\" cols=\"60\" style='width: 100%;' name=\"text\">$text</textarea>";
+		<textarea class=\"textbox\" rows=\"10\" cols=\"60\" style='width: 100%;' name=\"text\" id=\"text\">$text</textarea>";
 	if($tinyMCE) 
 		$output .= "<div class='tinytoggle'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('text');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div>";
 	$output .= "</div><INPUT type=\"submit\" class=\"button\" name=\"preview\" id=\"preview\" value=\""._PREVIEW."\"><INPUT type=\"submit\" class=\"button\" name=\"submit\" id=\"submit\" value=\""._SUBMIT."\"></form></div>";
