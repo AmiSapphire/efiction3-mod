@@ -185,6 +185,7 @@ if($add == "series" || ($action == "add" && !$add) || $action == "edit") {
 		include("includes/categories.php");
 		$output .= "<input type=\"hidden\" name=\"formname\" value=\"series\">";
 	}
+	$output .= "<div style=\"text-align: center;\"><b>"._MULTIPLESELECT."</b></div>\r\n";
 	if(count($charlist) > 0) {
 		$output .= "<div style=\"float: left; width: 99%;\"><div style=\"float: left; padding: 5px; width: 47%;\"><label for=\"charid\">"._CHARACTERS.":</label> <br /><select size=\"5\" style=\"width: 99%;\" name=\"charid[]\" id=\"charid\" multiple>";
 		$chars = isset($series['characters']) ? explode(",", $series['characters']) : array( );

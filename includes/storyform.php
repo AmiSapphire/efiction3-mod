@@ -87,6 +87,7 @@ function storyform($stories, $preview = 0){
 	if(!$multiplecats) $output .= "<input type=\"hidden\" name=\"catid\" id=\"catid\" value=\"1\">";
 	else {
 		include("includes/categories.php");
+		$output .= "<div style=\"text-align: center;\"><b>"._MULTIPLESELECT."</b></div>\r\n";
 		$output .= "<input type=\"hidden\" name=\"formname\" value=\"stories\">";
 	}
 	$output .= "<div style='float: left; width: 100%;'>";
