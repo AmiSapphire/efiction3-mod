@@ -28,7 +28,7 @@ else include_once("blocks/info/en.php");
 		else $template = "";
 		$output .= "<div style='margin: 1em auto; width: 80%;'><b>"._CURRENT.":</b><br /><div class=\"tblborder\" style=\"text-align: left; padding: 4px; margin: 0 auto;\">$content</div><br />";
 		$output .= "<form method='POST' enctype='multipart/form-data' name='blockadmin' action='admin.php?action=blocks&admin=info'>
-			<label for='template'>"._TEMPLATE.":</label><br /><textarea name='template' rows='5' cols='50' style='width: 100%;'>$template</textarea>";
+			<label for='template'>"._TEMPLATE.":</label><br /><textarea name='template' id='template' rows='5' cols='50' style='width: 100%;'>$template</textarea>";
 		if($tinyMCE) $output .= "<div style='display: block; margin: 0; padding: 0;'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('template');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div>";
 		$output .= "<label for='style'>"._DISPLAY.": </label><select name='style'class='textbox' ><option value='0'".(!$style ? " selected" : "").">"._CHART."</option>
 				<option value='1'".($style == 1 ? " selected" : "").">"._NARRATIVE."</option>
