@@ -26,7 +26,7 @@ if(isset($_POST['shouthidden']) && (isMEMBER || !empty($blocks['shoutbox']['gues
 
 }
 if(isMEMBER || !empty($blocks['shoutbox']['guestshouts'])) {
-	$content = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>
+	$content = "<script src=\"blocks/shoutbox/jquery.min.js\"></script>
 	<script language=\"javascript\" type=\"text/javascript\">
 	$(document).ready(function() {
 		$(function () {
