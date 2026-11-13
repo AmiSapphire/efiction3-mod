@@ -66,22 +66,46 @@ if($set_355) {
 }
 else {
 	$set_356 = do_version_check_356();
+	$set_359 = do_version_check_359();
+	$set_090 = do_version_check_090();
+	$set_generic = do_version_check_generic();
  
 	if ($set_356)
 	{
-		$output .= write_message("Table <b>" . $set_356 . "</b> needs a update.");
+		$output .= write_message("Table <b>" . $set_356 . "</b> needs an update.");
 		dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = '3.5.6' WHERE sitekey = '" . SITEKEY . "'");
 		$settings['version'] = '3.5.6';
 	}
  
-	else {
+	else if ($set_359) {
 		$set_359 = do_version_check_359();
 	
 		if ($set_359)
 		{
-			$output .= write_message("Table <b>" . $set_359 . "</b> needs a update.");
+			$output .= write_message("Table <b>" . $set_359 . "</b> needs an update.");
 			dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = '3.5.8' WHERE sitekey = '" . SITEKEY . "'");
 			$settings['version'] = '3.5.8';
+		}
+	}
+
+	else if ($set_090) {
+		$set_090 = do_version_check_090();
+	
+		if ($set_090)
+		{
+			$output .= write_message("Table <b>" . $set_090 . "</b> needs an update.");
+			dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = '0.9.0' WHERE sitekey = '" . SITEKEY . "'");
+			$settings['version'] = '0.9.0';
+		}
+	}
+
+	else if ($set_generic) {
+		$set_generic = do_version_check_generic();
+	
+		if ($set_generic)
+		{
+			dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = ".$version." WHERE sitekey = '" . SITEKEY . "'");
+			$settings['version'] = ".$version.";
 		}
 	}
 }
@@ -349,7 +373,33 @@ elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 10)  // 3
 	else if ($confirm == "no") $output .= write_message(_ACTIONCANCELLED);
 	else $output .= write_message("Are you ready to update? <a href='update.php?confirm=yes'>"._YES."</a> "._OR." <a href='update.php?confirm=no'>"._NO."</a>");
 }
-	
+
+//elseif ($oldVersion[0] == 0 && $oldVersion[1] == 9 && $oldVersion[2] < 1)  // Mod 0.9.0 -> Mod 0.9.1 (and further)
+//{
+//	if ($confirm == "yes")
+//		{
+//		$set_generic = do_version_check_generic();
+//		if ($set_generic)
+//		{
+//			$output .= write_error(_ERROR);   // migration not confirmed -> DO NOT bump version
+//		}
+//		else {
+//			$update = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET version = '".$version."' WHERE sitekey = '".SITEKEY."'");
+//			if ($update) $output .= write_message(_ACTIONSUCCESSFUL);
+//		}
+//	}
+//	else if ($confirm == "no") $output .= write_message(_ACTIONCANCELLED);
+//	else $output .= write_message("Are you ready to update? <a href='update.php?confirm=yes'>"._YES."</a> "._OR." <a href='update.php?confirm=no'>"._NO."</a>");
+//}
+
+elseif ($oldVersion[0] == 0 && $oldVersion[1] == 9 && $oldVersion[2] < 1)  // Mod 0.9.0 -> Mod 0.9.1 (and further within 0.9.x)
+{
+	$set_generic = do_version_check_generic();
+	if (!$set_generic) {
+		$update = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET version = '".$version."' WHERE sitekey = '".SITEKEY."'");
+		if ($update) $output .= write_message("No database changes required; eFiction 3 Mod Version bumped to ".$version."! " ._ACTIONSUCCESSFUL);
+	}
+}
 
 else $output .= write_message(_ALREADYUPDATED);
 
@@ -493,6 +543,23 @@ function do_version_check_090()
 	}
 
 	return $check_090;
+}
+
+function do_version_check_generic()
+{
+	$check_generic = false;
+	
+	//old version check
+	$ver = dbquery("SELECT version FROM " . TABLEPREFIX . "fanfiction_settings WHERE sitekey = '".SITEKEY."'");
+	list($oldver) = dbrow($ver);
+
+	//new version check
+	include("version.php");
+	$ver2 = explode(".", $version);
+	$newver = implode(".", $ver2);
+
+	if ($oldver != $newver) return $check_generic;
+	return $check_generic;
 }
 
 $tpl->assign("output", $output);
