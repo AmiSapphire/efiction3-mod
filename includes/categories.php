@@ -43,7 +43,7 @@ foreach($catlist as $cat => $info) {
 }
 $output .= "</select></div>
 		<div style='float: left; width: 20%; text-align: center; padding-top: 3em;'>
-			<input type='button' class='button' value='>' name='Select' onClick='addCat(\"catoptions\", \"selectCats\");'><br /><br />
+			<input type='button' class='button' value='Add Selected >' name='Select' onClick='addCat(\"catoptions\", \"selectCats\");'><br /><br />
 			<input type='button' class='button' value='"._REMOVE."' onClick='removeCat(\"selectCats\");'>
 		</div>
 		<div style='width: 40%; float: left;'>
