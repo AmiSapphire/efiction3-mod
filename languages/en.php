@@ -78,7 +78,7 @@ define ("_MULTIPLECATEGORIES",
 "<span style=\"text-decoration: underline; font-weight: bold;\">Note:</span> You may select multiple categories.  
 <u>Please be aware that when you select a category in the drop-down menu below, the options in the list will change to display that category's sub-categories.</u>
  Press the 'Select >' button to add it to your choices. You may clear your selections at any time using the 'Clear' button.");
-define ("_MULTIPLESELECT", "Hold the CTRL key to make multiple selections.");
+define ("_MULTIPLESELECT", "Hold the CTRL key to make multiple selections. The same can be done for the removal of selections.");
 define ("_NAME", "Name");
 define ("_NAUGHTYWORDS", "You have triggered our bad language filters.  We require that all content not behind an age verification warning be suitable for all audiences.  This includes titles, summaries, and names (for anonymous reviews, challenges, etc.). Please <a href=\"javascript: history.back(1)\">try again.</a>");
 define ("_NEXT", "Next");
