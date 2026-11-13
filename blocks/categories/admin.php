@@ -57,7 +57,7 @@ else include("blocks/categories/en.php");
 		$output .= "<div><form method=\"POST\" id=\"settingsform\" enctype=\"multipart/form-data\" action=\"admin.php?action=blocks&admin=categories\">
 			<textarea name=\"template\" id=\"template\" rows=\"5\" cols=\"40\">$template</textarea><br />";
 		if($tinyMCE) 
-			$output .= "<div class='tinytoggle'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('template');\"><label for='toggle'>"._TINYMCETOGGLE."</label></div>";	
+			$output .= "<div class='tinytoggle'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('template');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div>";	
 		$output .= "<select name=\"columns\" class=\"textbox\" style='margin: 3px;'><option value=\"0\"".(empty($blocks['categories']['columns']) ? " selected" : "").">"._ONECOLUMN."</option>
 					<option value=\"1\"".(!empty($blocks['categories']['columns']) ? " selected" : "").">"._MULTICOLUMN."</option></select> 
 			<select name=\"tpl\" class=\"textbox\" style='margin: 3px;'><option value=\"0\"".(empty($blocks['categories']['tpl']) ? " selected" : "").">"._DEFAULT."</option>
