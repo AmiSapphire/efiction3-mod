@@ -53,11 +53,13 @@ Reference: https://mariadb.com/docs/server/server-management/variables-and-modes
 
 Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_query($mysqli_access, "SET NAMES UTF8;");**  and uncomment the line **mysqli_query($mysqli_access, "SET NAMES UTF8MB4;");** if you are not able to configure the database configuration. It is recommended to uncomment the line **mysqli_query($mysqli_access, "SET collation_connection = utf8mb4_bin;");** if the UTF8MB4 line is used as well.
 
-MySQL uses **ONLY_FULL_GROUP_BY** by default, but MariaDB doesn't seem to. It should be disabled for this script for now; however, the includes/mysqli_functions.php file here already does that for you. I found three queries that **ONLY_FULL_GROUP_BY** complains about so far (two referenced that one column was never in GROUP BY; removing that part of those queries worked...).
+MySQL uses **ONLY_FULL_GROUP_BY** by default, but MariaDB doesn't seem to. It should be disabled for this script for now; however, the includes/mysqli_functions.php file here already does that for you. I found four queries that **ONLY_FULL_GROUP_BY** complains about so far (three referenced that one column was never in GROUP BY - or at least depended on that column; removing that part of those queries worked...).
 
-Early installs reference **MYSQL40** in the includes/mysqli_functions.php file. MySQL 8.0 actually removed this setting (along with quite a few other options), so MySQL 8.0 and newer will hang using this. As a result, this file does not use this option for sql_mode. MariaDB seems to still have this setting, but for full compatibility purposes, **HIGH_NOT_PRECEDENCE** is used instead in its place in sql_mode.
+Early installs reference **MYSQL40** in the includes/mysqli_functions.php file. MySQL 8.0 actually removed this setting (along with quite a few other options), so MySQL 8.0 and newer will hang using this. As a result, this file does not use this option for sql_mode. MariaDB seems to still have this setting (or it still references it as current in their documentation), but for full compatibility purposes, **HIGH_NOT_PRECEDENCE** is used instead in its place for sql_mode.
 
-**NO_ZERO_IN_DATE** - not needed for this fork, as timestamps are stored in the database using the Unix timestamp instead of datetimes timestamp (for which datetime does not utiilize the timezone data...).
+Even earlier installs actually never specified an SQL session but rather used the server's sql_mode configuration, which did have inconsistent results when migrated to different servers. **SET SESSION sql_mode** was introduced in upstream eFiction 3.5.6 using the **MYSQL40** option.
+
+**NO_ZERO_IN_DATE**, **NO_ZERO_DATE** - not needed for this fork, as timestamps are stored in the database using the Unix timestamp instead of the datetimes timestamp (for which datetime does not utiilize the timezone data...).
 
 
 ### Installation and Usage
