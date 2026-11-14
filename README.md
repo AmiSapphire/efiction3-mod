@@ -53,6 +53,12 @@ Reference: https://mariadb.com/docs/server/server-management/variables-and-modes
 
 Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_query($mysqli_access, "SET NAMES UTF8;");**  and uncomment the line **mysqli_query($mysqli_access, "SET NAMES UTF8MB4;");** if you are not able to configure the database configuration. It is recommended to uncomment the line **mysqli_query($mysqli_access, "SET collation_connection = utf8mb4_bin;");** if the UTF8MB4 line is used as well.
 
+MySQL uses **ONLY_FULL_GROUP_BY** by default, but MariaDB doesn't seem to. It should be disabled for this script for now; however, the includes/mysqli_functions.php file here already does that for you. I found three queries that **ONLY_FULL_GROUP_BY** complains about so far (two referenced that one column was never in GROUP BY; removing that part of those queries worked...).
+
+Early installs reference **MYSQL40** in the includes/mysqli_functions.php file. MySQL 8.0 actually removed this setting (along with quite a few other options), so MySQL 8.0 and newer will hang using this. As a result, this file does not use this option for sql_mode. MariaDB seems to still have this setting, but for full compatibility purposes, **HIGH_NOT_PRECEDENCE** is used instead in its place in sql_mode.
+
+**NO_ZERO_IN_DATE** - not needed for this fork, as timestamps are stored in the database using the Unix timestamp instead of datetimes timestamp (for which datetime does not utiilize the timezone data...).
+
 
 ### Installation and Usage
 
@@ -81,13 +87,16 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - SQL database engine change from MyISAM to InnoDB
 - SQL database charset changes from latin1 to utf8mb4 (certain fields are utf8mb4 'ci' for sorting purposes and certain count purposes, however)
 - Password hashes are now bcrypt with a cost of 12 instead of MD5 (though old MD5 hashed passwords still work until changed by user; they are warned beforehand)
+- PHPMailer upgraded to 6.12!
+- Ratings guard feature thanks to @ariadoss - can be enabled or disabled
+- This script should fully support PHP 5+ again (...)
 - includes/button.php: GD captcha font path handling fix for PHP 8.6/GD 2.4.0 users and remove unused variable
 - includes/plain.button.php: Undefined variable PHP warning fix
 - includes/corefunctions.php: occasional foreach array|object, string given PHP warning fix
 - includes/userlist.php: Uncaught TypeError for Co-Authors field in PHP 8.x when searching for a user with the first character yields no results - discovered this one entirely by accident due to a typo... slipped my hand on the keyboard!
 - install/install.php: SMTP settings table column creation oversight fix, security fix in Step 1 (eventually reimplemented from eFiction 3.5.72 install), consistency changes, and cleanup
 - user/manageimages.php: Add support for WebP images
-- search.php: failed penname search causes PHP warning fix for PHP 8.x users - MySQL error message overwriting the Search Results header due to an assumption of an array count of author data
+- search.php: failed penname search causes PHP warning fix for PHP 8.x users - MySQL error message overwriting the Search Results header due to an assumption of an array count of author data, wildcard fixes, search only validated stories/chapters (mysql only), series results fix, dupe stories showing when searching by penname fix, Sorting Order drop-down fix, some patches from upstream (one fixed the completed checkbox in Advanced Search)
 - series.php: category settings causing Fatal Error bug for PHP 8.x users and Undefined array key PHP warning fixes
 - stories.php: add story with null category using 'Only one' setting causing Fatal Error bug fix for PHP 8.x users
 - categories.php: deleting only category causing Fatal Error bug fix for PHP 8.x users
@@ -95,11 +104,11 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
 - blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix
 - admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fixes and Undefined array key PHP warning when viewing the list that contains a panel with null entries fix
-- reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix (these also had PHP warnings, but the checks made most of them nil)
+- reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix (these also had PHP warnings, but the checks made most of them nil), Uncaught TypeError with leaving a review on a story/chapter with co-authors present fix (likely related to newer upstream patches)
 - viewstory.php: Undefined variable warnings when trying to access a nonexistent or formerly existing chapter for PHP 8 users dirty fix
 - viewseries.php: Add a check for anyone trying to access a nonexistent or no longer existing series - null series page/various PHP warnings fix
 - viewuser.php: Add a check for anyone trying to access any nonexistent or formerly existing users - this also applies to UID 0, which should never exist (these also had PHP warnings, but the checks made most of them nil)
-- news.php: Add a check for anyone trying to access a nonexistent or no longer existing news entry - this also applies to NID 0, which should never exist (these also had PHP warnings - namely Trying to access offset array on null, but the checks made them nil)
+- news.php: Add a check for anyone trying to access a nonexistent or no longer existing news entry (these also had PHP warnings - namely Trying to access offset array on null, but the checks made them nil)
 - browse/ratings.php: Uncaught TypeError in PHP 8 with visiting the Browse Ratings page with no ratings listed and Undefined variable PHP warning fixes
 - browse/class.php: Uncaught TypeError in PHP 8 with visiting a classification type that has no classifications listed fixes - also Undefined array key, Trying to access array offset on null, and second Uncaught TypeError fixes - also Undefined variable warning fixes (tricky file...)
 - includes/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
@@ -109,12 +118,23 @@ Alternateively, in includes/mysqli_functions, you may comment the line **mysqli_
 - header.php, rss.php, admin/backup.php, admin/backup_utf8.php, includes/categorylist.php, includes/userlist.php, install/install.php, languages/en.php: possible CHARSET definition breakage - mostly reverted as one former config.php line does belong in includes/dbfunctions.php and very old editing typo causing Uncaught ValueError: Unknown format specifier message regarding changing an author with logging enabled fix
 - rss.php, includes/button.php (me), includes/plain.button.php (me), languages/en.php (me): error and warning message suppression removal - rss and en were a stupid hack for the actual problem in the next item of the list
 - languages/en.php: undefined variables warning fix for PHP 8.x - applies to any other language PHP files, so they should be updated - only needs one line and one additional file in the **includes** directory
-- admin/settings.php, install/install.php: Do not parse the mailer directory in the Admin Panel's or installer's language setting's drop-down menus
+- admin/settings.php, install/install.php: Do not parse the mailer directory in the Admin Panel's or installer's language setting's drop-down menus (removed when PHPMailer was upgraded to 6.12)
 - admin/viewlog.php, languages/en_admin.php: some hardcoded English entries have been relocated to the Admin Panel language file
 - includes/reviewform.php, includes/seriesreviews.php, reviews.php: Number of Likes - unfinished calculation fixes and updates, implement its entry in the review form as well
 - includes/mysqli_functions.php: Updated MySQL query behavior - this comes from the eFiction 3.5.72 release
 - user/editprefs: the ~20-year-old skin selection bug is finally fixed!
+- blocks/categories/admin.php: fix inverted tinyMCE checkbox behavior - didn't mention this in the commit, but this was actually internally fixed way back in early 2012
+- various blocks and admin pages: textarea id requirements for tinyMCE 6.x and later support fixes
+- various sections: passing null to certain functions PHP 8.x deprecations fixes
+- admin/members.php, includes/button.php, includes/plain.button.php, user/lostpassword.php: casting from double to float due to PHP 8.5 deprecation notice fix
+- admin/mailusers.php: add tinyMCE toggle supoprt, textarea id requirement for tinyMCE 6.x support, formatting fix from early 2012
+- modules/challenges/challenges.php: Undefined constant error message for PHP 8.x users due to the fact it was missing the language includes fix
+- modules/challenges/otherresults.php: wildcard filter patch
+- includes/storyform.php: remove ancient 'None' option from the Characters section as it was redundant (selecting nothing achieved the same effect); that and any tinyMCE newer than 3.4.9 made it disappear when using the Categories section - it was present ever since eFiction 3.0 - this option also never existed when adding/editing series
+- includes/categories.php: replace multiple selections constant with the multiple categories constant as it will disappear when 'Only one' setting is used; add selected categories button is now more prominent
+- series.php, includes/storyform.php: relocated the multiple selections constant to where it actually belongs - just before the categories section for stories/chapters; added the multiple selections constant for series to match the story form as it was never present
 - Some security patches from https://github.com/Hyperion360/efiction fork
+- Some security patches from upstream (not all, as some modules have slight issues with them)
 - Bridges return! Their removal got rid of the example work, which is now updated as well
 - Layout fixes and consistency changes for various sections of the script: admin settings, new/edit story pages, new/edit series pages, installer
 - TinyMCE versions added; now you have a choice of TinyMCE versions 2.1.2, 3.4.8, 4.5.12, 5.3.2, and 6.8.6 - replaces eFiction 3.5.x's original 3.0.9
