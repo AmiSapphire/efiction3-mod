@@ -107,7 +107,7 @@ Even earlier installs actually never specified an SQL session but rather used th
 - blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix
 - admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fixes and Undefined array key PHP warning when viewing the list that contains a panel with null entries fix
 - reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix (these also had PHP warnings, but the checks made most of them nil), Uncaught TypeError with leaving a review on a story/chapter with co-authors present fix (likely related to newer upstream patches)
-- viewstory.php: Undefined variable warnings when trying to access a nonexistent or formerly existing chapter for PHP 8 users dirty fix
+- viewstory.php: Add proper chapter checks for missing or nonexistent chapters (was Undefined variable warnings when trying to access a nonexistent or formerly existing chapter for PHP 8 users dirty fix)
 - viewseries.php: Add a check for anyone trying to access a nonexistent or no longer existing series - null series page/various PHP warnings fix
 - viewuser.php: Add a check for anyone trying to access any nonexistent or formerly existing users - this also applies to UID 0, which should never exist (these also had PHP warnings, but the checks made most of them nil)
 - news.php: Add a check for anyone trying to access a nonexistent or no longer existing news entry (these also had PHP warnings - namely Trying to access offset array on null, but the checks made them nil)
@@ -126,6 +126,7 @@ Even earlier installs actually never specified an SQL session but rather used th
 - includes/mysqli_functions.php: Updated MySQL query behavior - this comes from the eFiction 3.5.72 release
 - user/editprefs: the ~20-year-old skin selection bug is finally fixed!
 - blocks/categories/admin.php: fix inverted tinyMCE checkbox behavior - didn't mention this in the commit, but this was actually internally fixed way back in early 2012
+- blocks/online/en.php: already defined 'GUESTS' constant fix
 - various blocks and admin pages: textarea id requirements for tinyMCE 6.x and later support fixes
 - various sections: passing null to certain functions PHP 8.x deprecations fixes
 - admin/members.php, includes/button.php, includes/plain.button.php, user/lostpassword.php: casting from double to float due to PHP 8.5 deprecation notice fix
@@ -142,6 +143,7 @@ Even earlier installs actually never specified an SQL session but rather used th
 - TinyMCE versions added; now you have a choice of TinyMCE versions 2.1.2, 3.4.8, 4.5.12, 5.3.2, and 6.8.6 - replaces eFiction 3.5.x's original 3.0.9
 - Setting to enable or disable new user registrations - sorely needed for some archives
 - New Archive Conversion page for Unicode database conversions - initial Mod conversion and Unicode versions 4.0, 5.2, 9.0, 14.0
+- implement prev/next pagination buttons for chapters at the top - already exists for the bottom
 
 <br>
 
