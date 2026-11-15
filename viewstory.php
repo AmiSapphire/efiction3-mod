@@ -51,7 +51,7 @@ if(empty($sid)) $sid = isset($_GET['sid']) && isNumber($_GET['sid']) ? $_GET['si
 	}
 	 
 	if($storyinfo['coauthors'] > 0) {
-	$coauthors = array();
+		$coauthors = array();
 		$coauth = dbquery("SELECT "._PENNAMEFIELD." as penname, co.uid FROM ".TABLEPREFIX."fanfiction_coauthors AS co LEFT JOIN "._AUTHORTABLE." ON co.uid = "._UIDFIELD." WHERE co.sid = '".$sid."'");
 		while($c = dbassoc($coauth)) {
 		$coauthors[$c['uid']] = $c['penname'];
