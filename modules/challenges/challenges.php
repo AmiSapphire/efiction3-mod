@@ -160,7 +160,7 @@ else if($action == "add" || $action == "edit") {
 	$challenger = $action == "edit" ? $challenger : USERPENNAME;
 	$chaluid = $action == "edit" ? $chaluid : USERUID;
 	$output .= "<form METHOD=\"POST\" name=\"form\" action=\"challenges.php?action=$action".(isset($chalid) ? "&amp;chalid=$chalid" : "")."\">";
-	$output .= "<div class=\"tblborder\" style=\"width: 550px; margin: 0 auto; padding: 5px;\">";
+	$output .= "<div class=\"tblborder\" style=\"width: 75%; margin: 1em auto; padding: 10px;\">";
 	$output .= "<label for=\"challenger\">"._NAME.":</label> ";
 	if(isMEMBER) $output .= $challenger."<input type=\"hidden\" id=\"challenger\" name=\"challenger\" value=\"$challenger\"><input type=\"hidden\" name=\"challengeruid\" value=\"$chaluid\"><br />";
 	else $output .= "<input  type=\"text\" class=\"textbox=\" name=\"challenger\" maxlength=\"200\" size=\"30\"> <font color=\"red\">*</font><br />";
