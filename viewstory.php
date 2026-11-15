@@ -338,7 +338,21 @@ else {
 	}
 	// if the story has only one chapter this is what happens
 	else {
+		$requested_chapter = $chapter;
 		$chapter = dbassoc($chapterinfo);
+		if(!$chapter || (int)$requested_chapter !== (int)$chapter['inorder']) {
+			$current = "chaptererror";
+			// load our template files to set up the page.
+			if (file_exists("$skindir/default.tpl")) $tpl = new TemplatePower("$skindir/default.tpl");
+			else $tpl = new TemplatePower("default_tpls/default.tpl");
+			$title = "Chapter was not found";
+			$text  = "Missing chapter";
+			include("includes/pagesetup.php");
+			$tpl->assign("output", "<div id='pagetitle'>" . $title . "</div>" . write_error($text));
+			$tpl->printToScreen();
+			dbclose();
+			exit();
+		}
 		$chapterauthor = $chapter['uid'];
 		$chapterpenname = $chapter['penname'];
 		$chaptertitle = $chapter['title'];
