@@ -371,7 +371,7 @@ else {
 		$printicon = "<a href=\"viewstory.php?action=printable&amp;sid=$sid&amp;textsize=$textsize&amp;chapter=1\" target=\"_blank\"><img src='".(isset($printer) ? $printer : "images/print.gif")."' border='0' alt='"._PRINTER."'></a>";
 	}
 	// if the *CHAPTER* hasn't been validated and the viewer isn't an admin or the author throw them a warning.  
-	if(!$valid && !$ef_ownview && USERUID != $chapterauthor) ef_story_error(_ACCESSDENIED, $title);
+	if(!$valid && !$ef_ownview && USERUID != $chapterauthor) write_error(_ACCESSDENIED, $title);
 	$stories = $storyinfo;
 	$tpl->gotoBlock("_ROOT");
 	$jumpmenu2 = ""; 
