@@ -392,7 +392,7 @@ elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 10)  // 3
 //	else $output .= write_message("Are you ready to update? <a href='update.php?confirm=yes'>"._YES."</a> "._OR." <a href='update.php?confirm=no'>"._NO."</a>");
 //}
 
-elseif ($oldVersion[0] == 0 && $oldVersion[1] == 9 && $oldVersion[2] < 1)  // Mod 0.9.0 -> Mod 0.9.1 (and further within 0.9.x)
+elseif ($oldVersion[0] == 0 && $oldVersion[1] == 9 && ($oldVersion[2] == 0 || $oldVersion[2] < 10))  // Mod 0.9.0 -> Mod 0.9.1 (and further within 0.9.x)
 {
 	$set_generic = do_version_check_generic();
 	if (!$set_generic) {
