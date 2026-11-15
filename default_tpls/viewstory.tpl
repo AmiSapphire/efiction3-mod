@@ -5,6 +5,7 @@
 {printicon} <br />
 {adminlinks} </div>
 <div class="jumpmenu">{textsizer}{jumpmenu}</div>
+<div id="prev">{prev}</div><div id="next">{next}</div><br /><br />
 <!-- START BLOCK : storynotes -->
 <div class='notes'>
 	<div class='title'><span class='label'>Story Notes:</span></div>
