@@ -26,5 +26,7 @@
 if(!defined("_CHARSET")) exit( );
 
 
-define("_GUESTS", "Guests");
+if(!defined("_GUESTS")) {
+	define("_GUESTS", "Guests");
+}
 ?>
