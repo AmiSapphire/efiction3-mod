@@ -49,12 +49,12 @@ if(isset($_POST['submit'])) {
 	else $output .= write_error(_ERROR);
 }
 else {
-	$output .= "<div  id=\"settingsform\"><form method=\"POST\" style=\"margin: 1em auto;\" enctype=\"multipart/form-data\" action=\"admin.php?action=modules&amp;admin=true&amp;module=challenges\">";
+	$output .= "<div  id=\"settingsform\" style=\"width: 77%; margin-right: -45%;\"><form method=\"POST\" style=\"margin: 1em auto;\" enctype=\"multipart/form-data\" action=\"admin.php?action=modules&amp;admin=true&amp;module=challenges\">";
 	$output .= "<label for=\"anonchallenges\">"._ANONCHALLENGES.": </label><select name=\"anonchallenges\">
 				<option value=\"1\"".($anonchallenges == "1" ? " selected" : "").">"._YES."</option>
 				<option value=\"0\"".($anonchallenges == "0" ? " selected" : "").">"._NO."</option>
 			</select><br />";
-	$output .= "<div id='submitdiv'><INPUT type=\"submit\" id=\"submit\" class=\"button\" name=\"submit\" value=\""._SUBMIT."\"></div></form></form></div>";
+	$output .= "<div id='submitdiv' style=\"width: 36%;\"><INPUT type=\"submit\" id=\"submit\" class=\"button\" name=\"submit\" value=\""._SUBMIT."\"></div></form></form></div>";
 	$output .= write_message("<a href='admin.php?action=modules&amp;admin=true&amp;module=challenges&amp;task=recalc'>"._RECALCCHAL."</a>");
 }
 ?>
