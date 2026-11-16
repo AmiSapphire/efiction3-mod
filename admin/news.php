@@ -94,7 +94,7 @@ else
 
 		//assign values
 		$news->assign("newstitle", $stories['title']);
-		$news->assign("newsstory", $stories['story']);
+		$news->assign("newsstory", format_story($stories['story']));
 		$news->assign("newsauthor", $stories['author']);
 		$news->assign("newsdate", date("$dateformat $timeformat", $stories['date']));
 		$news->assign("oddeven", ($count % 2 ? "even" : "odd"));
