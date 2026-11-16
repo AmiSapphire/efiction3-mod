@@ -42,6 +42,11 @@ if($confirm == "yes") {
 			dbquery("UPDATE `".TABLEPREFIX."fanfiction_panels` SET panel_order = '12' WHERE panel_name = 'modules'");
 			dbquery("INSERT INTO `".TABLEPREFIX."fanfiction_panels`(`panel_name`, `panel_title`, `panel_url`, `panel_level`, `panel_hidden`, `panel_type`, `panel_order`) VALUES( 'convert', 'Archive Conversion', '', '1', '0', 'A', '11')");
 		}
+		$field_info = dbassoc(dbquery("SHOW COLUMNS FROM ".TABLEPREFIX."fanfiction_chapters LIKE 'storytext'"));
+		if (strtolower($field_info['Type']) != 'mediumtext')
+		{
+			dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_chapters` MODIFY `storytext` MEDIUMTEXT NULL");
+		}
 		// initial UTF-8 conversion
 		dbquery("ALTER DATABASE $dbname DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_0900_bin;");
 		dbquery("ALTER TABLE ".TABLEPREFIX."fanfiction_authorfields ENGINE=INNODB, DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_0900_bin;");

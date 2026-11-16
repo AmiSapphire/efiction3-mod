@@ -122,7 +122,7 @@ CREATE TABLE `fanfiction_chapters` (
   `title` varchar(250) NOT NULL default '',
   `inorder` int(11) NOT NULL default '0',
   `notes` text NOT NULL,
-  `storytext` text NOT NULL,
+  `storytext` mediumtext NOT NULL,
   `endnotes` text,
   `validated` tinyint(4) NOT NULL default '0',
   `wordcount` int(11) NOT NULL default '0',
@@ -166,7 +166,7 @@ CREATE TABLE `fanfiction_characters` (
 CREATE TABLE `fanfiction_classes` (
   `class_id` int(11) NOT NULL auto_increment,
   `class_type` int(11) NOT NULL default '0',
-  `class_name` varchar(100) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
+  `class_name` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`class_id`),
   KEY `byname` (`class_type`,`class_name`,`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -179,8 +179,8 @@ CREATE TABLE `fanfiction_classes` (
 
 CREATE TABLE `fanfiction_classtypes` (
   `classtype_id` int(11) NOT NULL auto_increment,
-  `classtype_name` varchar(50) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
-  `classtype_title` varchar(50) NOT NULL default '' COLLATE utf8mb4_unicode_ci,
+  `classtype_name` varchar(50) NOT NULL default '',
+  `classtype_title` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`classtype_id`),
   UNIQUE KEY `classtype_name` (`classtype_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

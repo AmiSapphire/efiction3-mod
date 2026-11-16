@@ -583,7 +583,7 @@ switch ($_GET['step'])
   `title` varchar(250) NOT NULL default '',
   `inorder` int(11) NOT NULL default '0',
   `notes` text NULL,
-  `storytext` text NULL,
+  `storytext` mediumtext NULL,
   `endnotes` text NULL,
   `validated` char(1) NOT NULL default '0',
   `wordcount` int(11) NOT NULL default '0',

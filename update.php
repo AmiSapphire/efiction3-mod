@@ -68,6 +68,7 @@ else {
 	$set_356 = do_version_check_356();
 	$set_359 = do_version_check_359();
 	$set_090 = do_version_check_090();
+	$set_093 = do_version_check_093();
 	$set_generic = do_version_check_generic();
  
 	if ($set_356)
@@ -96,6 +97,17 @@ else {
 			$output .= write_message("Table <b>" . $set_090 . "</b> needs an update.");
 			dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = '0.9.0' WHERE sitekey = '" . SITEKEY . "'");
 			$settings['version'] = '0.9.0';
+		}
+	}
+
+	else if ($set_093) {
+		$set_093 = do_version_check_093();
+	
+		if ($set_093)
+		{
+			$output .= write_message("Table <b>" . $set_093 . "</b> needs an update.");
+			dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = '0.9.2' WHERE sitekey = '" . SITEKEY . "'");
+			$settings['version'] = '0.9.2';
 		}
 	}
 
@@ -162,8 +174,8 @@ if ($oldVersion[0] == 3 && ($oldVersion[1] < 5 || $oldVersion[2] < 6))  //3.5.5
 				),
 			);
 
-			// Tables where IP address field needs updating to accommodate IPV6
-			// Set to varchar(45) - just in case something uses the IPV4 subnet (see http://en.wikipedia.org/wiki/IPV6#Notation)
+			// Tables where datetime/timestamp field needs updating to int
+			// Set to int(10) - for storing Unix timestamp
 			foreach ($date_upgrade as $tmp)
 			{
 
@@ -392,7 +404,69 @@ elseif ($oldVersion[0] == 3 && $oldVersion[1] == 5 && $oldVersion[2] < 10)  // 3
 //	else $output .= write_message("Are you ready to update? <a href='update.php?confirm=yes'>"._YES."</a> "._OR." <a href='update.php?confirm=no'>"._NO."</a>");
 //}
 
-elseif ($oldVersion[0] == 0 && $oldVersion[1] == 9 && ($oldVersion[2] == 0 || $oldVersion[2] < 10))  // Mod 0.9.0 -> Mod 0.9.1 (and further within 0.9.x)
+elseif ($oldVersion[0] == 0 && $oldVersion[1] == 9 && $oldVersion[2] < 2)  // Mod 0.9.[0,1] -> Mod 0.9.2
+{
+	$set_generic = do_version_check_generic();
+	if (!$set_generic) {
+		$update = dbquery("UPDATE ".$settingsprefix."fanfiction_settings SET version = '".$version."' WHERE sitekey = '".SITEKEY."'");
+		if ($update) $output .= write_message("No database changes required; eFiction 3 Mod Version bumped to ".$version."! " ._ACTIONSUCCESSFUL);
+	}
+
+}
+
+elseif ($oldVersion[0] == 0 && $oldVersion[1] == 9 && $oldVersion[2] < 3)  // Mod 0.9.[0,1,2] -> Mod 0.9.3
+{
+	if ($confirm == "yes")
+	{
+		if ($oldVersion[0] == 0 &&  $oldVersion[1] == 9 && $oldVersion[2] < 3)
+		{
+			// List of DB tables (key) and field (value) which need changing text from text to mediumtext
+			$text_upgrade = array(
+				'fanfiction_chapters' => 'storytext'
+			);
+
+			foreach ($text_upgrade as $t => $f)
+			{
+				if (isTable($t))
+				{
+			 
+					// Check for table - might add some core plugin tables in here
+					if ($field_info =  dbassoc(dbquery("SHOW COLUMNS FROM " . TABLEPREFIX . $t . " LIKE '{$f}'")))
+					{
+						if (strtolower($field_info['Type']) != 'mediumtext')
+						{
+
+							dbquery("ALTER TABLE `".TABLEPREFIX."fanfiction_chapters` MODIFY `storytext` MEDIUMTEXT NULL");
+ 
+						}
+					}
+				}
+			}	 
+		}
+
+		$set_093 = false;
+		$set_093 = do_version_check_093();
+		if($set_093) {
+			$output .= write_error(_ERROR);
+		}
+		else {
+			$update = dbquery("UPDATE " . $settingsprefix . "fanfiction_settings SET version = '" . $version . "' WHERE sitekey = '" . SITEKEY . "'");
+			if ($update) $output .= write_message(_ACTIONSUCCESSFUL);
+			}
+		}
+	else if ($confirm == "no")
+	{
+		$output .= write_message(_ACTIONCANCELLED);
+	}
+	else
+	{
+		if ($oldVersion[0] == 0 && $oldVersion[1] == 9 && $oldVersion[2] < 3)
+			$output .= write_message(_CONFIRMUPDATE . "<br /> <a href='update.php?confirm=yes'>" . _YES . "</a> " . _OR . " <a href='update.php?confirm=no'>" . _NO . "</a>");
+		else $output .= write_message("Are you ready to update? <a href='update.php?confirm=yes'>" . _YES . "</a> " . _OR . " <a href='update.php?confirm=no'>" . _NO . "</a>");
+	}
+}
+
+elseif ($oldVersion[0] == 0 && $oldVersion[1] == 9 && $oldVersion[2] < 10)  // Mod 0.9.3 -> Mod 0.9.4 (and further within 0.9.x)
 {
 	$set_generic = do_version_check_generic();
 	if (!$set_generic) {
@@ -498,7 +572,7 @@ function do_version_check_356()
 			
 				if (strtolower($field_info['Type']) != 'varbinary(16)')
 				{
-					$check_356 = $t . " - field:  " . $f;;
+					$check_356 = $t . " - field:  " . $f;
 			 
 					return $check_356;	 
 				}
@@ -543,6 +617,40 @@ function do_version_check_090()
 	}
 
 	return $check_090;
+}
+
+function do_version_check_093()
+{
+	$check_093 = false;
+ 
+	// List of DB tables (key) and field (value) which need changing text from text to mediumtext
+	$text_upgrade = array(
+		'fanfiction_chapters' => 'storytext'
+	);
+
+	foreach ($text_upgrade as $t => $f)
+	{
+ 
+		if (isTable($t))
+		{
+			// Check for table - might add some core plugin tables in here
+			if ($field_info =  dbassoc(dbquery("SHOW COLUMNS FROM " . TABLEPREFIX . $t ." LIKE '{$f}'")) )
+			{
+
+			
+				if (strtolower($field_info['Type']) != 'mediumtext')
+				{
+					$check_093 = $t . " - field:  " . $f;
+			 
+					return $check_093;	 
+				}
+			}
+	 
+		}
+		
+	}
+ 
+	return $check_093;
 }
 
 function do_version_check_generic()
