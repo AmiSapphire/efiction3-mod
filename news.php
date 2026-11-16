@@ -123,8 +123,10 @@ if($nid) {
 		}
 		else $comment = "";
 		$output .= "<table align=\"center\"><tr><td><strong>"._PENNAME.":</strong></td><td>".USERPENNAME."<INPUT type=\"hidden\" name=\"uname\" value=\"".USERPENNAME."\"></td></tr>
-		<tr><td><b>"._COMMENTS.":</b></td><td><TEXTAREA name=\"comment\" cols=\"35\" rows=\"6\">$comment</TEXTAREA></td></tr>
-		<tr><td><INPUT type=\"hidden\" name=\"nid\" value=\"$nid\"><INPUT name=\"submit\" id=\"submit\" type=\"submit\" value=\""._SUBMIT."\"></td></tr></table></form>";
+		<tr><td><b>"._COMMENTS.":</b></td><td><TEXTAREA name=\"comment\" id=\"comment\" cols=\"55\" rows=\"12\">$comment</TEXTAREA></td></tr>";
+		if($tinyMCE) 
+		$output .= "<tr><td></td><td><div class='tinytoggle'><input type='checkbox' name='toggle' onclick=\"toogleEditorMode('comment');\" checked><label for='toggle'>"._TINYMCETOGGLE."</label></div></td></tr>";
+		$output .= "<tr><td><INPUT type=\"hidden\" name=\"nid\" value=\"$nid\"><INPUT name=\"submit\" id=\"submit\" type=\"submit\" value=\""._SUBMIT."\"></td></tr></table></form>";
 	}
 	$tpl->assign("output", $output);
 }
