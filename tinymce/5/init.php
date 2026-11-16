@@ -32,6 +32,7 @@ echo "
 		skin: 'oxide',
 		min_height: 300,
 		min_width: 200,
+		height: 350,
 		width: 500,
 		toolbar_location: 'top',
 	    browser_spellcheck: true,
