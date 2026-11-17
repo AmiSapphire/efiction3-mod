@@ -104,7 +104,8 @@ Even earlier installs actually never specified an SQL session but rather used th
 - categories.php: deleting only category causing Fatal Error bug fix for PHP 8.x users
 - header.php: leftover array typo oversight fix with age consent feature
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
-- blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix
+- blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix, deprecation notice fixes re: using null as an array offset
+- blocks/menu/admin.php, blocks/menu/menu.php: further fixes for array keys due to the prior deprecation notice fixes - menu was $pagelinks[$page] -> $page - admin was an if statement for unserialize()
 - admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fixes and Undefined array key PHP warning when viewing the list that contains a panel with null entries fix
 - reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix (these also had PHP warnings, but the checks made most of them nil), Uncaught TypeError with leaving a review on a story/chapter with co-authors present fix (likely related to newer upstream patches)
 - viewstory.php: Add proper chapter checks for missing or nonexistent chapters (was Undefined variable warnings when trying to access a nonexistent or formerly existing chapter for PHP 8 users dirty fix)
@@ -136,6 +137,8 @@ Even earlier installs actually never specified an SQL session but rather used th
 - includes/storyform.php: remove ancient 'None' option from the Characters section as it was redundant (selecting nothing achieved the same effect); that and any tinyMCE newer than 3.4.9 made it disappear when using the Categories section - it was present ever since eFiction 3.0 - this option also never existed when adding/editing series
 - includes/categories.php: replace multiple selections constant with the multiple categories constant as it will disappear when 'Only one' setting is used; add selected categories button is now more prominent
 - series.php, includes/storyform.php: relocated the multiple selections constant to where it actually belongs - just before the categories section for stories/chapters; added the multiple selections constant for series to match the story form as it was never present
+- news.php, admin/news.php: use format_story function for rendering news entries - news.php used nl2br (which triple-spaced paragraphs on news entries that used tinyMCE especially), admin/news.php used nothing (which may render newlines as \r, \n, or \r\n in display)
+- fanfiction_chapters storytext column is changed from text -> mediumtext
 - Some security patches from https://github.com/Hyperion360/efiction fork
 - Some security patches from upstream (not all, as some modules have slight issues with them)
 - Bridges return! Their removal got rid of the example work, which is now updated as well
