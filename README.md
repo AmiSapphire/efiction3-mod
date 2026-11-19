@@ -30,7 +30,7 @@ This script is being tested for issues with future (now released 2026/11/19) PHP
 default_charset = "UTF-8"
 
 
-Just caught on 2026/11/19: session cookie settings behavior is changed: as of CVE 2026-115560, ini session settings cannot be set with a PHP file when session.upload_progress.enabled is set to On, as that will bring up an Uncaught Error in patched versions; either disable the aforementioned setting or set session.cookie_httponly to 1 and session.cookie_samesite to Lax in php.ini. PHP 8.6.0 sets these to 1 and Lax by default.
+Just caught on 2026/11/19: session cookie settings behavior is changed: as of CVE 2026-115560, ini session settings cannot be set with a PHP file when session.upload_progress.enabled is set to On, as that will bring up an Uncaught Error in patched versions; either disable the aforementioned setting or set session.cookie_httponly to 1 and session.cookie_samesite to Lax in php.ini. PHP 8.6.0 sets these to 1 and Lax by default. The samesite session cookie entry was introduced in PHP 7.3.0, so that one will not work on anything earlier than this.
 
 session.upload_progress.enabled = Off
 
