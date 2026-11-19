@@ -37,7 +37,7 @@ session.upload_progress.enabled = Off
 or
 
 session.cookie_httponly = 1
-session.cookie_samesite = Lax
+session.cookie_samesite = "Lax"
 
 You may want this as well:
 
