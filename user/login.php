@@ -70,10 +70,15 @@
 				setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
 				setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
 			}
+			// as of CVE-2026-115560, you can no longer set these settings if
+			// session.upload_progress.enabled is set to 'On'
 			if(!isset($_SESSION)) {
-				ini_set('session.cookie_httponly', '1');
-				ini_set('session.cookie_samesite', 'Lax');
-				session_start( );
+				if (ini_get('session.upload_progress.enabled' == 0)) {
+					ini_set('session.cookie_httponly', '1');
+					ini_set('session.cookie_samesite', 'Lax');
+					session_start();
+				}
+				else session_start();
 			}
 			session_regenerate_id(true);
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
@@ -89,10 +94,15 @@
 				setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
 				setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordm), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
 			}
+			// as of CVE-2026-115560, you can no longer set these settings if
+			// session.upload_progress.enabled is set to 'On'
 			if(!isset($_SESSION)) {
-				ini_set('session.cookie_httponly', '1');
-				ini_set('session.cookie_samesite', 'Lax');
-				session_start( );
+				if (ini_get('session.upload_progress.enabled' == 0)) {
+					ini_set('session.cookie_httponly', '1');
+					ini_set('session.cookie_samesite', 'Lax');
+					session_start();
+				}
+				else session_start();
 			}
 			session_regenerate_id(true);
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];

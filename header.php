@@ -50,10 +50,15 @@ foreach ($_GET as $v) {
 }
 unset($v);
 
+// as of CVE-2026-115560, you can no longer set these settings if
+// session.upload_progress.enabled is set to 'On'
 if(!isset($_SESSION)) {
-	ini_set('session.cookie_httponly', '1');
-	ini_set('session.cookie_samesite', 'Lax');
-	session_start();
+	if (ini_get('session.upload_progress.enabled' == 0)) {
+		ini_set('session.cookie_httponly', '1');
+		ini_set('session.cookie_samesite', 'Lax');
+		session_start();
+	}
+	else session_start();
 }
 // clear the global variables if register globals is on.
 if(ini_get('register_globals')) {

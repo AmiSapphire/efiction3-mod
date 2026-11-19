@@ -28,9 +28,14 @@ else $current = "login";
 	}
 	
 	if(!empty($_POST['submit']) && $current == "login") {
-	ini_set('session.cookie_httponly', '1');
-	ini_set('session.cookie_samesite', 'Lax');
-	session_start();
+	// as of CVE-2026-115560, you can no longer set these settings if
+	// session.upload_progress.enabled is set to 'On'
+	if (ini_get('session.upload_progress.enabled' == 0)) {
+		ini_set('session.cookie_httponly', '1');
+		ini_set('session.cookie_samesite', 'Lax');
+		session_start();
+	}
+	else session_start();
 	define("_LOGINCHECK", true);		
 		include("user/login.php");
 	}
