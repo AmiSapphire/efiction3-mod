@@ -25,9 +25,23 @@ Just place the script over your current install like any upgrade. This script ca
 
 ### PHP
 
-This script is being tested for issues with future PHP 8.6.0, and anything actually unique to 8.6 was likely fixed. The other stuff would be related to older PHP 8 versions. Since some patches over time (starting in 2016) use PHP 7+ only behavior, this meant that you can no longer use eFiction with PHP 5.6 and earlier. However, since 2026/10/29, such coalescing patches were removed and PHP 5.6 could be used again. PHP should also use the UTF-8 character set to use this script. The entry in the ini file should say UTF-8 for default_charset.
+This script is being tested for issues with future (now released 2026/11/19) PHP 8.6.0, and anything actually unique to 8.6 was likely fixed. The other stuff would be related to older PHP 8 versions. Since some patches over time (starting in 2016) use PHP 7+ only behavior, this meant that you can no longer use eFiction with PHP 5.6 and earlier. However, since 2026/10/29, such coalescing patches were removed and PHP 5.6 could be used again. PHP should also use the UTF-8 character set to use this script. The entry in the ini file should say UTF-8 for default_charset.
 
 default_charset = "UTF-8"
+
+
+Just caught on 2026/11/19: session cookie settings behavior is changed: as of CVE 2026-115560, ini session settings cannot be set with a PHP file when session.upload_progress.enabled is set to On, as that will bring up an Uncaught Error in patched versions; either disable the aforementioned setting or set session.cookie_httponly to 1 and session.cookie_samesite to Lax in php.ini. PHP 8.6.0 sets these to 1 and Lax by default.
+
+session.upload_progress.enabled = Off
+
+or
+
+session.cookie_httponly = 1
+session.cookie_samesite = Lax
+
+You may want this as well:
+
+session.use_strict_mode = 1
 
 
 ### Database
