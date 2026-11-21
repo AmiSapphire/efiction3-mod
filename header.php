@@ -53,7 +53,8 @@ unset($v);
 // as of CVE-2026-115560, you can no longer set these settings if
 // session.upload_progress.enabled is set to 'On'
 if(!isset($_SESSION)) {
-	if (ini_get('session.upload_progress.enabled' == 0) && (version_compare(PHP_VERSION, '7.3.0', '>='))) {
+	$sessionuploadprogress = ini_get('session.upload_progress.enabled');
+	if (($sessionuploadprogress != 1) && (version_compare(PHP_VERSION, '7.3.0', '>='))) {
 		ini_set('session.cookie_httponly', '1');
 		ini_set('session.cookie_samesite', 'Lax');
 		session_start();
