@@ -67,8 +67,14 @@
 		}
 		if(password_verify($_POST['password'], $encryptedpasswordb)) {
 			if(isset($_POST['cookiecheck'])) {
-				setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
-				setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+				if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+					setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+				}
+				else {
+					setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
+					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), time()+60*60*24*30, "/");
+				}
 			}
 			// as of CVE-2026-115560, you can no longer set these settings if
 			// session.upload_progress.enabled is set to 'On'
@@ -92,8 +98,14 @@
 
 		else if($passwd['password'] == $encryptedpasswordm) {
 			if(isset($_POST['cookiecheck'])) {
-				setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
-				setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordm), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+				if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+					setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordm), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+				}
+				else {
+					setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
+					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordm), time()+60*60*24*30, "/");
+				}
 			}
 			// as of CVE-2026-115560, you can no longer set these settings if
 			// session.upload_progress.enabled is set to 'On'
