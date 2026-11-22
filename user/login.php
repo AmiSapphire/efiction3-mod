@@ -80,9 +80,11 @@
 			// session.upload_progress.enabled is set to 'On'
 			if(!isset($_SESSION)) {
 				$sessionuploadprogress = ini_get('session.upload_progress.enabled');
-				if (($sessionuploadprogress != 1) && (version_compare(PHP_VERSION, '7.3.0', '>='))) {
+				if ($sessionuploadprogress != 1) {
 					ini_set('session.cookie_httponly', '1');
-					ini_set('session.cookie_samesite', 'Lax');
+					if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+						ini_set('session.cookie_samesite', 'Lax');
+					}
 					session_start();
 				}
 				else session_start();
@@ -111,9 +113,11 @@
 			// session.upload_progress.enabled is set to 'On'
 			if(!isset($_SESSION)) {
 				$sessionuploadprogress = ini_get('session.upload_progress.enabled');
-				if (($sessionuploadprogress != 1) && (version_compare(PHP_VERSION, '7.3.0', '>='))) {
+				if ($sessionuploadprogress != 1) {
 					ini_set('session.cookie_httponly', '1');
-					ini_set('session.cookie_samesite', 'Lax');
+					if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+						ini_set('session.cookie_samesite', 'Lax');
+					}
 					session_start();
 				}
 				else session_start();
