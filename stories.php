@@ -85,7 +85,15 @@ function preview_story($stories) {
 	$count = 0;
 	if(file_exists("$skindir/listings.tpl")) $tpl = new TemplatePower( "$skindir/listings.tpl" );
 	else $tpl = new TemplatePower("default_tpls/listings.tpl");
-	if(is_array($stories['coauthors']) && count($stories['coauthors']) > 0) $stories['coauthors'] = 1;
+	// Unsaved previews carry selected IDs, not the stored co-author flag.
+	if(is_array($stories['coauthors'])) {
+		$ids = array_diff(array_map('intval', $stories['coauthors']), array(0, (int)$stories['uid']));
+		$stories['coauthors'] = array();
+		if($ids) {
+			$names = dbquery("SELECT "._UIDFIELD." AS uid, "._PENNAMEFIELD." AS penname FROM "._AUTHORTABLE." WHERE "._UIDFIELD." IN (".implode(',', $ids).")");
+			while($name = dbassoc($names)) $stories['coauthors'][$name['uid']] = $name['penname'];
+		}
+	}
 	$tpl->prepare( );
 	$tpl->newBlock("listings");
 	$tpl->newBlock("storyblock");
