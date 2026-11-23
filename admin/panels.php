@@ -75,7 +75,16 @@ if(!empty($_GET['edit'])) {
 		for($x = 0; $x < 5; $x++) { $output .= "<option".((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == $x ? " selected" : "").">$x</option>"; }
 		$output .= "</select><br />
 			<label for='panel_hidden'>"._HIDDEN.":</label> <input type='checkbox' class='checkbox' name='panel_hidden' id='panel_hidden' ".((isset($panelinfo['panel_hidden']) ? $panelinfo['panel_hidden'] : null) ? " checked" : "")."><br />
-			<label for='panel_type'>"._TYPE.":</label> <input type='text' class='textbox' name='panel_type' id='panel_type' value='".(isset($panelinfo['panel_type']) ? $panelinfo['panel_type'] : null)."' size='2'><br />
+			<label for='panel_type'>"._TYPE. ": </label> <select name='panel_type'>
+				<option value=\"A\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "A" ? " selected" : "") . ">A - "._ADMIN."</option>
+				<option value=\"B\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "B" ? " selected" : "") . ">B - "._BROWSE."</option>
+				<option value=\"F\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "F" ? " selected" : "") . ">F - "._FAVOR."</option>
+				<option value=\"L\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "L" ? " selected" : "") . ">L - "._10LISTS."</option>
+				<option value=\"P\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "P" ? " selected" : "") . ">P - "._PROFILE."</option>
+				<option value=\"S\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "S" ? " selected" : "") . ">S - "._SUBMISSIONS."</option>
+				<option value=\"U\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "U" ? " selected" : "") . ">U - "._USERACCOUNT."</option>
+				</select>
+			<br />
 			<div style='margin: 1em; text-align: center;'><INPUT type=\"submit\" class=\"button\" value=\""._SUBMIT."\" name=\"submit\"></div></form></div>";
 	}
 }
