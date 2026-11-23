@@ -68,28 +68,33 @@
 		if(password_verify($_POST['password'], $encryptedpasswordb)) {
 			if(isset($_POST['cookiecheck'])) {
 				if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
-					setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
-					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+					setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => ''.basename(__DIR__).'', 'httponly' => true, 'samesite' => 'Lax'));
+					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), array('expires' => time()+60*60*24*30, 'path' => ''.basename(__DIR__).'', 'httponly' => true, 'samesite' => 'Lax'));
 				}
 				else {
-					setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
-					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), time()+60*60*24*30, "/");
+					setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, ''.basename(__DIR__).'', '', false, true);
+					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), time()+60*60*24*30, ''.basename(__DIR__).'', '', false, true);
 				}
 			}
 			// as of CVE-2026-115560, you can no longer set these settings if
 			// session.upload_progress.enabled is set to 'On'
-			if(!isset($_SESSION)) {
+			if (session_status() === PHP_SESSION_NONE) {
 				$sessionuploadprogress = ini_get('session.upload_progress.enabled');
 				if ($sessionuploadprogress == false) {
+					ini_set('session.name', 'eFiction3Mod');
+					ini_set('session.cookie_path', ''.basename(__DIR__).'');
 					ini_set('session.cookie_httponly', '1');
 					if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
 						ini_set('session.cookie_samesite', 'Lax');
 					}
+					//ini_set('session.gc_maxlifetime', '86400');
 					session_start();
 				}
 				else session_start();
 			}
-			session_regenerate_id(true);
+			if (session_status() === PHP_SESSION_ACTIVE) {
+				session_regenerate_id(true);
+			}
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
 			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordb);
 			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");
@@ -101,28 +106,33 @@
 		else if($passwd['password'] == $encryptedpasswordm) {
 			if(isset($_POST['cookiecheck'])) {
 				if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
-					setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
-					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordm), array('expires' => time()+60*60*24*30, 'path' => "/", 'httponly' => true, 'samesite' => 'Lax'));
+					setcookie($sitekey."_useruid", $passwd['uid'], array('expires' => time()+60*60*24*30, 'path' => ''.basename(__DIR__).'', 'httponly' => true, 'samesite' => 'Lax'));
+					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordm), array('expires' => time()+60*60*24*30, 'path' => ''.basename(__DIR__).'', 'httponly' => true, 'samesite' => 'Lax'));
 				}
 				else {
-					setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, "/");
-					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordm), time()+60*60*24*30, "/");
+					setcookie($sitekey."_useruid",$passwd['uid'], time()+60*60*24*30, ''.basename(__DIR__).'', '', false, true);
+					setcookie($sitekey."_salt", md5($passwd['email'].$encryptedpasswordb), time()+60*60*24*30, ''.basename(__DIR__).'', '', false, true);
 				}
 			}
 			// as of CVE-2026-115560, you can no longer set these settings if
 			// session.upload_progress.enabled is set to 'On'
-			if(!isset($_SESSION)) {
+			if (session_status() === PHP_SESSION_NONE) {
 				$sessionuploadprogress = ini_get('session.upload_progress.enabled');
 				if ($sessionuploadprogress == false) {
+					ini_set('session.name', 'eFiction3Mod');
+					ini_set('session.cookie_path', ''.basename(__DIR__).'');
 					ini_set('session.cookie_httponly', '1');
 					if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
 						ini_set('session.cookie_samesite', 'Lax');
 					}
+					//ini_set('session.gc_maxlifetime', '86400');
 					session_start();
 				}
 				else session_start();
 			}
-			session_regenerate_id(true);
+			if (session_status() === PHP_SESSION_ACTIVE) {
+				session_regenerate_id(true);
+			}
 			$_SESSION[$sitekey."_useruid"] = $passwd['uid'];
 			$_SESSION[$sitekey."_salt"] = md5($passwd['email'] . $encryptedpasswordm);
 			$logincode = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_codeblocks WHERE code_type = 'login'");

@@ -52,13 +52,16 @@ unset($v);
 
 // as of CVE-2026-115560, you can no longer set these settings if
 // session.upload_progress.enabled is set to 'On'
-if(!isset($_SESSION)) {
+if (session_status() === PHP_SESSION_NONE) {
 	$sessionuploadprogress = ini_get('session.upload_progress.enabled');
 	if ($sessionuploadprogress == false) {
+		ini_set('session.name', 'eFiction3Mod');
+		ini_set('session.cookie_path', ''.basename(__DIR__).'');
 		ini_set('session.cookie_httponly', '1');
 		if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
 			ini_set('session.cookie_samesite', 'Lax');
 		}
+		//ini_set('session.gc_maxlifetime', '86400');
 		session_start();
 	}
 	else session_start();

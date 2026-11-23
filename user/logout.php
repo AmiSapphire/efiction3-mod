@@ -3,21 +3,24 @@ if(!defined("_LOGOUTCHECK")) exit( );
 	define("_BASEDIR", "");
 	include("config.php");
 	session_start( );
-	foreach ($_SESSION as $VarName => $Value)  { 
-		if(substr($VarName, 0, strlen($sitekey)) == $sitekey) {
-			if(strpos($VarName, "skin")) continue;
-			$_SESSION[$VarName] = "";
-			unset($_SESSION[$VarName]);
-			unset($_COOKIE[$VarName]);
-			setcookie($VarName, '', time() - 1000, '/', '', '' );
+	if (session_status() === PHP_SESSION_ACTIVE) {
+		foreach ($_SESSION as $VarName => $Value)  { 
+			if(substr($VarName, 0, strlen($sitekey)) == $sitekey) {
+				if(strpos($VarName, "skin")) continue;
+				$_SESSION[$VarName] = "";
+				unset($_SESSION[$VarName]);
+				unset($_COOKIE[$VarName]);
+				setcookie($VarName, '', time() - 1000, ''.basename(__DIR__).'', '', '' );
+			}
+		} 
+		foreach ($_COOKIE as $VarName => $Value)  { 
+			if(substr($VarName, 0, strlen($sitekey)) == $sitekey) {
+				unset($_COOKIE[$VarName]);
+				setcookie($VarName, "", time() - 1000, ''.basename(__DIR__).'', '', '' );
+			}
 		}
-	} 
-	foreach ($_COOKIE as $VarName => $Value)  { 
-		if(substr($VarName, 0, strlen($sitekey)) == $sitekey) {
-			unset($_COOKIE[$VarName]);
-			setcookie($VarName, "", time() - 1000, '/', '', '' );
-		}
-	} 
+	}
+	session_abort( );
 require_once("header.php");
 //make a new TemplatePower object
 if(file_exists("$skindir/default.tpl")) $tpl = new TemplatePower( "$skindir/default.tpl" );
