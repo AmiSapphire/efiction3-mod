@@ -31,7 +31,7 @@ else $current = "login";
 	// as of CVE-2026-115560, you can no longer set these settings if
 	// session.upload_progress.enabled is set to 'On'
 	$sessionuploadprogress = ini_get('session.upload_progress.enabled');
-	if ($sessionuploadprogress != 1) {
+	if ($sessionuploadprogress == false) {
 		ini_set('session.cookie_httponly', '1');
 		if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
 			ini_set('session.cookie_samesite', 'Lax');
