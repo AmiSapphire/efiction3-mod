@@ -54,7 +54,7 @@ if (document.shoutbox.shout_message.value.length >= mlength) {
 }
 }
 
-</script><div id='shoutbox_container' style='width: 100%;'>\n<form name='shoutbox' id='shoutbox' method='POST' action='".$_SERVER['SCRIPT_NAME'].($_SERVER['QUERY_STRING'] ? "?".$_SERVER['QUERY_STRING']  : "")."'>\n";
+</script><div id='shoutbox_container' style='width: 100%;'>\n<form name='shoutbox' id='shoutbox' method='POST' action='".$_SERVER['SCRIPT_NAME'].($_SERVER['QUERY_STRING'] ? "?".htmlspecialchars($_SERVER['QUERY_STRING'], ENT_QUOTES)  : "")."'>\n";
 	if(!isMEMBER) $content .= "<div><label for='shoutname'>"._NAME.":</label> <input type='text' name='shoutname' value='' style='display: block; width: 90%; margin: 0 auto;' maxlength='30'></div>";
 	else $content .= "<div><span class='label'>"._NAME.":</span> ".USERPENNAME."</div>";
 	if(!isMEMBER && $captcha) $content .= "<div><label for='userdigit'>"._CAPTCHANOTE."</label><input MAXLENGTH=5 SIZE=5 name=\"userdigit\" type=\"text\" value=\"\"><div style='text-align: center;'><img width=120 height=40 src=\""._BASEDIR."includes/button.php\" style=\"border: 1px solid #111;\"></div></div>";
