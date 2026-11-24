@@ -74,6 +74,8 @@ if(!defined("_CHARSET")) exit( );
 
 		}
 		$type = (isset($reviews['type']) ? $reviews['type'] : null);
+		$item = (isset($reviews['item']) ? (int)$reviews['item'] : null);
+		$coauthors = array();
 		if($type == "SE") $query2 = "SELECT uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '".$reviews['item']."'";
 		else if($type == "ST") {
 			$query2 = "SELECT uid, coauthors FROM ".TABLEPREFIX."fanfiction_stories WHERE sid = '".$reviews['item']."' LIMIT 1";
@@ -93,15 +95,16 @@ if(!defined("_CHARSET")) exit( );
 		}
 		if(USERUID == $user['uid'] || (!empty($user['coauthors']) && in_array(USERUID, $coauthors))) {
 			if($type == "ST") {
-				$storyquery = dbquery("SELECT s.title, s.uid, r.rid, r.rating, r.ratingwarning, r.warningtext, s.sid FROM ".TABLEPREFIX."fanfiction_stories as s, ".TABLEPREFIX."fanfiction_ratings as r WHERE s.sid = '".$reviews['item']."' AND s.rid = r.rating LIMIT 1");
+				$storyquery = dbquery("SELECT s.title, s.uid, c.title AS chaptertitle, c.inorder FROM ".TABLEPREFIX."fanfiction_stories AS s LEFT JOIN ".TABLEPREFIX."fanfiction_chapters AS c ON c.sid = s.sid AND c.chapid = '".(int)$reviews['chapid']."' WHERE s.sid = '$item' LIMIT 1");
 				$story = dbassoc($storyquery);
-				$authoruid = isset($story['uid']) ? $story['uid'] : null;
-				$title = title_link($story);
+				$authoruid = $story['uid'];
+				$reviewlabel = isset($story['inorder']) ? _CHAPTER." ".$story['inorder'].": ".$story['chaptertitle'] : $story['title'];
 			}
 			else if($type == "SE") {
 				$storyquery = dbquery("SELECT title, uid FROM ".TABLEPREFIX."fanfiction_series WHERE seriesid = '$item' LIMIT 1");
 				list($title, $authoruid) = dbrow($storyquery);
 				$title = stripslashes($title);
+				$reviewlabel = $title;
 				$title = "<a href=\"series.php?seriesid=$item\">$title</a>";
 			}
 			else { 
@@ -125,7 +128,7 @@ if(!defined("_CHARSET")) exit( );
 			$revlist->newBlock("reviewsblock");
 			$revlist->assign("reviewer"   , $reviewer );
 			$revlist->assign("review"   , $reviews['review']);
-			$revlist->assign("chapter", (isset($chaptitle) ? _CHAPTER." $chapnum: $chaptitle" : (isset($story['title']) ? $story['title'] : _NONE)) );
+			$revlist->assign("chapter", isset($reviewlabel) ? $reviewlabel : (isset($chaptitle) ? _CHAPTER." $chapnum: $chaptitle" : (!empty($story['title']) ? $story['title'] : _NONE)));
 			$revlist->assign("reviewdate", date("$dateformat", $reviews['date']) );
 			$revlist->assign("rating", ratingpics($reviews['rating']) );
 			$revlist->assign("member", $member );
