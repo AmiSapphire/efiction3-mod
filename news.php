@@ -51,9 +51,14 @@ if($nid) {
 		else accessDenied( );
 		unset($comment);
 	}
-	if(isset($_GET['del']) && isADMIN && uLEVEL < 4 && !empty($cid)) {
-		$insert = dbquery("DELETE FROM ".TABLEPREFIX."fanfiction_comments WHERE cid = '$cid'");
-		if($insert) dbquery("UPDATE ".TABLEPREFIX."fanfiction_news SET comments = comments - 1 WHERE nid = '$nid' LIMIT 1");
+	if ((isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '') === 'GET' && isset($_GET['del'])) {
+		if(!isADMIN || uLEVEL < 1 || uLEVEL >= 4) accessDenied();
+		$deleteCid = isset($_GET['cid']) && is_string($_GET['cid']) && isNumber($_GET['cid']) ? (int)$_GET['cid'] : 0;
+		$deleteNid = isset($_GET['nid']) && is_string($_GET['nid']) && isNumber($_GET['nid']) ? (int)$_GET['nid'] : 0;
+		if($deleteCid <= 0 || $deleteNid <= 0) accessDenied();
+		dbquery("DELETE FROM ".TABLEPREFIX."fanfiction_comments WHERE cid = '$deleteCid' AND nid = '$deleteNid' LIMIT 1");
+		if($GLOBALS['dbconnect']->affected_rows === 1) dbquery("UPDATE ".TABLEPREFIX."fanfiction_news SET comments = comments - 1 WHERE nid = '$deleteNid' AND comments > 0 LIMIT 1");
+		unset($_POST['submit']);
 	}
 	$newsquery = dbquery("SELECT n.*, n.time as date FROM ".TABLEPREFIX."fanfiction_news as n WHERE n.nid = '$nid' LIMIT 1");
 	$stories = dbassoc($newsquery);
