@@ -345,7 +345,7 @@ function newstory( ) {
 				}
 			}
 			$update = dbquery("UPDATE ".TABLEPREFIX."fanfiction_stories SET updated = '" . time() . "' WHERE sid = '$sid'");
-			list($chapters, $words) = dbrow(dbquery("SELECT COUNT(chapid), SUM(wordcount) FROM ".TABLEPREFIX."fanfiction_chapters WHERE validated > 0"));
+			list($chapters, $words) = dbrow(dbquery("SELECT COUNT(chapid), COALESCE(SUM(wordcount), 0) FROM ".TABLEPREFIX."fanfiction_chapters WHERE validated > 0"));
 			list($authors) = dbrow(dbquery("SELECT COUNT(uid) FROM ".TABLEPREFIX."fanfiction_authorprefs WHERE stories > 0"));
 			dbquery("UPDATE ".TABLEPREFIX."fanfiction_stats set wordcount = '$words', chapters = '$chapters', authors = '$authors'");
 			$count =  dbquery("SELECT SUM(wordcount) as totalcount FROM ".TABLEPREFIX."fanfiction_chapters WHERE sid = '$sid' AND validated = '1'");
@@ -799,14 +799,14 @@ function editstory($sid) {
 					dbquery("UPDATE ".TABLEPREFIX."fanfiction_authorprefs SET stories = stories - 1 WHERE uid = '".$c['uid']."'");
 				}
 				dbquery("UPDATE ".TABLEPREFIX."fanfiction_authorprefs SET stories = stories - 1 WHERE uid = '$uid'");
-				list($chapters, $words) = dbrow(dbquery("SELECT COUNT(chapid), SUM(wordcount) FROM ".TABLEPREFIX."fanfiction_chapters WHERE validated > 0"));
+				list($chapters, $words) = dbrow(dbquery("SELECT COUNT(chapid), COALESCE(SUM(wordcount), 0) FROM ".TABLEPREFIX."fanfiction_chapters WHERE validated > 0"));
 				list($authors) = dbrow(dbquery("SELECT COUNT(uid) FROM ".TABLEPREFIX."fanfiction_authorprefs WHERE stories > 0"));
 				dbquery("UPDATE ".TABLEPREFIX."fanfiction_stats set wordcount = '$words', chapters = '$chapters', authors = '$authors'");
 			}
 			else if(!$admin) $validated = $oldvalid;
 			if(!$admin && $oldfeat != $feat) $feat = $oldfeat;
 			// Update the site stats
-			list($chapters, $words) = dbrow(dbquery("SELECT COUNT(chapid), SUM(wordcount) FROM ".TABLEPREFIX."fanfiction_chapters WHERE validated > 0"));
+			list($chapters, $words) = dbrow(dbquery("SELECT COUNT(chapid), COALESCE(SUM(wordcount), 0) FROM ".TABLEPREFIX."fanfiction_chapters WHERE validated > 0"));
 			list($authors) = dbrow(dbquery("SELECT COUNT(uid) FROM ".TABLEPREFIX."fanfiction_authorprefs WHERE stories > 0"));
 			dbquery("UPDATE ".TABLEPREFIX."fanfiction_stats set wordcount = '$words', chapters = '$chapters', authors = '$authors'");
 
