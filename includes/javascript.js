@@ -219,6 +219,7 @@ function removeCat( catid ) {
 	buildCharacters(catid);
 }
 
+// Legacy - Category Admin Tree
 function displayCatRows(catid) {
 	var serverPage = basedir + "includes/categorylist.php";
 	myRequest = new ajaxObject(serverPage, displayCatRowsResponse);
@@ -227,6 +228,7 @@ function displayCatRows(catid) {
 	myRequest.update(val);
 }
 
+//Legacy - Category Admin Tree
 function displayCatRowsResponse(responseText, responseStatus) {
 	if(responseStatus == 200) {
 		categories = Array( );
@@ -256,6 +258,35 @@ function displayCatRowsResponse(responseText, responseStatus) {
 	}
 	else {
 		alert(responseStatus + ' -- Error Processing Request');
+	}
+}
+
+function displayCatRowsAdmin(catid) {
+	var toggle = document.getElementById('c_' + catid);
+	if (!toggle) return;
+	function setExpanded(button, expanded) {
+		button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+		var image = button.querySelector('img');
+		image.src = expanded ? image.src.replace('_on', '_off') : image.src.replace('_off', '_on');
+	}
+	var expand = toggle.getAttribute('aria-expanded') !== 'true';
+	setExpanded(toggle, expand);
+	// Rows are already rendered parent-first. Close and reset each descendant,
+	// so reopening this branch reveals only its immediate children.
+	var branch = Object.create(null);
+	branch[catid] = true;
+	var rows = document.querySelectorAll('tr[data-cat-parent]');
+	for (var i = 0; i < rows.length; i++) {
+		var row = rows[i], parent = row.getAttribute('data-cat-parent');
+		if (!branch[parent]) continue;
+		if (expand) row.style.display = '';
+		else {
+			row.style.display = 'none';
+			var child = row.id.slice('catid_'.length);
+			branch[child] = true;
+			var childToggle = document.getElementById('c_' + child);
+			if (childToggle) setExpanded(childToggle, false);
+		}
 	}
 }
 

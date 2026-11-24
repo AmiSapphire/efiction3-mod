@@ -32,7 +32,7 @@ function build_cat_row($thiscat, $thiscatinfo) {
 	for($count = 0; $count < $thiscatinfo['leveldown']; $count++) {
 		$space .= "&nbsp;&nbsp;&nbsp;";
 	}
-	$output = "<tr id='catid_".$thiscat."' ".($thiscatinfo['leveldown'] > 0 ? "style='display: none;'" : "")." class='$class'>\n\t<td class='tblborder'>".$space;
+	$output = "<tr id='catid_".$thiscat."' data-cat-parent='".(int)$thiscatinfo['pid']."' ".($thiscatinfo['pid'] != -1 ? "style='display: none;'" : "")." class='$class'>\n\t<td class='tblborder'>".$space;
 	$subs = ""; $downlink = "&nbsp;"; $uplink = "&nbsp;";
 	$$thiscat = $catlist;
 	foreach($$thiscat as $cat => $catinfo) {
@@ -40,7 +40,7 @@ function build_cat_row($thiscat, $thiscatinfo) {
 		if($catinfo['pid'] == $thiscatinfo['pid'] && $thiscatinfo['order'] < $catinfo['order']) $downlink = "<a href=\"admin.php?action=categories&go=down&displayorder=".$thiscatinfo['order']."&parentcatid=".$thiscatinfo['pid']."\">$down</a>";
 		if($catinfo['pid'] == $thiscat) $subs .= build_cat_row($cat, $catinfo);
 	}
-	if($subs) $output .= "<img onclick=\"javascript:displayCatRows('$thiscat')\" name='c_$thiscat' alt='on' src='".($onpic ? $onpic : "images/row_on.gif")."'> ";
+	if($subs) $output .= "<button type='button' onclick=\"displayCatRowsAdmin('$thiscat')\" id='c_$thiscat' aria-expanded='false' aria-label='".$thiscatinfo['name']."'><img alt='row_on' src='".($onpic ? $onpic : "images/row_on.gif")."'></button> ";
 	$output .= $thiscatinfo['name']."</td>\n
 	<td class='tblborder'>$downlink</td>\n
 	<td class='tblborder' width=\"13\">$uplink</td>\n
