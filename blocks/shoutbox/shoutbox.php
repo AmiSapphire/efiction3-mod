@@ -72,7 +72,7 @@ $content .= "<div id='shoutlist' style='height: 200px; overflow: auto;'>";
 if(dbnumrows($shouts) != 0) {
 	while($shout = dbassoc($shouts)) {
 		if(isNumber($shout['shout_name']) && isset($shout['penname'])) $shoutname = "<a href='"._BASEDIR."viewuser.php?uid=".$shout['shout_name']."'>".$shout['penname']."</a>";
-		else if(isset($shout['shout_name'])) $shoutname = $shout['shout_name'];
+		else if(isset($shout['shout_name'])) $shoutname = htmlspecialchars(html_entity_decode(strip_tags($shout['shout_name']), ENT_QUOTES, _CHARSET), ENT_QUOTES, _CHARSET);
 		else $shout = _GUEST; // Just in case.
 		$content .= "<span class='sbname'>$shoutname</span><br /><span class='sbdatetime'>".date("$shoutdate", $shout['shout_datestamp']);
 		if(isADMIN) $content .= " [<a href='"._BASEDIR."admin.php?action=blocks&amp;admin=shoutbox&amp;shout_id=".$shout['shout_id']."' class='sbadmin'>"._EDIT."</a>]";
