@@ -249,7 +249,7 @@ function format_link($text, $title = "", $target = 0) {
 function title_link($stories) {
 	global $ratingslist, $ageconsent, $disablepopups;
 
-	$rating = isset($stories['rid']) ? $stories['rid'] : null;
+	$rating = isset($stories['rid']) ? $stories['rid'] : '';
 	$warningtext = !empty($ratingslist[$rating]['warningtext']) ? addslashes(strip_tags($ratingslist[$rating]['warningtext'])) : "";
 		if(empty($ratingslist[$rating]['ratingwarning']))
 			$title = "<a href=\""._BASEDIR."viewstory.php?sid=".(isset($stories['sid']) ? $stories['sid'] : null)."\">".(isset($stories['title']) ? $stories['title'] : null)."</a>";
