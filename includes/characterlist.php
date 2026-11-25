@@ -12,9 +12,10 @@ function isNumber($num) {
 	return (preg_match("/^[0-9]+$/", $num) || $num == "-1" ? true : false);
 }
 
-$catid = isset($_GET['catid']) ? explode(",", $_GET['catid']) : array(-1);
-$catid = array_filter($catid, "isNumber");
-$characters = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_characters WHERE ".(count($catid) > 1 ? "FIND_IN_SET(catid, '".implode(",", $catid)."') > 0" : "catid = '".$catid[0]."'")." ORDER BY charname");
+$catid = isset($_GET['catid']) && is_string($_GET['catid']) ? explode(',', $_GET['catid']) : array('-1');
+$catid = array_filter($catid, function($id) { return $id === '-1' || preg_match('/^[0-9]+$/D', $id); });
+if(!$catid) $catid = array('-1');
+$characters = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_characters WHERE catid IN (".implode(',', $catid).") ORDER BY charname");
 if(!isset($_GET['element']) || !preg_match('/^[A-Za-z_][A-Za-z0-9_.-]*$/', $_GET['element'])) $_GET['element'] = '';
 echo "var element = '".addslashes($_GET['element'])."';\n";
 $x = 0;
