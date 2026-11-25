@@ -27,8 +27,9 @@ if(!defined("_CHARSET")) exit( );
 
 
 $querystring = "";
-foreach($_GET as $key=>$value) {
-	if($key != "skin") $querystring .= "&amp;$key=$value";
+foreach($_GET as $key => $value) {
+	if($key == "skin" || is_array($value)) continue;
+	$querystring .= "&amp;".addslashes(htmlspecialchars((string)$key, ENT_QUOTES))."=".addslashes(htmlspecialchars((string)$value, ENT_QUOTES));
 }
 if(!isset($hiddenskins)) $hiddenskins = array( );
 if(is_string($hiddenskins)) $hiddenskins = explode(",", $hiddenskins);
