@@ -50,6 +50,8 @@ if(isset($_POST['submit']) || isset($_GET['offset'])) {
 	$query = array();
 	$countquery = array();
 	$scountquery = array();
+	if(!in_array($searchtype, array("title", "summary", "penname", "advanced", "fulltext"), true)) errorExit(_ERROR);
+	if($searchtype == "fulltext" && $store != "mysql") errorExit(_ERROR);
 	if($searchtype == "fulltext") {
 		$query = "SELECT DISTINCT stories.*, "._PENNAMEFIELD." as penname, stories.date as date, stories.updated as updated FROM "._AUTHORTABLE.", ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext AND chapter.validated > 0 LIKE '%$searchterm%' AND chapter.sid = stories.sid AND stories.uid = "._UIDFIELD;
 		$countquery = "SELECT count(DISTINCT stories.sid) FROM ".TABLEPREFIX."fanfiction_stories as stories, ".TABLEPREFIX."fanfiction_chapters as chapter WHERE chapter.storytext AND chapter.validated > 0 LIKE '%$searchterm%' AND chapter.sid = stories.sid GROUP BY stories.sid";
