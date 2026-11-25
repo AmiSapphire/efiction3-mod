@@ -43,7 +43,7 @@ if(!empty($_GET['edit'])) {
 		$panel_url = addslashes(strip_tags(descript($_POST['panel_url'])));
 		$panel_level = (!empty($_POST['panel_level']) && isNumber($_POST['panel_level']) ? $_POST['panel_level'] : 0);
 		$panel_hidden = (!empty($_POST['panel_hidden']) ? 1 : 0);
-		$panel_type = strip_tags(descript($_POST['panel_type']));
+		$panel_type = (!empty($_POST['panel_type']) && strip_tags(descript($_POST['panel_type'])) ? $_POST['panel_type'] : "A");
 		if(!$panel_hidden) {
 			$oldinfo = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_id = '".$_GET['edit']."'");
 			$panelinfo = dbassoc($oldinfo);
