@@ -48,7 +48,7 @@ if(!empty($_GET['edit'])) {
 			$oldinfo = dbquery("SELECT * FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_id = '".$_GET['edit']."'");
 			$panelinfo = dbassoc($oldinfo);
 			$nextorder = 0;
-			if((isset($panelinfo['panel_hidden']) ? $panelinfo['panel_hidden'] : null) || $_GET['edit'] == "new") {
+			if($panelinfo['panel_hidden'] || $_GET['edit'] == "new") {
 				$order = dbquery("SELECT COUNT(panel_id) FROM ".TABLEPREFIX."fanfiction_panels WHERE panel_type = '$panel_type' AND panel_hidden = 0".($panel_type == "A" ? " AND panel_level = '$panel_level'" : ""));
 				list($nextorder) = dbrow($order);
 				$nextorder++;
@@ -75,14 +75,14 @@ if(!empty($_GET['edit'])) {
 		for($x = 0; $x < 5; $x++) { $output .= "<option".((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == $x ? " selected" : "").">$x</option>"; }
 		$output .= "</select><br />
 			<label for='panel_hidden'>"._HIDDEN.":</label> <input type='checkbox' class='checkbox' name='panel_hidden' id='panel_hidden' ".((isset($panelinfo['panel_hidden']) ? $panelinfo['panel_hidden'] : null) ? " checked" : "")."><br />
-			<label for='panel_type'>"._TYPE. ": </label> <select name='panel_type'>
-				<option value=\"A\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "A" ? " selected" : "") . ">A - "._ADMIN."</option>
-				<option value=\"B\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "B" ? " selected" : "") . ">B - "._BROWSE."</option>
-				<option value=\"F\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "F" ? " selected" : "") . ">F - "._FAVOR."</option>
-				<option value=\"L\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "L" ? " selected" : "") . ">L - "._10LISTS."</option>
-				<option value=\"P\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "P" ? " selected" : "") . ">P - "._PROFILE."</option>
-				<option value=\"S\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "S" ? " selected" : "") . ">S - "._SUBMISSIONS."</option>
-				<option value=\"U\"" . ((isset($panelinfo['panel_level']) ? $panelinfo['panel_level'] : null) == "U" ? " selected" : "") . ">U - "._USERACCOUNT."</option>
+			<label for='panel_type'>"._TYPE. ": </label> <select name='panel_type' id='panel_type'>
+				<option value='A'" . ((isset($panelinfo['panel_type']) && $panelinfo['panel_type'] == 'A') ? " selected" : "") . ">A - "._ADMIN."</option>
+				<option value='B'" . ((isset($panelinfo['panel_type']) && $panelinfo['panel_type'] == 'B') ? " selected" : "") . ">B - "._BROWSE."</option>
+				<option value='F'" . ((isset($panelinfo['panel_type']) && $panelinfo['panel_type'] == 'F') ? " selected" : "") . ">F - "._FAVOR."</option>
+				<option value='L'" . ((isset($panelinfo['panel_type']) && $panelinfo['panel_type'] == 'L') ? " selected" : "") . ">L - "._10LISTS."</option>
+				<option value='P'" . ((isset($panelinfo['panel_type']) && $panelinfo['panel_type'] == 'P') ? " selected" : "") . ">P - "._PROFILE."</option>
+				<option value='S'" . ((isset($panelinfo['panel_type']) && $panelinfo['panel_type'] == 'S') ? " selected" : "") . ">S - "._SUBMISSIONS."</option>
+				<option value='U'" . ((isset($panelinfo['panel_type']) && $panelinfo['panel_type'] == 'U') ? " selected" : "") . ">U - "._USERACCOUNT."</option>
 				</select>
 			<br />
 			<div style='margin: 1em; text-align: center;'><INPUT type=\"submit\" class=\"button\" value=\""._SUBMIT."\" name=\"submit\"></div></form></div>";
@@ -109,7 +109,7 @@ else {
 	$output .= "<option value=\"admin.php?action=panels\">"._ALL."</option>";
 	$paneltypelist = dbquery("SELECT DISTINCT panel_type FROM ".TABLEPREFIX."fanfiction_panels ORDER BY panel_type");
 	while($t = dbrow($paneltypelist)) {
-		$output .= "<option value='admin.php?action=panels&amp;type=$t[0]'".($type == $t[0] ? " selected" : "").">$t[0] - ".(isset($paneltypes[$t[0]]) ? $paneltypes[$t[0]] : null)."</option>";
+		$output .= "<option value='admin.php?action=panels&amp;type=$t[0]'".($type == $t[0] ? " selected" : "").">$t[0] - ".$paneltypes[$t[0]]."</option>";
 	}
 	$output .= "</select>";
 	if($type == "A") {
@@ -129,7 +129,7 @@ else {
 		if(!$panel['panel_hidden']) $count++;
 		else $num--;
 		$output .= "<tr><td class='tblborder'>".$panel['panel_title']."</td><td class='tblborder'>";
-		if(!$type) $output .= (isset($panel['panel_type']) ? $panel['panel_type'] : null)." - ".(isset($paneltypes[$panel['panel_type']]) ? $paneltypes[$panel['panel_type']] : null);
+		if(!$type) $output .= $panel['panel_type']." - ".$paneltypes[$panel['panel_type']];
 		else if($type == "A" && empty($_GET['level'])) $output .= $panel['panel_hidden'] ? _HIDDEN :  _LEVEL." ".$panel['panel_level'];
 		else {
 			if($panel['panel_hidden']) $output .= _HIDDEN;
