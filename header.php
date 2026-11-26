@@ -55,9 +55,26 @@ unset($v);
 if (session_status() === PHP_SESSION_NONE) {
 	$sessionuploadprogress = ini_get('session.upload_progress.enabled');
 	if ($sessionuploadprogress == false) {
+		// we will keep using ini_set here, as setting session cookie params with
+		// cookie lifetime was historically bugged; not sure if it was ever fixed
+		ini_set('session.use_cookies', '1');
+		// messing with this setting in PHP 8.4.0 and newer trips up a deprecation
+		// notice; should be 1 there anyway
+		ini_set('session.use_only_cookies', '1');
+		ini_set('use_strict_mode', '1');
+		// messing with this setting in PHP 8.4.0 and newer trips up a deprecation
+		// notice; should be 0 there anyway
+		ini_set('session.use_trans_sid', '0');
+		//ini_set('session.cookie_lifetime', '0');
 		ini_set('session.name', 'eFiction3Mod');
 		ini_set('session.cookie_path', ''.basename(__DIR__).'');
+		$securecookiecheck = in_array(strtolower((string)(isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : '')), array('on', '1'), true);
+		if ($securecookiecheck === true)  {
+			ini_set('session.cookie_secure', '1');
+		}
+		else ini_set('session.cookie_secure', '0');
 		ini_set('session.cookie_httponly', '1');
+		// session.cookie_samesite was introduced in PHP 7.3.0
 		if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
 			ini_set('session.cookie_samesite', 'Lax');
 		}
