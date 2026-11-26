@@ -30,7 +30,7 @@ This script is being tested for issues with future (now released 2026/11/19) PHP
 default_charset = "UTF-8"
 
 
-Just caught on 2026/11/19: session cookie settings behavior is changed: as of CVE 2026-115560, ini session settings cannot be set with a PHP file when session.upload_progress.enabled is set to On, as that will bring up an Uncaught Error in patched versions; either disable the aforementioned setting or set session.cookie_httponly to 1 and session.cookie_samesite to Lax in php.ini. PHP 8.6.0 sets these to 1 and Lax by default. The samesite session cookie entry was introduced in PHP 7.3.0, so that one will not work on anything earlier than this.
+Just caught on 2026/11/19: session cookie settings behavior is changed: as of CVE 2026-115560, ini session settings cannot be set with a PHP file when session.upload_progress.enabled is set to On, as that will bring up an Uncaught Error in patched versions (**yes, this includes using session_set_cookie_params**, as this is the same as using ini_set to set session settings in runtime - this was tested twice!); either disable the aforementioned setting or set session.cookie_httponly to 1 and session.cookie_samesite to Lax in php.ini. PHP 8.6.0 sets these to 1 and Lax by default. The samesite session cookie entry was introduced in PHP 7.3.0, so that one will not work on anything earlier than this.
 
 session.upload_progress.enabled = Off
 
@@ -108,26 +108,31 @@ Even earlier installs actually never specified an SQL session but rather used th
 - This script should fully support PHP 5+ again (...)
 - includes/button.php: GD captcha font path handling fix for PHP 8.6/GD 2.4.0 users and remove unused variable
 - includes/plain.button.php: Undefined variable PHP warning fix
-- includes/corefunctions.php: occasional foreach array|object, string given PHP warning fix
+- includes/corefunctions.php: occasional foreach array|object, string given PHP warning fix, deprecation fix
 - includes/userlist.php: Uncaught TypeError for Co-Authors field in PHP 8.x when searching for a user with the first character yields no results - discovered this one entirely by accident due to a typo... slipped my hand on the keyboard!
 - install/install.php: SMTP settings table column creation oversight fix, security fix in Step 1 (eventually reimplemented from eFiction 3.5.72 install), consistency changes, and cleanup
 - user/manageimages.php: Add support for WebP images
-- search.php: failed penname search causes PHP warning fix for PHP 8.x users - MySQL error message overwriting the Search Results header due to an assumption of an array count of author data, wildcard fixes, search only validated stories/chapters (mysql only), series results fix, dupe stories showing when searching by penname fix, Sorting Order drop-down fix, some patches from upstream (one fixed the completed checkbox in Advanced Search)
+- search.php: failed penname search causes PHP warning fix for PHP 8.x users - MySQL error message overwriting the Search Results header due to an assumption of an array count of author data, wildcard fixes, search only validated stories/chapters (mysql only), series results fix, dupe stories showing when searching by penname fix, Sorting Order drop-down fix, some patches from upstream (one fixed the completed checkbox in Advanced Search), searchtypes will no longer use unknown search modes, fulltext search is now limited to mysql setups (and no further - historically, file-based setups could use this through certain means)
 - series.php: category settings causing Fatal Error bug for PHP 8.x users and Undefined array key PHP warning fixes
-- stories.php: add story with null category using 'Only one' setting causing Fatal Error bug fix for PHP 8.x users
+- stories.php: add story with null category using 'Only one' setting causing Fatal Error bug fix for PHP 8.x users, various upstream bugfix and security patches, word-count recalculation when removing stories or chapters bugfix from upstream, co-authors not showing when previewing stories for the first time fix - from upstream (adding a new chapter for existing stories or editing existing stories/chapters always properly showed co-authors' names - and the fact that it didn't when adding a brand new story was a bug, as it would show the author's name twice)
 - categories.php: deleting only category causing Fatal Error bug fix for PHP 8.x users
 - header.php: leftover array typo oversight fix with age consent feature
 - admin/settings.php: SMTP updates/fixes and test code implementation and oversights breaking Ratings and $storiespath fixes
+- blocks/shoutbox/shoutbox.php: have jquery library file become local and no longer bound to google's servers, two security patches (one from @ariadoss, one from upstream)
 - blocks/menu/menu.php: Array to string conversion warning when accessing the menu block page fix, deprecation notice fixes re: using null as an array offset
 - blocks/menu/admin.php, blocks/menu/menu.php: further fixes for array keys due to the prior deprecation notice fixes - menu was $pagelinks[$page] -> $page - admin was an if statement for unserialize()
-- admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fixes and Undefined array key PHP warning when viewing the list that contains a panel with null entries fix
+- blocks/skinchange/skinchange.php: potential script execution using a GET parameter in the right place, so they are now entity-escaped and slash-escaped - security patch from @ariadoss
+- admin/panels.php: Trying to access offset array on null PHP warning when creating a new panel entry fixes, Undefined array key PHP warning when viewing the list that contains a panel with null entries fix, Panel Type is now a drop-down menu that should fail on empty instead of a textbox with no obvious protection
 - reviews.php: Prevent users/anons from trying to create/rate nonexistent or no longer existing stories and series fix and reviews page showing up to null stories/series fix (these also had PHP warnings, but the checks made most of them nil), Uncaught TypeError with leaving a review on a story/chapter with co-authors present fix (likely related to newer upstream patches)
 - viewstory.php: Add proper chapter checks for missing or nonexistent chapters (was Undefined variable warnings when trying to access a nonexistent or formerly existing chapter for PHP 8 users dirty fix)
 - viewseries.php: Add a check for anyone trying to access a nonexistent or no longer existing series - null series page/various PHP warnings fix
 - viewuser.php: Add a check for anyone trying to access any nonexistent or formerly existing users - this also applies to UID 0, which should never exist (these also had PHP warnings, but the checks made most of them nil)
-- news.php: Add a check for anyone trying to access a nonexistent or no longer existing news entry (these also had PHP warnings - namely Trying to access offset array on null, but the checks made them nil)
+- news.php: Add a check for anyone trying to access a nonexistent or no longer existing news entry (these also had PHP warnings - namely Trying to access offset array on null, but the checks made them nil), comment deletion decrementing the comments into the negatives bug - patched
 - browse/ratings.php: Uncaught TypeError in PHP 8 with visiting the Browse Ratings page with no ratings listed and Undefined variable PHP warning fixes
 - browse/class.php: Uncaught TypeError in PHP 8 with visiting a classification type that has no classifications listed fixes - also Undefined array key, Trying to access array offset on null, and second Uncaught TypeError fixes - also Undefined variable warning fixes (tricky file...)
+user/revres.php: review response page having story/chapter title displaying as None bugfix (a bug because the title/chapter did show on the review page but not the review response page) - from upstream (commit for this says includes/revres.php - my own oversight)
+includes/characterlist.php: potential Uncaught TypeError when trying to load characters or no characters fix - from upstream
+- admin/categories.php, includes/javascript.js: categories tree expand/collapse behavior update as the code was too old patch - re-implemented from upstream
 - includes/corefunctions.php, user/revres.php: Trying to access array offset on null PHP warning when responding to a review fix
 - reviews.php, stories.php, viewstory.php, includes/corefunctions.php, includes/storyblock.php, includes/storyform.php, user/revres.php: proper coauthors behavior fixes
 - header.php, user/profile.php: Trying to access array on null and Undefined variable PHP warnings dirty fix for trying to access nonexistent or formerly existing user profiles
@@ -149,7 +154,7 @@ Even earlier installs actually never specified an SQL session but rather used th
 - modules/challenges/challenges.php: Undefined constant error message for PHP 8.x users due to the fact it was missing the language includes fix
 - modules/challenges/otherresults.php: wildcard filter patch
 - includes/storyform.php: remove ancient 'None' option from the Characters section as it was redundant (selecting nothing achieved the same effect); that and any tinyMCE newer than 3.4.9 made it disappear when using the Categories section - it was present ever since eFiction 3.0 - this option also never existed when adding/editing series
-- includes/categories.php: replace multiple selections constant with the multiple categories constant as it will disappear when 'Only one' setting is used; add selected categories button is now more prominent
+- includes/categories.php: replace multiple selections constant with the multiple categories constant as it will disappear when 'Only one' setting is used; add selected categories button is now more prominent; have the multiple categories notice not show up in Advanced Search
 - series.php, includes/storyform.php: relocated the multiple selections constant to where it actually belongs - just before the categories section for stories/chapters; added the multiple selections constant for series to match the story form as it was never present
 - news.php, admin/news.php: use format_story function for rendering news entries - news.php used nl2br (which triple-spaced paragraphs on news entries that used tinyMCE especially), admin/news.php used nothing (which may render newlines as \r, \n, or \r\n in display)
 - fanfiction_chapters storytext column is changed from text -> mediumtext
