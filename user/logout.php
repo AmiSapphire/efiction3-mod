@@ -2,6 +2,7 @@
 if(!defined("_LOGOUTCHECK")) exit( );
 	define("_BASEDIR", "");
 	include("config.php");
+	session_name('eFiction3Mod');
 	session_start( );
 	if (session_status() === PHP_SESSION_ACTIVE) {
 		foreach ($_SESSION as $VarName => $Value)  { 
@@ -20,7 +21,6 @@ if(!defined("_LOGOUTCHECK")) exit( );
 			}
 		}
 	}
-	session_abort( );
 require_once("header.php");
 //make a new TemplatePower object
 if(file_exists("$skindir/default.tpl")) $tpl = new TemplatePower( "$skindir/default.tpl" );
