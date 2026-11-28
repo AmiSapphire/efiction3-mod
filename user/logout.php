@@ -2,7 +2,10 @@
 if(!defined("_LOGOUTCHECK")) exit( );
 	define("_BASEDIR", "");
 	include("config.php");
-	session_name('eFiction3Mod');
+	$sessionuploadprogress = ini_get('session.upload_progress.enabled');
+	if ($sessionuploadprogress == false) {
+		session_name('eFiction3Mod');
+	}
 	session_start( );
 	if (session_status() === PHP_SESSION_ACTIVE) {
 		foreach ($_SESSION as $VarName => $Value)  { 
